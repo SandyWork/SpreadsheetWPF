@@ -36,7 +36,7 @@
                         </TabItem.Background>
                         <TabItem.Header>
                             <StackPanel Orientation="Horizontal">
-                                
+
                                 <Image Source="/Menu1.png" Width="20" Height="20" >
                                     <Image.OpacityMask>
                                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -55,7 +55,7 @@
                                         <Image Source="import-icon.png" Width="69" Height="63"/>
                                     </Button.Content>
                                 </Button>
-                                
+
                                 <Label Content="Import Excel" HorizontalAlignment="Center" FontWeight="Normal" FontSize="14" />
                             </StackPanel>
                             <Separator Width="15" Height="{Binding Height, ElementName=stkpnl_menu1}" Opacity="0"/>
@@ -106,7 +106,7 @@
                                 <Label Content="Validate" HorizontalAlignment="Center" FontWeight="Normal" FontSize="14" />
                             </StackPanel>
                             <Separator Width="15" Height="{Binding Height, ElementName=stkpnl_menu2}" Opacity="0"/>
-                            
+
                             <StackPanel Orientation="Vertical">
                                 <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Name="btn_close" Click="btn_close_Click" Background="White">
                                     <Button.Content>
@@ -143,7 +143,16 @@
                             <DataGridTextColumn Header="NormalVal"/>
                             <DataGridTextColumn Header="MaximumVal"/>
                         </DataGrid.Columns>
+                        <DataGrid.Resources>
+                            <ContextMenu x:Key="DataGridColumnHeaderContextMenu">
+                                <MenuItem x:Name="menu_colVertical" MouseLeftButtonDown="header_rotate" Header="Vertical" IsEnabled="True"></MenuItem>
+                                <MenuItem Header="Horizontal" IsEnabled="False"></MenuItem>
+                            </ContextMenu>
 
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="ContextMenu" Value="{StaticResource DataGridColumnHeaderContextMenu}" />
+                            </Style>
+                        </DataGrid.Resources>
                     </DataGrid>
                 </ScrollViewer>
 

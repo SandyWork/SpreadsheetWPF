@@ -30,6 +30,13 @@ Class MainWindow
 
     End Sub
 
+    Private Sub header_rotate(sender As Object, e As MouseButtonEventArgs) Handles
+             menu_colVertical.MouseLeftButtonDown
+
+
+
+    End Sub
+
     'Code to rotate text'
     'Private void Form1_Load(Object sender, EventArgs e)
     '    {
