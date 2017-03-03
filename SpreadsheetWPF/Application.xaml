@@ -4,20 +4,5 @@
     xmlns:local="clr-namespace:SpreadsheetWPF"
     StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <Style x:Key="rotateText" TargetType="DataGridColumnHeader" >
-            <Setter Property="ContentTemplate" >
-                <Setter.Value>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" Width="90" VerticalAlignment="Center" TextAlignment="Center"
-                                            HorizontalAlignment="Center">
-                            <TextBlock.LayoutTransform>
-                                <RotateTransform Angle="270" />
-                            </TextBlock.LayoutTransform>
-                        </TextBlock>
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
-        </Style>
     </Application.Resources>
 </Application>

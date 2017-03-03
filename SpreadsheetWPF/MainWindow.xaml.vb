@@ -3,22 +3,22 @@ Imports System.Windows.Threading
 
 
 Class userData
-    Dim name As String
-    Dim selection As String
-    Dim attribute1 As String
-    Dim attribute2 As String
-    Dim attribute3 As String
-    Dim attribute4 As String
-    Dim attribute5 As String
-    Dim attribute6 As String
-    Dim attribute7 As String
-    Dim attribute8 As String
-    Dim attribute9 As String
-    Dim attribute10 As String
-    Dim unitattri4 As String
-    Dim minVal As Integer
-    Dim maxVal As Integer
-    Dim normVal As Integer
+    Public Property name As String
+    Public Property selection As String
+    Public Property attribute1 As String
+    Public Property attribute2 As String
+    Public Property attribute3 As String
+    Public Property attribute4 As String
+    Public Property attribute5 As String
+    Public Property attribute6 As String
+    Public Property attribute7 As String
+    Public Property attribute8 As String
+    Public Property attribute9 As String
+    Public Property attribute10 As String
+    Public Property unitattri4 As String
+    Public Property minVal As Integer
+    Public Property maxVal As Integer
+    Public Property normVal As Integer
 
     Public Sub New(name As String, selection As String, attribute1 As String, attribute2 As String, attribute3 As String, attribute4 As String, unitattri4 As String, attribute5 As String, attribute6 As String, attribute7 As String, attribute8 As String, attribute9 As String, attribute10 As String, minVal As Integer, normVal As Integer, maxVal As Integer)
 
@@ -79,10 +79,12 @@ Class MainWindow
 
     Private Sub win_main_Initialized(sender As Object, e As EventArgs)
 
-        Dim obj As userData = New userData("Sundaresh", "none", "1", "2", "3", "3", "3", "3", "3", "3", "3", "3", "3", 1, 2, 3)
-        'dg_grid1.Items.Add(obj)
-        'dg_grid1.Items.Add(obj)
+        Dim obj As userData = New userData("Name", "Selc", "1", "2", "3", "dd", "asd", "dd", "ad", "3", "3", "3", "3", 1, 2, 3)
+        dg_grid1.Items.Add(obj)
+        dg_grid1.Items.Add(obj)
     End Sub
 
+    Private Sub dg_grid1_SelectionChanged(sender As Object, e As SelectionChangedEventArgs) Handles dg_grid1.SelectionChanged
 
+    End Sub
 End Class

@@ -121,7 +121,7 @@
 
                 </TabControl>
                 <ScrollViewer   x:Name="scrlVw_grid" HorizontalAlignment='Stretch' VerticalAlignment='Stretch' HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"  Grid.Row="1" Grid.RowSpan="5" Margin="30,10,50,65" >
-                    <DataGrid HorizontalAlignment="Stretch"
+                    <DataGrid SelectionUnit="CellOrRowHeader" SelectionMode="Extended" HorizontalAlignment="Stretch"
                       x:Name="dg_grid1"
                       
                       AutoGenerateColumns="False"
@@ -132,19 +132,41 @@
                               CanUserDeleteRows="True"
                         CanUserResizeColumns="True" FontSize="14"
                         >
+                        <DataGrid.LayoutTransform>
+                            <TransformGroup>
+                                <RotateTransform Angle="90"/>
+                                <MatrixTransform Matrix="-1,0,0,1,0,0"/>
+                            </TransformGroup>
+                        </DataGrid.LayoutTransform>
                         <DataGrid.ColumnHeaderStyle>
-                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
                                 <Setter Property="LayoutTransform">
                                     <Setter.Value>
-                                        <RotateTransform Angle="270" />
+                                        <TransformGroup>
+                                            <RotateTransform Angle="-90"/>
+                                            <ScaleTransform ScaleX="1" ScaleY="-1" />
+                                        </TransformGroup>
                                     </Setter.Value>
                                 </Setter>
                             </Style>
                         </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.CellStyle>
+                            <Style  TargetType="DataGridCell">
+                                <Setter Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <TransformGroup>
+                                            <RotateTransform Angle="-90"/>
+                                            <ScaleTransform ScaleX="1" ScaleY="-1" />
+                                        </TransformGroup>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.CellStyle>
+
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn HeaderStyle="{x:Null}" Binding="{Binding Path = name}" x:Name="dgtxtcol_nam" Header="Name"/>
-                            <DataGridTextColumn HeaderStyle="{x:Null}" Binding="{Binding Path = selection}" x:Name="dgtxtcol_sel" Header="Selection"/>
+                            <DataGridTextColumn  Binding="{Binding Path = name}" x:Name="dgtxtcol_nam" Header="Name"/>
+                            <DataGridTextColumn  Binding="{Binding Path = selection}" x:Name="dgtxtcol_sel" Header="Selection"/>
                             <DataGridTextColumn Binding="{Binding Path = attribute1}" x:Name="dgtxtcol_attri1" Header="Attribute1"/>
                             <DataGridTextColumn  Binding="{Binding Path = attribute2}" x:Name="dgtxtcol_attri2" Header="Attribute2"/>
                             <DataGridTextColumn  Binding="{Binding Path = attribute3}" x:Name="dgtxtcol_attri3" Header="Attribute3"/>
@@ -156,27 +178,11 @@
                             <DataGridTextColumn  Binding="{Binding Path = attribute8}" x:Name="dgtxtcol_attri8" Header="Attribute8"/>
                             <DataGridTextColumn  Binding="{Binding Path = attribute9}" x:Name="dgtxtcol_attri9" Header="Attribute9"/>
                             <DataGridTextColumn  Binding="{Binding Path = attribute10}" x:Name="dgtxtcol_attri10" Header="Attribute10"/>
-                            <DataGridTextColumn HeaderStyle="{x:Null}" Binding="{Binding Path = minval}" x:Name="dgtxtcol_minval" Header="MininumVal"/>
-                            <DataGridTextColumn HeaderStyle="{x:Null}"  Binding="{Binding Path = normval}" x:Name="dgtxtcol_normval" Header="NormalVal"/>
-                            <DataGridTextColumn HeaderStyle="{x:Null}" Binding="{Binding Path = maxval}" x:Name="dgtxtcol_maxval" Header="MaximumVal"/>
+                            <DataGridTextColumn Binding="{Binding Path = minVal}" x:Name="dgtxtcol_minval" Header="MininumVal"/>
+                            <DataGridTextColumn  Binding="{Binding Path = normVal}" x:Name="dgtxtcol_normval" Header="NormalVal"/>
+                            <DataGridTextColumn Binding="{Binding Path = maxVal}" x:Name="dgtxtcol_maxval" Header="MaximumVal"/>
                         </DataGrid.Columns>
-
-                        <!--<DataGrid.RowDetailsTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Details}" Margin="10" />
-                            </DataTemplate>
-                        </DataGrid.RowDetailsTemplate>-->
-
-                        <DataGrid.Resources>
-                            <ContextMenu x:Key="DataGridColumnHeaderContextMenu">
-                                <MenuItem x:Name="cntxtmenu_colVertical" MouseLeftButtonDown="cntxtmenu_colVertical_MouseLeftButtonDown" Header="Vertical" IsEnabled="True"></MenuItem>
-                                <MenuItem x:Name="cntxtmenu_colHorizontal" Header="Horizontal" MouseLeftButtonDown="cntxtmenu_colHorizontal_MouseLeftButtonDown" IsEnabled="False"></MenuItem>
-                            </ContextMenu>
-
-                            <Style TargetType="{x:Type DataGridColumnHeader}">
-                                <Setter Property="ContextMenu" Value="{StaticResource DataGridColumnHeaderContextMenu}" />
-                            </Style>
-                        </DataGrid.Resources>
+                        
                     </DataGrid>
                 </ScrollViewer>
 
