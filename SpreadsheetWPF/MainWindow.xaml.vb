@@ -1,6 +1,46 @@
 ﻿Imports System.Windows.Interop
 Imports System.Windows.Threading
 
+
+Class userData
+    Dim name As String
+    Dim selection As String
+    Dim attribute1 As String
+    Dim attribute2 As String
+    Dim attribute3 As String
+    Dim attribute4 As String
+    Dim attribute5 As String
+    Dim attribute6 As String
+    Dim attribute7 As String
+    Dim attribute8 As String
+    Dim attribute9 As String
+    Dim attribute10 As String
+    Dim unitattri4 As String
+    Dim minVal As Integer
+    Dim maxVal As Integer
+    Dim normVal As Integer
+
+    Public Sub New(name As String, selection As String, attribute1 As String, attribute2 As String, attribute3 As String, attribute4 As String, unitattri4 As String, attribute5 As String, attribute6 As String, attribute7 As String, attribute8 As String, attribute9 As String, attribute10 As String, minVal As Integer, normVal As Integer, maxVal As Integer)
+
+        Me.name = name
+        Me.selection = selection
+        Me.attribute1 = attribute1
+        Me.attribute2 = attribute2
+        Me.attribute3 = attribute3
+        Me.attribute4 = attribute4
+        Me.attribute5 = attribute5
+        Me.attribute6 = attribute6
+        Me.attribute7 = attribute7
+        Me.attribute8 = attribute8
+        Me.attribute9 = attribute9
+        Me.attribute10 = attribute10
+        Me.minVal = minVal
+        Me.normVal = normVal
+        Me.maxVal = maxVal
+        Me.unitattri4 = unitattri4
+    End Sub
+
+End Class
 Class MainWindow
 
 
@@ -30,45 +70,18 @@ Class MainWindow
 
     End Sub
 
-    'Private Sub header_rotate(sender As Object, e As MouseButtonEventArgs) Handles
-    '         menu_colVertical.MouseLeftButtonDown
+    Private Sub cntxtmenu_colVertical_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs)
+    End Sub
 
+    Private Sub cntxtmenu_colHorizontal_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs)
 
+    End Sub
 
-    'End Sub
+    Private Sub win_main_Initialized(sender As Object, e As EventArgs)
 
-    'Code to rotate text'
-    'Private void Form1_Load(Object sender, EventArgs e)
-    '    {
-    '        DataGridViewTextBoxColumn tc = New DataGridViewTextBoxColumn();
-    '        tc.HeaderText = "Hello\nWorld";
-    '        tc.Width = 50;
+        Dim obj As userData = New userData("Sundaresh", "none", "1", "2", "3", "3", "3", "3", "3", "3", "3", "3", "3", 1, 2, 3)
 
-    '        dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-    '        dataGridView1.ColumnHeadersHeight = 100;
-
-    '        dataGridView1.Columns.Add(tc);
-    '        For (int x = 0; x < 10; x++)
-    '        {
-    '            dataGridView1.Rows.Add();
-    '            dataGridView1[0, x].Value = x.ToString();
-    '        }
-    '    }
-
-    '    Private void dataGridView1_CellPainting(Object sender, DataGridViewCellPaintingEventArgs e)
-    '    {
-    '        If (e.RowIndex == -1 && e.ColumnIndex == 0)
-    '        {
-    '            e.PaintBackground(e.CellBounds, true);
-    '            e.Graphics.TranslateTransform(e.CellBounds.Left , e.CellBounds.Bottom);
-    '            e.Graphics.RotateTransform(270);
-    '            e.Graphics.DrawString(e.FormattedValue.ToString(),e.CellStyle.Font,Brushes.Black,5,5);
-    '            e.Graphics.ResetTransform();
-    '            e.Handled=true;
-    '        }
-    '    }
-
-
+    End Sub
 
 
 End Class

@@ -1,5 +1,5 @@
-﻿<Window
-      
+﻿<Window Initialized="win_main_Initialized"
+       
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -122,31 +122,55 @@
                 </TabControl>
                 <ScrollViewer   x:Name="scrlVw_grid" HorizontalAlignment='Stretch' VerticalAlignment='Stretch' HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"  Grid.Row="1" Grid.RowSpan="5" Margin="30,10,50,65" >
                     <DataGrid HorizontalAlignment="Stretch"
-                      x:Name="dg_grid1" 
+                      x:Name="dg_grid1"
+                      
                       AutoGenerateColumns="False"
                         ColumnWidth="90"
                         CanUserReorderColumns="False"
                         CanUserSortColumns="True"
+                              CanUserAddRows="True"
+                              CanUserDeleteRows="True"
                         CanUserResizeColumns="True" FontSize="14"
                         >
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="270" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Name"/>
-                            <DataGridTextColumn Header="Selection"/>
-                            <DataGridTextColumn Header="Attribute1"/>
-                            <DataGridTextColumn Header="Attribute2"/>
-                            <DataGridTextColumn Header="Attribute3"/>
-                            <DataGridTextColumn Header="Attribute4"/>
-                            <DataGridTextColumn Header="Unit_Attri4"/>
-                            <DataGridTextColumn Header="Attribute5"/>
-                            <DataGridTextColumn Header="MininumVal"/>
-                            <DataGridTextColumn Header="NormalVal"/>
-                            <DataGridTextColumn Header="MaximumVal"/>
+                            <DataGridTextColumn HeaderStyle="{x:Null}" Binding="{Binding Path = name}" x:Name="dgtxtcol_nam" Header="Name"/>
+                            <DataGridTextColumn HeaderStyle="{x:Null}" Binding="{Binding Path = selection}" x:Name="dgtxtcol_sel" Header="Selection"/>
+                            <DataGridTextColumn Binding="{Binding Path = attribute1}" x:Name="dgtxtcol_attri1" Header="Attribute1"/>
+                            <DataGridTextColumn  Binding="{Binding Path = attribute2}" x:Name="dgtxtcol_attri2" Header="Attribute2"/>
+                            <DataGridTextColumn  Binding="{Binding Path = attribute3}" x:Name="dgtxtcol_attri3" Header="Attribute3"/>
+                            <DataGridTextColumn  Binding="{Binding Path = attribute4}" x:Name="dgtxtcol_attri4" Header="Attribute4"/>
+                            <DataGridTextColumn  Binding="{Binding Path = unitattri4}" x:Name="dgtxtcol_unitattri4" Header="Unit_Attri4"/>
+                            <DataGridTextColumn  Binding="{Binding Path = attribute5}" x:Name="dgtxtcol_attri5" Header="Attribute5"/>
+                            <DataGridTextColumn  Binding="{Binding Path = attribute6}" x:Name="dgtxtcol_attri6" Header="Attribute6"/>
+                            <DataGridTextColumn  Binding="{Binding Path = attribute7}" x:Name="dgtxtcol_attri7" Header="Attribute7"/>
+                            <DataGridTextColumn  Binding="{Binding Path = attribute8}" x:Name="dgtxtcol_attri8" Header="Attribute8"/>
+                            <DataGridTextColumn  Binding="{Binding Path = attribute9}" x:Name="dgtxtcol_attri9" Header="Attribute9"/>
+                            <DataGridTextColumn  Binding="{Binding Path = attribute10}" x:Name="dgtxtcol_attri10" Header="Attribute10"/>
+                            <DataGridTextColumn HeaderStyle="{x:Null}" Binding="{Binding Path = minval}" x:Name="dgtxtcol_minval" Header="MininumVal"/>
+                            <DataGridTextColumn HeaderStyle="{x:Null}"  Binding="{Binding Path = normval}" x:Name="dgtxtcol_normval" Header="NormalVal"/>
+                            <DataGridTextColumn HeaderStyle="{x:Null}" Binding="{Binding Path = maxval}" x:Name="dgtxtcol_maxval" Header="MaximumVal"/>
                         </DataGrid.Columns>
+
+                        <!--<DataGrid.RowDetailsTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Details}" Margin="10" />
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>-->
+
                         <DataGrid.Resources>
                             <ContextMenu x:Key="DataGridColumnHeaderContextMenu">
-                                <MenuItem x:Name="menu_colVertical" MouseLeftButtonDown="header_rotate" Header="Vertical" IsEnabled="True"></MenuItem>
-                                <MenuItem Header="Horizontal" IsEnabled="False"></MenuItem>
+                                <MenuItem x:Name="cntxtmenu_colVertical" MouseLeftButtonDown="cntxtmenu_colVertical_MouseLeftButtonDown" Header="Vertical" IsEnabled="True"></MenuItem>
+                                <MenuItem x:Name="cntxtmenu_colHorizontal" Header="Horizontal" MouseLeftButtonDown="cntxtmenu_colHorizontal_MouseLeftButtonDown" IsEnabled="False"></MenuItem>
                             </ContextMenu>
 
                             <Style TargetType="{x:Type DataGridColumnHeader}">
