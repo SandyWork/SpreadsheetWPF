@@ -80,7 +80,8 @@ Class MainWindow
     Private Sub win_main_Initialized(sender As Object, e As EventArgs)
 
         Dim obj As userData = New userData("Sundaresh", "none", "1", "2", "3", "3", "3", "3", "3", "3", "3", "3", "3", 1, 2, 3)
-
+        'dg_grid1.Items.Add(obj)
+        'dg_grid1.Items.Add(obj)
     End Sub
 
 
