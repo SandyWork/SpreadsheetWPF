@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SpreadsheetWPF.gridData"
+        xmlns:local="clr-namespace:SpreadsheetWPF.gridData" 
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:mui="http://firstfloorsoftware.com/ModernUI"
@@ -13,25 +13,10 @@
         mc:Ignorable="d"
         Title="MainWindow" SizeChanged="colSize" Width="750" Height="800" Icon="New Job-96.ico">
 
-    <!-- Commands for hot keys -->
-    <Window.CommandBindings>
 
-        <!-- Source -->
-        <!-- http://stackoverflow.com/questions/4682915/defining-menuitem-shortcuts -->
-
-        <CommandBinding Command="Cut" Executed="btnCut_Click" />
-        <CommandBinding Command="Paste" Executed="btnPaste_Click" />
-
-    </Window.CommandBindings>
-
-    <!-- Hot keys -->
-    <Window.InputBindings>
-        <KeyBinding Key="X" Modifiers="Control" Command="Cut" />
-        <KeyBinding Key="V" Modifiers="Control" Command="Paste" />
-    </Window.InputBindings>
 
     <Window.Resources>
-        <local:PresentData x:Key="presentData"/> 
+        <local:PresentData  x:Key="presentData"/> 
 
         <CollectionViewSource x:Key="cvsTasks" Source="{StaticResource presentData}"
                               Filter="CollectionViewSource_Filter">
@@ -161,17 +146,21 @@
                         CanUserAddRows="True"
                         CanUserDeleteRows="True"
                         CanUserResizeColumns="True" FontSize="14" RowHeaderWidth="0"
-                        ItemsSource="{Binding Source={StaticResource presentData}}"
+                        ItemsSource="{Binding Source={StaticResource cvsTasks}}"
                         >
 
                         <!-- This is required to handle CTRL + C when something is selected in the DataGrid -->
                         <DataGrid.CommandBindings>
                             <CommandBinding Command="Copy" Executed="CopyCommand" />
+                            <CommandBinding Command="Cut" x:Name="CutCommand" Executed="CutCommand_Executed" />
+                            <CommandBinding Command="Paste" x:Name="PasteCommand" Executed="PasteCommand_Executed" />
                         </DataGrid.CommandBindings>
 
                         <!-- This is required to handle CTRL + C when something is selected in the DataGrid -->
                         <DataGrid.InputBindings>
                             <KeyBinding Key="C" Modifiers="Control" Command="Copy" />
+                            <KeyBinding Key="X" Modifiers="Control" Command="Cut" />
+                            <KeyBinding Key="V" Modifiers="Control" Command="Paste" />
                         </DataGrid.InputBindings>
 
                         <!-- Styles to change column header in vertical orientation-->
@@ -187,12 +176,10 @@
                                 <Setter Property="ContextMenu">
                                     <Setter.Value>
                                         <ContextMenu>
-                                            <MenuItem Header="Item1"/>
-                                            <MenuItem Header="Item2"></MenuItem>
+                                            <MenuItem Header="Filter Column" Click="menuFilter_Click"   x:Name="menuFilter"  ></MenuItem>
                                         </ContextMenu>
                                     </Setter.Value>
                                 </Setter>
-                                <EventSetter Event="PreviewMouseRightButtonUp"  Handler="columnHeader_PreviewMouseRightButtonUp" />
                             </Style>
 
                         </DataGrid.ColumnHeaderStyle>
@@ -203,31 +190,13 @@
                                 <Setter Property="ContextMenu">
                                     <Setter.Value>
                                         <ContextMenu>
-                                            <MenuItem Header="RowItem1"/>
-                                            <MenuItem Header="RowItem2"></MenuItem>
+                                            <MenuItem Header="Copy"/>
+                                            <MenuItem Header="Paste"></MenuItem>
                                         </ContextMenu>
                                     </Setter.Value>
                                 </Setter>
                             </Style>
                         </DataGrid.RowStyle>
-                        
-
-                        <DataGrid.RowHeaderTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}},Path=Header}"/>
-                            </DataTemplate>
-                        </DataGrid.RowHeaderTemplate>
-
-                        <DataGrid.Resources>
-                            <ContextMenu x:Key="DataGridRowHeaderContextMenu">
-                                <MenuItem Header="Item1"/>
-                                <MenuItem Header="ITem2"/>
-                            </ContextMenu>
-
-                            <Style TargetType="{x:Type DataGridRowHeader}">
-                                <Setter Property="ContextMenu" Value="{StaticResource DataGridRowHeaderContextMenu}" />
-                            </Style>
-                        </DataGrid.Resources>
 
                         <DataGrid.Columns>
                             <DataGridTextColumn  Binding="{Binding Path = name}" x:Name="dgtxtcol_nam" Header="Name"/>
@@ -262,8 +231,6 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
-
-
                     </DataGrid>
                 </ScrollViewer>
                 <!--<StackPanel Orientation="Horizontal" Grid.Row="8" Margin="30,20,50,60" Grid.RowSpan="2">

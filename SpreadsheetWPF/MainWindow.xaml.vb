@@ -44,7 +44,10 @@ Namespace gridData
 
         Public Event PropertyChanged(sender As Object, e As PropertyChangedEventArgs) Implements INotifyPropertyChanged.PropertyChanged
 
+
+
         Protected Sub OnPropertyChanged(PropertyName As String)
+            MsgBox("Editing")
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(PropertyName))
         End Sub
 
@@ -68,7 +71,7 @@ Namespace gridData
 
         Dim collection As PresentData
         Dim obj, obj2 As userData
-        Dim rowData(20) As String
+        Dim rowData(20) As String, headerSelected As String = ""
         Dim lastCellAddedIndex As Short = 0
         Dim copyActivated As Boolean = False, cutActivated As Boolean = False, pasteActivated As Boolean = False
         Private Sub colSize(sender As Object, e As SizeChangedEventArgs)
@@ -102,13 +105,12 @@ Namespace gridData
         Private Sub columnHeader_PreviewMouseRightButtonUp(sender As Object, e As MouseButtonEventArgs) Handles dg_grid1.PreviewMouseRightButtonUp
             If TypeOf sender Is DataGridColumn Then
                 Dim header As DataGridColumn = CType(sender, DataGridColumn)
-                MsgBox(header.Header)
+                headerSelected = header.Header.ToString
             ElseIf TypeOf sender Is Primitives.DataGridColumnHeader Then
                 Dim header As Primitives.DataGridColumnHeader = CType(sender, Primitives.DataGridColumnHeader)
-                MsgBox(header.Content.ToString)
-            Else
-                Dim header As DataGrid = CType(sender, DataGrid)
+                headerSelected = header.Content.ToString
             End If
+            e.Handled = False
 
         End Sub
 
@@ -123,20 +125,19 @@ Namespace gridData
 
         Private Sub win_main_Initialized(sender As Object, e As EventArgs)
 
+            collection = Me.Resources("presentData")
+            collection.Clear()
             obj = New userData("Name", "Selc", "1", "2", "3", "dd", "asd", "dd", "ad", "3", "3", "3", "3", 1, 2, 3)
-            collection = New PresentData(obj)
+            collection.Add(obj)
             obj2 = New userData("Name", "Selc", "1", "2", "111", "dd", "asd", "dd", "ad", "3", "3", "3", "3", 1, 2, 3)
             collection.Add(obj2)
             obj2 = New userData("Name", "Selc", "1", "2", "222", "dd", "asd", "dd", "ad", "3", "3", "3", "3", 1, 2, 3)
             collection.Add(obj2)
-            dg_grid1.ItemsSource = collection
-        End Sub
-
-        Private Sub dg_grid1_SelectionChanged(sender As Object, e As SelectionChangedEventArgs) Handles dg_grid1.SelectionChanged
-
+            ''dg_grid1.ItemsSource = collection
         End Sub
 
         Private Sub btn_edit_row_Click(sender As Object, e As RoutedEventArgs)
+            MsgBox(sender.GetType.ToString)
             collection.Add(New userData())
         End Sub
 
@@ -144,33 +145,6 @@ Namespace gridData
 
         End Sub
 
-
-        Private Sub detectHeader(sender As Object, e As MouseButtonEventArgs)
-            'Dim dg_demoColumn As DataGridColumn = sender
-            'If Not dg_demoColumn.Header Is Nothing Then
-            '    MsgBox(dg_demoColumn.Header)
-            'End If
-        End Sub
-
-
-        Private Sub btnCut_Click(sender As Object, e As ExecutedRoutedEventArgs)
-            MessageBox.Show("Cut command activated")
-            Dim cellsSelected As IList = CType(sender, DataGrid).SelectedCells
-            If Not cellsSelected.Count = 0 Then
-                If cellsSelected.Count = 1 Then
-                    rowData(lastCellAddedIndex) = cellsSelected(0).attribute3
-                    MsgBox(rowData(0))
-                Else
-
-
-                End If
-            End If
-
-        End Sub
-
-        Private Sub btnPaste_Click(sender As Object, e As ExecutedRoutedEventArgs)
-            MessageBox.Show("Paste command activated")
-        End Sub
 
         Private Sub CollectionViewSource_Filter(sender As Object, e As FilterEventArgs)
 
@@ -184,23 +158,59 @@ Namespace gridData
 
         End Sub
 
-        Private Sub CopyCommand(sender As Object, e As ExecutedRoutedEventArgs)
 
-            If Not copyActivated Then
-                Dim cellsSelected As Object = CType(sender, DataGrid).SelectedCells
-                If Not cellsSelected.Count = 0 Then
-                    If cellsSelected.Count = 1 Then
-                        If (cellsSelected(0).IsValid) Then
-                            Dim header = cellsSelected(0).Column.Header.ToString()
-                            Dim userObject As userData = cellsSelected(0).Item
+        Private Sub PasteCommand_Executed(sender As Object, e As ExecutedRoutedEventArgs)
+
+        End Sub
+
+
+        Private Sub menuFilter_Click(sender As Object, e As RoutedEventArgs)
+            MsgBox(headerSelected)
+        End Sub
+
+        Private Sub CutCommand_Executed(sender As Object, e As ExecutedRoutedEventArgs)
+            If Not cutActivated Then
+                If TypeOf sender Is DataGrid Then
+                    Dim cellsSelected As Object = CType(sender, DataGrid).SelectedCells
+                    If Not cellsSelected.Count = 0 Then
+                        If cellsSelected.Count = 1 Then
+                            If (cellsSelected(0).IsValid) Then
+                                Dim header = cellsSelected(0).Column.Header.ToString()
+                                Dim userObject As userData = cellsSelected(0).Item
+                                Dim elementSelected As Object = determineColumn(header, userObject)
+                                MsgBox(elementSelected)
+                            End If
+                        ElseIf cellsSelected > 1 And cellsSelected < dg_grid1.Columns.Count Then
 
                         End If
-                    Else
-
                     End If
                 End If
 
             End If
+
+        End Sub
+
+        Private Sub CopyCommand(sender As Object, e As ExecutedRoutedEventArgs)
+
+            If Not copyActivated Then
+                If TypeOf sender Is DataGrid Then
+                    Dim cellsSelected As Object = CType(sender, DataGrid).SelectedCells
+                    If Not cellsSelected.Count = 0 Then
+                        If cellsSelected.Count = 1 Then
+                            If (cellsSelected(0).IsValid) Then
+                                Dim header = cellsSelected(0).Column.Header.ToString()
+                                Dim userObject As userData = cellsSelected(0).Item
+                                Dim elementSelected As Object = determineColumn(header, userObject)
+                                MsgBox(elementSelected)
+                            End If
+                        ElseIf cellsSelected > 1 And cellsSelected < dg_grid1.Columns.Count Then
+
+                        End If
+                    End If
+
+                End If
+            End If
+
 
         End Sub
 
@@ -249,19 +259,5 @@ Namespace gridData
         Private Sub dg_grid1_LoadingRow(sender As Object, e As DataGridRowEventArgs)
 
         End Sub
-
-        'Private Sub columnHeader_MouseRightButtonUp(sender As Object, e As MouseButtonEventArgs) Handles dg_grid1.PreviewMouseRightButtonUp
-        '    If TypeOf sender Is DataGrid Then
-        '        MsgBox("Grid")
-        '    ElseIf TypeOf sender Is DataGridColumn Then
-        '        MsgBox("Column")
-        '    ElseIf TypeOf sender Is DataGridRow Then
-        '        MsgBox("Row")
-        '    Else
-        '        MsgBox("GridArea")
-        '    End If
-
-
-        'End Sub
     End Class
 End Namespace
