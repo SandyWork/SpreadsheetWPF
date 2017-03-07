@@ -3,11 +3,45 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SpreadsheetWPF"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:mui="http://firstfloorsoftware.com/ModernUI" x:Name="win_main" x:Class="MainWindow"
+        xmlns:local="clr-namespace:SpreadsheetWPF.gridData"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+        x:Name="win_main"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        x:Class="gridData.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" SizeChanged="colSize" Width="750" Height="800" Icon="New Job-96.ico">
+
+    <!-- Commands for hot keys -->
+    <Window.CommandBindings>
+
+        <!-- Source -->
+        <!-- http://stackoverflow.com/questions/4682915/defining-menuitem-shortcuts -->
+
+        <CommandBinding Command="Cut" Executed="btnCut_Click" />
+        <CommandBinding Command="Paste" Executed="btnPaste_Click" />
+
+    </Window.CommandBindings>
+
+    <!-- Hot keys -->
+    <Window.InputBindings>
+        <KeyBinding Key="X" Modifiers="Control" Command="Cut" />
+        <KeyBinding Key="V" Modifiers="Control" Command="Paste" />
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <local:PresentData x:Key="presentData"/> 
+
+        <CollectionViewSource x:Key="cvsTasks" Source="{StaticResource presentData}"
+                              Filter="CollectionViewSource_Filter">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Filtered"/>
+                <PropertyGroupDescription PropertyName="Complete"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+    </Window.Resources>
+    
     <ScrollViewer x:Name="scrlVw_window" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
 
         <DockPanel x:Name="pnl_dock" Width="750" Height="800" >
@@ -124,7 +158,19 @@
                         CanUserAddRows="True"
                         CanUserDeleteRows="True"
                         CanUserResizeColumns="True" FontSize="14" RowHeaderWidth="0"
+                        ItemsSource="{Binding Source={StaticResource presentData}}"
                         >
+
+                        <!-- This is required to handle CTRL + C when something is selected in the DataGrid -->
+                        <DataGrid.CommandBindings>
+                            <CommandBinding Command="Copy" Executed="CopyCommand" />
+                        </DataGrid.CommandBindings>
+
+                        <!-- This is required to handle CTRL + C when something is selected in the DataGrid -->
+                        <DataGrid.InputBindings>
+                            <KeyBinding Key="C" Modifiers="Control" Command="Copy" />
+                        </DataGrid.InputBindings>
+
                         <!-- Styles to change column header in vertical orientation-->
                         <DataGrid.ColumnHeaderStyle>
                             <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
@@ -143,10 +189,25 @@
                                         </ContextMenu>
                                     </Setter.Value>
                                 </Setter>
+                                <EventSetter Event="PreviewMouseRightButtonUp"  Handler="columnHeader_PreviewMouseRightButtonUp" />
                             </Style>
 
                         </DataGrid.ColumnHeaderStyle>
                         <!-- Styles to change column header in vertical orientation-->
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                                <Setter Property="ContextMenu">
+                                    <Setter.Value>
+                                        <ContextMenu>
+                                            <MenuItem Header="RowItem1"/>
+                                            <MenuItem Header="RowItem2"></MenuItem>
+                                        </ContextMenu>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.RowStyle>
+                        
 
                         <DataGrid.RowHeaderTemplate>
                             <DataTemplate>
