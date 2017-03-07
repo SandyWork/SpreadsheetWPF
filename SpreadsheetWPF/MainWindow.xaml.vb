@@ -176,6 +176,14 @@ Namespace gridData
 
         End Sub
 
+        Private Sub cbCompleteFilter_Checked(sender As Object, e As RoutedEventArgs)
+
+        End Sub
+
+        Private Sub cbCompleteFilter_Unchecked(sender As Object, e As RoutedEventArgs)
+
+        End Sub
+
         Private Sub CopyCommand(sender As Object, e As ExecutedRoutedEventArgs)
 
             If Not copyActivated Then

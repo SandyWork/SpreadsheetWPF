@@ -58,9 +58,13 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TabControl Grid.Row="0" FontWeight="Bold">
-                    <TabItem>
+                <TabControl Grid.Row="0" Grid.RowSpan="2" FontWeight="Bold">
+                    <TabItem HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <TabItem.Background>
                             <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                                 <GradientStop Color="#FFF0F0F0" Offset="0"/>
@@ -81,27 +85,27 @@
                                 <TextBlock Text=" Menu1" FontWeight="Normal" FontSize="14" />
                             </StackPanel>
                         </TabItem.Header>
-                        <StackPanel x:Name="stckpnl_menu1" Orientation="Horizontal" Margin="25,5,0,0" VerticalAlignment="Center" HorizontalAlignment="Left">
-                            <StackPanel Orientation="Vertical">
+                        <StackPanel x:Name="stckpnl_menu1" Width="Auto" Height="Auto" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" x:Name="btn_import" Click="btn_import_Click" Background="White">
-                                    <Image Source="import-icon.png" Width="69" Height="63"/>
+                                    <Image Source="import-icon.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60"/>
                                 </Button>
 
-                                <Label Content="Import Excel" HorizontalAlignment="Center" FontWeight="Normal" FontSize="14" />
+                                <Label Content="Import Excel" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
                             </StackPanel>
                             <Separator Width="15" Height="{Binding Height, ElementName=stkpnl_menu1}" Opacity="0"/>
-                            <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" x:Name="btn_export" Click="btn_export_Click" Background="White">
-                                    <Image Source="export-icon.png" Width="69" Height="63"/>
+                                    <Image Source="export-icon.png"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60"/>
                                 </Button>
-                                <Label Content="Export Excel" HorizontalAlignment="Center" FontWeight="Normal" FontSize="14" />
+                                <Label Content="Export Excel" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
                             </StackPanel>
                         </StackPanel>
 
                     </TabItem>
-                    <TabItem>
+                    <TabItem HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <TabItem.Header>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <Image Source="/Menu2.png" Width="20" Height="20" >
                                     <Image.OpacityMask>
                                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -114,41 +118,40 @@
                             </StackPanel>
                         </TabItem.Header>
 
-                        <StackPanel x:Name="stckpnl_menu2" Orientation="Horizontal" VerticalAlignment="Center" Margin="25,5,0,0">
-                            <StackPanel Orientation="Vertical">
+                        <StackPanel x:Name="stckpnl_menu2" Width="Auto"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto"  Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Name="btn_save" Click="btn_save_Click" Background="White">
                                     <Button.Content>
-                                        <Image Source="/menu2.png" Width="69" Height="63"/>
+                                        <Image Source="/menu2.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60"/>
                                     </Button.Content>
                                 </Button>
-                                <Label Content="Save" HorizontalAlignment="Center" FontWeight="Normal" FontSize="14" />
+                                <Label Content="Save" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
                             </StackPanel>
                             <Separator Width="15" Height="{Binding Height, ElementName=stkpnl_menu2}" Opacity="0"/>
 
-                            <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Name="btn_validate" Click="btn_validate_Click" Background="White">
                                     <Button.Content>
-                                        <Image Source="validate.jpg" Width="69" Height="63"/>
+                                        <Image Source="validate.jpg" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60"/>
                                     </Button.Content>
                                 </Button>
-                                <Label Content="Validate" HorizontalAlignment="Center" FontWeight="Normal" FontSize="14" />
+                                <Label Content="Validate" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
                             </StackPanel>
                             <Separator Width="15" Height="{Binding Height, ElementName=stkpnl_menu2}" Opacity="0"/>
 
-                            <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Name="btn_close" Click="btn_close_Click" Background="White">
                                     <Button.Content>
-                                        <Image Source="close.png" Width="69" Height="63"/>
+                                        <Image Source="close.png"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60"/>
                                     </Button.Content>
                                 </Button>
-                                <Label Content="Close" HorizontalAlignment="Center" FontWeight="Normal" FontSize="14" />
+                                <Label Content="Close" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
                             </StackPanel>
                         </StackPanel>
                     </TabItem>
 
-
                 </TabControl>
-                <ScrollViewer   x:Name="scrlVw_grid" HorizontalAlignment='Stretch' VerticalAlignment='Stretch' HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"  Grid.Row="1" Grid.RowSpan="5" Margin="30,10,50,65" >
+                <ScrollViewer   x:Name="scrlVw_grid" HorizontalAlignment='Stretch' VerticalAlignment='Stretch' HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Row="2" Grid.RowSpan="8" Margin="30,10,50,65" >
                     <DataGrid   SelectionUnit="CellOrRowHeader" LoadingRow="dg_grid1_LoadingRow" SelectionMode="Extended" HorizontalAlignment="Stretch"
                       x:Name="dg_grid1"
                       AutoGenerateColumns="False"
@@ -263,7 +266,11 @@
 
                     </DataGrid>
                 </ScrollViewer>
-
+                <!--<StackPanel Orientation="Horizontal" Grid.Row="8" Margin="30,20,50,60" Grid.RowSpan="2">
+                    <TextBlock Text="Apply Filter " VerticalAlignment="Center" />
+                    <CheckBox x:Name="cbCompleteFilter" VerticalAlignment="Center"
+                      Checked="cbCompleteFilter_Checked" Unchecked="cbCompleteFilter_Unchecked" />
+                </StackPanel>-->
             </Grid>
 
         </DockPanel>
