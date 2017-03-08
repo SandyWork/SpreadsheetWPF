@@ -136,7 +136,7 @@
                     </TabItem>
 
                 </TabControl>
-                <ScrollViewer   x:Name="scrlVw_grid" HorizontalAlignment='Stretch' VerticalAlignment='Stretch' HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Row="2" Grid.RowSpan="8" Margin="30,10,50,65" >
+                <ScrollViewer   x:Name="scrlVw_grid" HorizontalAlignment='Stretch' VerticalAlignment='Stretch' HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Row="2" Grid.RowSpan="7" Margin="30,10,50,15" >
                     <DataGrid   SelectionUnit="CellOrRowHeader" LoadingRow="dg_grid1_LoadingRow" SelectionMode="Extended" HorizontalAlignment="Stretch"
                       x:Name="dg_grid1"
                       AutoGenerateColumns="False"
@@ -243,11 +243,13 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </ScrollViewer>
-                <!--<StackPanel Orientation="Horizontal" Grid.Row="8" Margin="30,20,50,60" Grid.RowSpan="2">
+                <StackPanel Orientation="Horizontal" Grid.Row="8" Margin="30,65,10,48" Grid.RowSpan="2">
                     <TextBlock Text="Apply Filter " VerticalAlignment="Center" />
-                    <CheckBox x:Name="cbCompleteFilter" VerticalAlignment="Center"
-                      Checked="cbCompleteFilter_Checked" Unchecked="cbCompleteFilter_Unchecked" />
-                </StackPanel>-->
+                    <CheckBox x:Name="cbCompleteFilter" IsEnabled="False" VerticalAlignment="Center"
+                      Checked="CompleteFilter_Changed" Unchecked="CompleteFilter_Changed" />
+                    <Label x:Name="filterStatus" Content="Currently No Filters Have Been Applied" TextBlock.Foreground="Red" VerticalAlignment="Center" Margin="100,0,0,0"/>
+                </StackPanel>
+                
             </Grid>
 
         </DockPanel>

@@ -74,8 +74,9 @@ Namespace gridData
         Dim rowData(20) As String, headerSelected As String = ""
         Dim lastCellAddedIndex As Short = 0, rowIndex As Short = 0, columnIndex As Short = 0
         Dim rowEditIndex As Integer, colEditIndex As Integer = 0
-
+        Dim filterValue As String = ""
         Dim copyActivated As Boolean = False, cutActivated As Boolean = False, pasteActivated As Boolean = False
+        Private filterSelected As Boolean = False
 
         Public Sub New()
 
@@ -144,7 +145,7 @@ Namespace gridData
         End Function
 
 
-        Private Function determineColumn(headerName As String, objectRef As userData) As Object
+        Private Function determineColumn(headerName As String, objectRef As userData ) As Object
             Select Case headerName
                 Case "Name"
                     Return objectRef.name
@@ -195,7 +196,7 @@ Namespace gridData
             collection.Add(obj)
             obj2 = New userData("Name", "abc", "1", "abc", "111", "dd", "abc", "dd", "abc", "435", "2", "3", "3", 1, 2, 3)
             collection.Add(obj2)
-            obj2 = New userData("Name", "12", "12", "2", "222", "dd", "12", "12", "ad", "22", "1", "3", "12", 1, 2, 3)
+            obj2 = New userData("Something", "12", "12", "2", "222", "dd", "12", "12", "ad", "22", "1", "3", "12", 1, 2, 3)
             collection.Add(obj2)
             ''dg_grid1.ItemsSource = collection
 
@@ -220,21 +221,41 @@ Namespace gridData
         End Sub
 
 
+
         Private Sub CollectionViewSource_Filter(sender As Object, e As FilterEventArgs)
+            If filterSelected Then
+                Dim obj As userData = e.Item
+                If obj IsNot Nothing Then
+                    ' If filter is turned on, filter completed items.
+                    If Me.cbCompleteFilter.IsChecked = True Then
+                        Dim temp As Object = determineColumn(headerSelected, obj)
+                        If temp.Equals(filterValue) Then
+                            e.Accepted = True
+
+                        Else
+                            e.Accepted = False
+                        End If
+                    End If
+                End If
+            End If
 
         End Sub
 
         Private Sub menuFilter_Click(sender As Object, e As RoutedEventArgs)
-            MsgBox(headerSelected)
+
+            Dim inputDialog As FilterWindow = New FilterWindow()
+            inputDialog.ShowInTaskbar = True
+            inputDialog.Owner = Me
+
+            If inputDialog.ShowDialog = True Then
+                filterSelected = True
+                cbCompleteFilter.IsEnabled = True
+                cbCompleteFilter.IsChecked = True
+                filterValue = inputDialog.returnFilterValue()
+                CollectionViewSource.GetDefaultView(dg_grid1.ItemsSource).Refresh()
+                filterStatus.Content = "Currently Filter is applied to Column : " & headerSelected & " with Value : " & filterValue
+            End If
         End Sub
-
-        'Private Sub cbCompleteFilter_Checked(sender As Object, e As RoutedEventArgs)
-
-        'End Sub
-
-        'Private Sub cbCompleteFilter_Unchecked(sender As Object, e As RoutedEventArgs)
-
-        'End Sub
 
         Private Sub CutCommand_Executed(sender As Object, e As ExecutedRoutedEventArgs)
             If Not cutActivated Then
@@ -367,7 +388,9 @@ Namespace gridData
             End If
         End Sub
 
-
+        Private Sub CompleteFilter_Changed(sender As Object, e As RoutedEventArgs)
+            CollectionViewSource.GetDefaultView(dg_grid1.ItemsSource).Refresh()
+        End Sub
 
         Private Sub detectCellClicked(sender As Object, e As MouseButtonEventArgs) Handles dg_grid1.PreviewMouseLeftButtonUp
 
