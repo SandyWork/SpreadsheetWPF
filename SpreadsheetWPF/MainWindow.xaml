@@ -163,6 +163,13 @@
                             <KeyBinding Key="V" Modifiers="Control" Command="Paste" />
                         </DataGrid.InputBindings>
 
+                        <DataGrid.Resources>
+                            <ContextMenu x:Key="myContextMenu">
+                                <MenuItem Header="Filter Column" Click="menuFilter_Click"  x:Name="menuFilter">
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.Resources>
+                        
                         <!-- Styles to change column header in vertical orientation-->
                         <DataGrid.ColumnHeaderStyle>
                             <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
@@ -173,18 +180,12 @@
                                         </TransformGroup>
                                     </Setter.Value>
                                 </Setter>
-                                <Setter Property="ContextMenu">
-                                    <Setter.Value>
-                                        <ContextMenu>
-                                            <MenuItem Header="Filter Column" Click="menuFilter_Click"   x:Name="menuFilter"  ></MenuItem>
-                                        </ContextMenu>
-                                    </Setter.Value>
-                                </Setter>
+                                <Setter Property="ContextMenu" Value="{StaticResource myContextMenu}"/>
                             </Style>
-
+                            
                         </DataGrid.ColumnHeaderStyle>
                         <!-- Styles to change column header in vertical orientation-->
-
+                        
                         <DataGrid.RowStyle>
                             <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
                                 <Setter Property="ContextMenu">
@@ -216,10 +217,10 @@
                             <DataGridTextColumn  Binding="{Binding Path = normVal, TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_normval" Header="NormalVal"/>
                             <DataGridTextColumn Binding="{Binding Path = maxVal, TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_maxval" Header="MaximumVal"/>
 
-                            <DataGridTemplateColumn Header="Edit Row">
+                            <DataGridTemplateColumn Header="Add Row">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button x:Name="btn_edit_row" Content="Edit" Click="btn_edit_row_Click"/>
+                                        <Button x:Name="btn_edit_row" Content="Add" Click="btn_edit_row_Click"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
