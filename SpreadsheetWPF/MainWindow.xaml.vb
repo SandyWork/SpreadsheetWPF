@@ -126,7 +126,8 @@ Namespace gridData
 
                 rowIndex = FindRowIndex(row)
                 columnIndex = cell.Column.DisplayIndex
-                MsgBox(rowIndex & " " & columnIndex)
+
+                ''MsgBox(rowIndex & " " & columnIndex)
                 ''If needed to find header of that row/column
                 'headerSelected = cell.Column.Header.ToString
             End If
@@ -190,13 +191,15 @@ Namespace gridData
 
             collection = Me.Resources("presentData")
             collection.Clear()
-            obj = New userData("Name", "Selc", "1", "2", "3", "dd", "asd", "dd", "ad", "3", "20", "3", "3", 1, 2, 3)
+            obj = New userData("Name", "10", "1", "10", "3", "dd", "asd", "dd", "ad", "2", "20", "3", "3", 1, 2, 3)
             collection.Add(obj)
-            obj2 = New userData("Name", "Selc", "1", "2", "111", "dd", "asd", "dd", "ad", "435", "2", "3", "3", 1, 2, 3)
+            obj2 = New userData("Name", "abc", "1", "abc", "111", "dd", "abc", "dd", "abc", "435", "2", "3", "3", 1, 2, 3)
             collection.Add(obj2)
-            obj2 = New userData("Name", "Selc", "1", "2", "222", "dd", "asd", "dd", "ad", "22", "1", "3", "3", 1, 2, 3)
+            obj2 = New userData("Name", "12", "12", "2", "222", "dd", "12", "12", "ad", "22", "1", "3", "12", 1, 2, 3)
             collection.Add(obj2)
             ''dg_grid1.ItemsSource = collection
+
+
         End Sub
 
         Private Sub btn_edit_row_Click(sender As Object, e As RoutedEventArgs)
@@ -283,6 +286,88 @@ Namespace gridData
         Private Sub PasteCommand_Executed(sender As Object, e As ExecutedRoutedEventArgs)
 
         End Sub
+
+        Private Sub addRowHeader_Click(sender As Object, e As RoutedEventArgs)
+            If colEditIndex = 16 Then
+                collection.Insert(rowEditIndex + 1L, New userData())
+            End If
+        End Sub
+
+        Private Sub deleteRowHeader_Click(sender As Object, e As RoutedEventArgs)
+            If colEditIndex = 17 Then
+                collection.RemoveAt(rowEditIndex)
+                If collection.Count = 0 Then
+                    collection.Add(New userData())
+                End If
+            End If
+
+        End Sub
+
+        Private Sub copyCells_Click(sender As Object, e As RoutedEventArgs)
+
+        End Sub
+
+        Private Sub pasteCells_Click(sender As Object, e As RoutedEventArgs)
+
+        End Sub
+
+        Private Sub highlightCells_Click(sender As Object, e As RoutedEventArgs)
+            If columnIndex = 1 Then
+                Dim obj As userData = collection.Item(rowIndex)
+                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(1))
+                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                End If
+
+                If obj.selection.Equals(obj.attribute1) Then
+                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(2))
+                        dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                    End If
+                    If obj.selection.Equals(obj.attribute2) Then
+                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(3))
+                        dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                    End If
+                If obj.selection.Equals(obj.attribute3) Then
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(4))
+                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                End If
+                If obj.selection.Equals(obj.attribute4) Then
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(5))
+                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                End If
+                If obj.selection.Equals(obj.unitattri4) Then
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(6))
+                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                End If
+                If obj.selection.Equals(obj.attribute5) Then
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(7))
+                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                End If
+                If obj.selection.Equals(obj.attribute6) Then
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(8))
+                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                End If
+                If obj.selection.Equals(obj.attribute7) Then
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(9))
+                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                End If
+                If obj.selection.Equals(obj.attribute8) Then
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(10))
+                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                End If
+                If obj.selection.Equals(obj.attribute9) Then
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(11))
+                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                End If
+                If obj.selection.Equals(obj.attribute10) Then
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(12))
+                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                End If
+
+            End If
+        End Sub
+
+
 
         Private Sub detectCellClicked(sender As Object, e As MouseButtonEventArgs) Handles dg_grid1.PreviewMouseLeftButtonUp
 

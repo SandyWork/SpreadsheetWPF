@@ -145,8 +145,9 @@
                         CanUserSortColumns="True"
                         CanUserAddRows="True"
                         CanUserDeleteRows="True"
-                        CanUserResizeColumns="True" FontSize="14" RowHeaderWidth="0"
+                        CanUserResizeColumns="True" FontSize="14" RowHeaderWidth="10"
                         ItemsSource="{Binding Source={StaticResource cvsTasks}}"
+                        IsSynchronizedWithCurrentItem="True"
                         >
 
                         <!-- This is required to handle CTRL + C when something is selected in the DataGrid -->
@@ -163,10 +164,19 @@
                             <KeyBinding Key="V" Modifiers="Control" Command="Paste" />
                         </DataGrid.InputBindings>
 
-                        <DataGrid.Resources>
-                            <ContextMenu x:Key="myContextMenu">
+                        <DataGrid.Resources x:Uid="resources">
+                            <ContextMenu x:Key="colHeaderContextMenu">
                                 <MenuItem Header="Filter Column" Click="menuFilter_Click"  x:Name="menuFilter">
                                 </MenuItem>
+                            </ContextMenu>
+                            <ContextMenu x:Key="rowHeaderContextMenu">
+                                <MenuItem Header="Add Row" Click="addRowHeader_Click"  x:Name="addRowHeader"/>
+                                <MenuItem Header="Delete Row" Click="deleteRowHeader_Click"  x:Name="deleteRowHeader"/>
+                            </ContextMenu>
+                            <ContextMenu  x:Key="rowContextMenu" x:Name="rowContextMenu">
+                                <MenuItem Header="Copy" x:Name="copyCells" Click="copyCells_Click" />
+                                <MenuItem Header="Paste" x:Name="pasteCells"  Click="pasteCells_Click" ></MenuItem>
+                                <MenuItem Header="Highlight" x:Name="highlightCells" Click="highlightCells_Click" > </MenuItem>
                             </ContextMenu>
                         </DataGrid.Resources>
                         
@@ -180,7 +190,7 @@
                                         </TransformGroup>
                                     </Setter.Value>
                                 </Setter>
-                                <Setter Property="ContextMenu" Value="{StaticResource myContextMenu}"/>
+                                <Setter Property="ContextMenu" Value="{StaticResource colHeaderContextMenu}"/>
                             </Style>
                             
                         </DataGrid.ColumnHeaderStyle>
@@ -188,16 +198,15 @@
                         
                         <DataGrid.RowStyle>
                             <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
-                                <Setter Property="ContextMenu">
-                                    <Setter.Value>
-                                        <ContextMenu>
-                                            <MenuItem Header="Copy"/>
-                                            <MenuItem Header="Paste"></MenuItem>
-                                        </ContextMenu>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
+                                <Setter Property="ContextMenu" Value="{StaticResource rowContextMenu}"/>
+                            </Style> 
                         </DataGrid.RowStyle>
+
+                        <DataGrid.RowHeaderStyle>
+                            <Style TargetType="{x:Type DataGridRowHeader}" BasedOn="{StaticResource {x:Type DataGridRowHeader}}">
+                                <Setter Property="ContextMenu" Value="{StaticResource rowHeaderContextMenu}"/>
+                            </Style>
+                        </DataGrid.RowHeaderStyle>
 
                         <DataGrid.Columns>
                             <DataGridTextColumn  Binding="{Binding Path = name}" x:Name="dgtxtcol_nam" Header="Name"/>
