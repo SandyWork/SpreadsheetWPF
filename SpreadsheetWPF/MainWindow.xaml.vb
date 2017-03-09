@@ -235,7 +235,6 @@ Namespace gridData
                         Dim temp As Object = determineColumn(headerSelected, obj)
                         If temp.Equals(filterValue) Then
                             e.Accepted = True
-
                         Else
                             e.Accepted = False
                         End If
@@ -393,7 +392,14 @@ Namespace gridData
         End Sub
 
         Private Sub CompleteFilter_Changed(sender As Object, e As RoutedEventArgs)
-            CollectionViewSource.GetDefaultView(dg_grid1.ItemsSource).Refresh()
+            If cbCompleteFilter.IsChecked = False Then
+                CollectionViewSource.GetDefaultView(dg_grid1.ItemsSource).Refresh()
+                filterStatus.Content = "Currently No Filters Have been Applied"
+            Else
+                CollectionViewSource.GetDefaultView(dg_grid1.ItemsSource).Refresh()
+                filterStatus.Content = "Currently Filter is applied to Column : " & headerSelected & " with Value : " & filterValue
+            End If
+
         End Sub
 
         Private Sub detectCellClicked(sender As Object, e As MouseButtonEventArgs) Handles dg_grid1.PreviewMouseLeftButtonUp
