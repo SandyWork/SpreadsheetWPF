@@ -2,9 +2,14 @@
 Imports System.ComponentModel
 Imports System.Windows.Interop
 Imports System.Windows.Threading
+Imports Microsoft.Win32
+Imports Microsoft.Office.Interop
+Imports Microsoft.Office.Interop.Excel
+Imports System.Data.OleDb
+Imports System.Data
 
 Namespace gridData
-    Class userData : Implements INotifyPropertyChanged
+    Public Class userData : Implements INotifyPropertyChanged
         Public Property name As String
         Public Property selection As String
         Public Property attribute1 As String
@@ -53,7 +58,7 @@ Namespace gridData
 
     End Class
 
-    Class PresentData
+    Public Class PresentData
         Inherits ObservableCollection(Of userData)
 
         Public Sub New(obj As userData)
@@ -67,6 +72,7 @@ Namespace gridData
     End Class
 
 
+
     Class MainWindow
 
         Dim collection As PresentData
@@ -78,12 +84,10 @@ Namespace gridData
         Dim copyActivated As Boolean = False, cutActivated As Boolean = False, pasteActivated As Boolean = False
         Private filterSelected As Boolean = False
 
-        Public Sub New()
 
+        Public Sub New()
             ' This call is required by the designer.
             InitializeComponent()
-
-            ' Add any initialization after the InitializeComponent() call.
 
         End Sub
 
@@ -145,41 +149,41 @@ Namespace gridData
         End Function
 
 
-        Private Function determineColumn(headerName As String, objectRef As userData ) As Object
+        Private Function determineColumn(headerName As String, objectRef As userData) As Object
+            headerName = headerName.Trim
+            headerName = headerName.ToLower()
             Select Case headerName
-                Case "Name"
+                Case "name"
                     Return objectRef.name
-                Case "Selection"
+                Case "selection"
                     Return objectRef.selection
-                Case "Attribute1"
+                Case "attribute1"
                     Return objectRef.attribute1
-                Case "Attribute2"
+                Case "attribute2"
                     Return objectRef.attribute2
-                Case "Attribute3"
+                Case "attribute3"
                     Return objectRef.attribute3
-                Case "Attribute4"
+                Case "attribute4"
                     Return objectRef.attribute4
-                Case "Unit_Attri4"
+                Case "unit_attri4"
                     Return objectRef.unitattri4
-                Case "Attribute5"
+                Case "attribute5"
                     Return objectRef.attribute5
-                Case "Attribute6"
+                Case "attribute6"
                     Return objectRef.attribute6
-                Case "Attribute7"
+                Case "attribute7"
                     Return objectRef.attribute7
-                Case "Attribute8"
+                Case "attribute8"
                     Return objectRef.attribute8
-                Case "Attribute9"
+                Case "attribute9"
                     Return objectRef.attribute9
-                Case "Attribute10"
+                Case "attribute10"
                     Return objectRef.attribute10
-                Case "Attribute1"
-                    Return objectRef.attribute1
-                Case "MinimumVal"
+                Case "minimumval"
                     Return objectRef.minVal
-                Case "NormalVal"
+                Case "normalval"
                     Return objectRef.normVal
-                Case "MaximumVal"
+                Case "maximumval"
                     Return objectRef.maxVal
                 Case Else
                     MsgBox("Bug Column Name Determination : " + headerName)
@@ -189,12 +193,12 @@ Namespace gridData
 
         ''End of Helper Functions
         Private Sub win_main_Initialized(sender As Object, e As EventArgs)
-
             collection = Me.Resources("presentData")
             collection.Clear()
+
             obj = New userData("Name", "10", "1", "10", "3", "dd", "asd", "dd", "ad", "2", "20", "3", "3", 1, 2, 3)
             collection.Add(obj)
-            obj2 = New userData("Name", "abc", "1", "abc", "111", "dd", "abc", "dd", "abc", "435", "2", "3", "3", 1, 2, 3)
+            obj2 = New userData("Name", "abc", "1", "abc", "111", "dd", "abc", "dd", "abc", "435", "2", "3", "3", 5, 6, 7)
             collection.Add(obj2)
             obj2 = New userData("Something", "12", "12", "2", "222", "dd", "12", "12", "ad", "22", "1", "3", "12", 1, 2, 3)
             collection.Add(obj2)
@@ -341,13 +345,13 @@ Namespace gridData
                 End If
 
                 If obj.selection.Equals(obj.attribute1) Then
-                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(2))
-                        dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                    End If
-                    If obj.selection.Equals(obj.attribute2) Then
-                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(3))
-                        dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                    End If
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(2))
+                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                End If
+                If obj.selection.Equals(obj.attribute2) Then
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(3))
+                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                End If
                 If obj.selection.Equals(obj.attribute3) Then
                     dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(4))
                     dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
@@ -419,22 +423,137 @@ Namespace gridData
 
         End Sub
 
-        Private Sub dg_grid1_LoadingRow(sender As Object, e As DataGridRowEventArgs)
-
-        End Sub
-
         ''Yet to be Impleted Codes
         Private Sub btn_export_Click(sender As Object, e As RoutedEventArgs)
 
+            '' Main Content
+            Dim f As SaveFileDialog = New SaveFileDialog()
+            f.Filter = "Excel Workbook (*.xlsx) |*.xlsx|All files (*.*)|*.*"
+            Try
+                If f.ShowDialog() = True Then
+                    Dim xlApp As Excel.Application = New Excel.Application()
+                    Dim xlWorkBook As Excel.Workbook = xlApp.Workbooks.Add
+                    Dim xlWorkSheet As Excel.Worksheet = xlWorkBook.Worksheets(1)
+                    Dim colCount = dg_grid1.Columns.Count, rowCount = collection.Count
+
+                    'Create an array with 16 columns and n rows
+                    Dim DataArray(rowCount, colCount) As Object
+                    Dim headersList(colCount) As Object
+
+                    Dim counter As Integer = 0
+                    For Each col In dg_grid1.Columns
+                        headersList(counter) = col.Header.ToString
+                        counter += 1
+                    Next
+
+                    For row As Short = 0 To rowCount - 1
+                        For col As Short = 0 To colCount - 3
+                            Dim temp As Object = determineColumn(headersList(col), collection.Item(row))
+                            DataArray(row, col) = temp
+                        Next
+                    Next
+                    xlWorkSheet.Range("A1").Resize(1, colCount).Value = headersList
+                    xlWorkSheet.Range("A2").Resize(rowCount, colCount).Value = DataArray
+
+
+                    xlWorkSheet.SaveAs(f.FileName)
+                    xlWorkBook.Close()
+                    xlApp.Quit()
+
+                    releaseObject(xlApp)
+                    releaseObject(xlWorkBook)
+                    releaseObject(xlWorkSheet)
+                    MsgBox("Exported")
+                End If
+            Catch ex As Exception
+                MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK)
+            End Try
+        End Sub
+
+        Private Sub releaseObject(ByVal obj As Object)
+            Try
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj)
+                obj = Nothing
+            Catch ex As Exception
+                obj = Nothing
+            Finally
+                GC.Collect()
+            End Try
         End Sub
 
         Private Sub btn_import_Click(sender As Object, e As RoutedEventArgs)
+            Dim openFileDialog As OpenFileDialog = New OpenFileDialog()
+            openFileDialog.Filter = "Excel 97-2003 Worksheet (*.xls)|*.xls|Excel Workbook (*.xlsx) |*.xlsx|All files (*.*)|*.*"
+            openFileDialog.Multiselect = False
 
+            If (openFileDialog.ShowDialog() = True) Then
+                If openFileDialog.CheckFileExists = True Then
+                    Dim filename = openFileDialog.FileName
+
+
+                    Dim sheetNames As List(Of String) = GetExcelSheetNames(filename)
+                    Dim excel As ImportExcel = New ImportExcel(sheetNames)
+                    excel.ShowInTaskbar = True
+                    excel.Owner = Me
+
+                    If excel.ShowDialog = True Then
+                        Dim sheetName As String = excel.getSheetName()
+                        displayExcelFile(filename, sheetName)
+                    End If
+
+                    ''displayExcelFile(filename)
+                End If
+
+            End If
         End Sub
 
         Private Sub btn_save_Click(sender As Object, e As RoutedEventArgs)
+        End Sub
+
+        Private Function GetExcelSheetNames(ByVal fileName As String) As List(Of String)
+            Dim strconn As String = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" &
+          fileName & ";Extended Properties=""Excel 12.0 Xml;HDR=YES"";"
+            Dim conn As New OleDb.OleDbConnection(strconn)
+
+            conn.Open()
+
+            Dim dtSheets As System.Data.DataTable =
+              conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, Nothing)
+            Dim listSheet As New List(Of String)
+            Dim drSheet As DataRow
+
+            For Each drSheet In dtSheets.Rows
+                Dim temp As String = drSheet("TABLE_NAME").ToString()
+                listSheet.Add(temp.Substring(0, temp.Length - 1))
+            Next
+            conn.Close()
+            Return listSheet
+
+        End Function
+
+        Private Sub displayExcelFile(filename As String, sheetName As String)
+
+            Dim excelApp As Excel.Application = New Excel.Application()
+            Dim workbook As Excel.Workbook = excelApp.Workbooks.Open(filename)
+            Dim worksheet As Excel.Worksheet = workbook.Sheets(sheetName)
+
+            Dim col As Integer = 0, row As Integer = 0
+            Dim range As Excel.Range = worksheet.UsedRange
+            MsgBox(range.Rows.Count)
+
+            workbook.Save()
+            workbook.Close()
+            excelApp.Quit()
+            'For row = 2 To range.Rows.Count
+            '    For col = 1 To range.Columns.Count
+            '        workbook.Close(True, Missing.Value, Missing.Value);
+            '            excelApp.Quit();
+            '            Return dt.DefaultView;
+            '    Next
+            'Next
 
         End Sub
+
 
         Private Sub btn_validate_Click(sender As Object, e As RoutedEventArgs)
 

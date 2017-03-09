@@ -137,7 +137,7 @@
 
                 </TabControl>
                 <ScrollViewer   x:Name="scrlVw_grid" HorizontalAlignment='Stretch' VerticalAlignment='Stretch' HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Row="2" Grid.RowSpan="7" Margin="30,10,50,15" >
-                    <DataGrid   SelectionUnit="CellOrRowHeader" LoadingRow="dg_grid1_LoadingRow" SelectionMode="Extended" HorizontalAlignment="Stretch"
+                    <DataGrid   SelectionUnit="CellOrRowHeader" SelectionMode="Extended" HorizontalAlignment="Stretch"
                       x:Name="dg_grid1"
                       AutoGenerateColumns="False"
                         ColumnWidth="90"
@@ -222,7 +222,7 @@
                             <DataGridTextColumn  Binding="{Binding Path = attribute8}" x:Name="dgtxtcol_attri8" Header="Attribute8"/>
                             <DataGridTextColumn  Binding="{Binding Path = attribute9}" x:Name="dgtxtcol_attri9" Header="Attribute9"/>
                             <DataGridTextColumn  Binding="{Binding Path = attribute10}" x:Name="dgtxtcol_attri10" Header="Attribute10"/>
-                            <DataGridTextColumn Binding="{Binding Path = minVal, TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_minval" Header="MininumVal"/>
+                            <DataGridTextColumn Binding="{Binding Path = minVal, TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_minval" Header="MinimumVal"/>
                             <DataGridTextColumn  Binding="{Binding Path = normVal, TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_normval" Header="NormalVal"/>
                             <DataGridTextColumn Binding="{Binding Path = maxVal, TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_maxval" Header="MaximumVal"/>
 

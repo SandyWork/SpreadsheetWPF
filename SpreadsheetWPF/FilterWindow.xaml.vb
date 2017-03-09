@@ -21,6 +21,10 @@
         Return filterValue.Text.ToString
     End Function
 
+    Public Function returnCaseSensitive() As Boolean
+        Return chk_caseSenst.IsChecked
+    End Function
+
     Private Sub filterValue_GotKeyboardFocus(sender As Object, e As KeyboardFocusChangedEventArgs) Handles filterValue.GotKeyboardFocus
         errorStatus.Visibility = Visibility.Hidden
     End Sub
