@@ -105,7 +105,8 @@ Namespace gridData
         Private filterSelected As Boolean = False
         Dim configHeaderList As List(Of List(Of String)) = New List(Of List(Of String))()
         Dim configIndexCount As Integer = 0
-        Dim cellsColored As List(Of DataGridCell) = New List(Of DataGridCell)
+        Dim redcellsColored As List(Of DataGridCell) = New List(Of DataGridCell)
+        Dim greencellsColored As List(Of DataGridCell) = New List(Of DataGridCell)
         Dim errorHighlight As Boolean = False, valHighlight As Boolean = False
 
         Public Sub New()
@@ -245,13 +246,15 @@ Namespace gridData
 
         Public Sub changeCellColor(dataCellInfo As DataGridCellInfo, bgColor As Color, fgColor As Color)
             Dim dataCell As DataGridCell = GetDataGridCell(dataCellInfo)
-            cellsColored.Add(dataCell)
+
 
             If bgColor = Colors.Green Then
+                greencellsColored.Add(dataCell)
                 valHighlight = True
             End If
 
             If bgColor = Colors.Red Then
+                redcellsColored.Add(dataCell)
                 errorHighlight = True
             End If
 
@@ -407,6 +410,7 @@ Namespace gridData
                 filterValue = inputDialog.returnFilterValue()
                 CollectionViewSource.GetDefaultView(dg_grid1.ItemsSource).Refresh()
                 filterStatus.Content = "Currently Filter is applied to Column : " & headerSelected & " with Value : " & filterValue
+                filterStatus.Visibility = True
             End If
         End Sub
 
@@ -522,47 +526,69 @@ Namespace gridData
 
                             If List.Item(i).Equals("Attribute1") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(2))
-                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                End If
 
                             ElseIf List.Item(i).Equals("Attribute2") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(3))
-                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                End If
 
                             ElseIf List.Item(i).Equals("Attribute3") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(4))
-                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                End If
 
                             ElseIf List.Item(i).Equals("Attribute4") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(5))
-                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                End If
 
                             ElseIf List.Item(i).Equals("Unit_Attri4") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(6))
-                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                End If
 
                             ElseIf List.Item(i).Equals("Attribute5") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(7))
-                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                End If
 
                             ElseIf List.Item(i).Equals("Attribute6") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(8))
-                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                End If
 
                             ElseIf List.Item(i).Equals("Attribute7") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(9))
-                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                End If
 
                             ElseIf List.Item(i).Equals("Attribute8") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(10))
-                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                End If
 
                             ElseIf List.Item(i).Equals("Attribute9") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(11))
-                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                End If
 
                             ElseIf List.Item(i).Equals("Attribute10") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(12))
-                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                End If
                             End If
                         Next
                         Exit For
@@ -591,11 +617,12 @@ Namespace gridData
             If cbCompleteFilter.IsChecked = False Then
                 CollectionViewSource.GetDefaultView(dg_grid1.ItemsSource).Refresh()
                 filterStatus.Content = "Currently No Filters Have been Applied"
+
             Else
                 CollectionViewSource.GetDefaultView(dg_grid1.ItemsSource).Refresh()
                 filterStatus.Content = "Currently Filter is applied to Column : " & headerSelected & " with Value : " & filterValue
             End If
-
+            filterStatus.Visibility = True
         End Sub
 
 
@@ -715,12 +742,14 @@ Namespace gridData
         Private Sub btn_validate_Click(sender As Object, e As RoutedEventArgs)
             validate_Mandatory(collection.Count)
             validate_Integers(collection.Count)
+            filterStatus.Visibility = False
+            errorStatus.Content = ""
             If errorHighlight = True Then
-                filterStatus.Content = "Cells Highlighted in Red Must not be left Blank"
+                errorStatus.Content = errorStatus.Content & vbNewLine & "Cells Highlighted in Red Must not be left Blank"
             End If
 
             If valHighlight = True Then
-                filterStatus.Content = filterStatus.Content & vbNewLine & "Value highlighted in Green don't match with validation conditions"
+                errorStatus.Content = errorStatus.Content & vbNewLine & "Value highlighted in Green don't match with validation conditions"
             End If
 
 
@@ -730,11 +759,11 @@ Namespace gridData
             fileRead()
             dg_grid1.SelectedCells.Clear()
 
-            For Each cell In cellsColored
+            For Each cell In redcellsColored
                 cell.Background = New SolidColorBrush(Colors.White)
                 cell.Foreground = New SolidColorBrush(Colors.Black)
             Next
-            cellsColored.Clear()
+            redcellsColored.Clear()
             errorHighlight = False
 
             For counter As Integer = 0 To nRows - 1
@@ -746,73 +775,95 @@ Namespace gridData
 
                             If List.Item(i).Equals("Attribute1") Then
                                 If temp_userData.attribute1.Equals("") Then
-                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(2))
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(2))
+                                    If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                        dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    End If
                                     changeCellColor(dg_grid1.CurrentCell, Colors.Red, Colors.White)
                                 End If
                             ElseIf List.Item(i).Equals("Attribute2") Then
                                 If temp_userData.attribute2.Equals("") Then
-                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(3))
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(3))
+                                    If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                        dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    End If
                                     changeCellColor(dg_grid1.CurrentCell, Colors.Red, Colors.White)
                                 End If
                             ElseIf List.Item(i).Equals("Attribute3") Then
                                 If temp_userData.attribute3.Equals("") Then
-                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(4))
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(4))
+                                    If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                        dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    End If
                                     changeCellColor(dg_grid1.CurrentCell, Colors.Red, Colors.White)
                                 End If
                             ElseIf List.Item(i).Equals("Attribute4") Then
                                 If temp_userData.attribute4.Equals("") Then
-                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(5))
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(5))
+                                    If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                        dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    End If
                                     changeCellColor(dg_grid1.CurrentCell, Colors.Red, Colors.White)
                                 End If
                             ElseIf List.Item(i).Equals("Unit_Attri4") Then
                                 If temp_userData.unitattri4.Equals("") Then
-                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(6))
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(6))
+                                    If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                        dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    End If
                                 End If
                             ElseIf List.Item(i).Equals("Attribute5") Then
                                 If temp_userData.attribute5.Equals("") Then
-                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(7))
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(7))
+                                    If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                        dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    End If
                                     changeCellColor(dg_grid1.CurrentCell, Colors.Red, Colors.White)
 
                                 End If
 
                             ElseIf List.Item(i).Equals("Attribute6") Then
                                 If temp_userData.attribute6.Equals("") Then
-                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(8))
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(8))
+                                    If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                        dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    End If
                                     changeCellColor(dg_grid1.CurrentCell, Colors.Red, Colors.White)
                                 End If
 
                             ElseIf List.Item(i).Equals("Attribute7") Then
                                 If temp_userData.attribute7.Equals("") Then
-                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(9))
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(9))
+                                    If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                        dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    End If
                                     changeCellColor(dg_grid1.CurrentCell, Colors.Red, Colors.White)
                                 End If
 
                             ElseIf List.Item(i).Equals("Attribute8") Then
                                 If temp_userData.attribute8.Equals("") Then
-                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(10))
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(10))
+                                    If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                        dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    End If
                                     changeCellColor(dg_grid1.CurrentCell, Colors.Red, Colors.White)
                                 End If
 
                             ElseIf List.Item(i).Equals("Attribute9") Then
                                 If temp_userData.attribute9.Equals("") Then
-                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(11))
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(11))
+                                    If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                        dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    End If
                                     changeCellColor(dg_grid1.CurrentCell, Colors.Red, Colors.White)
                                 End If
 
                             ElseIf List.Item(i).Equals("Attribute10") Then
                                 If temp_userData.attribute10.Equals("") Then
-                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(12))
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(12))
+                                    If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                                        dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                                    End If
                                     changeCellColor(dg_grid1.CurrentCell, Colors.Red, Colors.White)
                                 End If
                             End If
@@ -827,23 +878,24 @@ Namespace gridData
             fileRead()
             dg_grid1.SelectedCells.Clear()
 
-            For Each cell In cellsColored
+            For Each cell In greencellsColored
                 cell.Background = New SolidColorBrush(Colors.White)
                 cell.Foreground = New SolidColorBrush(Colors.Black)
             Next
-            cellsColored.Clear()
+            greencellsColored.Clear()
 
             For counter As Integer = 0 To nRows - 1
                 Dim temp_userData As userData = collection.Item(counter)
 
-                If Not temp_userData.minVal < temp_userData.normVal < temp_userData.maxVal Then
-                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(13))
+                If (temp_userData.minVal > temp_userData.normVal) Or (temp_userData.normVal > temp_userData.maxVal) Or (temp_userData.minVal > temp_userData.maxVal) Then
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(13))
                     dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(14))
+                    changeCellColor(dg_grid1.CurrentCell, Colors.Green, Colors.White)
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(14))
                     dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(15))
+                    changeCellColor(dg_grid1.CurrentCell, Colors.Green, Colors.White)
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(15))
                     dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-
                     changeCellColor(dg_grid1.CurrentCell, Colors.Green, Colors.White)
                 End If
             Next

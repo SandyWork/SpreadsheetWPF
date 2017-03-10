@@ -136,7 +136,7 @@
                       AutoGenerateColumns="False"
                         ColumnWidth="80"
                         CanUserReorderColumns="False"
-                        CanUserSortColumns="True"
+                        CanUserSortColumns="False"
                         CanUserAddRows="True"
                         CanUserDeleteRows="True"
                         CanUserResizeColumns="True" FontSize="14" RowHeaderWidth="10"
@@ -245,7 +245,7 @@
                     <Label x:Name="filterStatus" Content="Currently No Filters Have Been Applied" TextBlock.Foreground="Red" VerticalAlignment="Center" Margin="100,0,0,0"/>
                     
                 </StackPanel>
-                    <Label x:Name="errorStatus" Content="" TextBlock.Foreground="Red" VerticalAlignment="Center" Margin="100,-7,0,0"/>
+                    <Label x:Name="errorStatus" Content="" TextBlock.Foreground="Purple" VerticalAlignment="Center" Margin="100,-7,0,0"/>
             </StackPanel>
             
 
