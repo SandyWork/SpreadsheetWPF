@@ -11,7 +11,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         x:Class="gridData.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" SizeChanged="colSize" MinWidth="500" MinHeight="500"  Width="500" Height="500"  Icon="New Job-96.ico">
+        Title="MainWindow" SizeChanged="resizeWindow" MinWidth="500" MinHeight="500"  Width="500" Height="500"  Icon="New Job-96.ico">
 
 
 
@@ -20,10 +20,6 @@
 
         <CollectionViewSource x:Key="cvsTasks" Source="{StaticResource presentData}"
                               Filter="CollectionViewSource_Filter">
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Filtered"/>
-                <PropertyGroupDescription PropertyName="Complete"/>
-            </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
     </Window.Resources>
 
@@ -46,7 +42,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TabControl Grid.Row="0" Grid.RowSpan="2" FontWeight="Bold" Margin="0,0,0,-15">
+            <TabControl Grid.Row="0" Grid.RowSpan="2" FontWeight="Bold" Margin="0,0,0,-15" Background="White">
                 <TabItem HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <TabItem.Background>
                         <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -76,7 +72,7 @@
 
                             <Label Content="Import Excel" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
                         </StackPanel>
-                        <Separator Width="15" Height="{Binding Height, ElementName=stkpnl_menu1}" Opacity="0"/>
+                        <Separator Width="15" Opacity="0"/>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" x:Name="btn_export" Click="btn_export_Click" Background="White">
                                 <Image Source="export-icon.png"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60"/>
@@ -110,7 +106,7 @@
                             </Button>
                             <Label Content="Save" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
                         </StackPanel>
-                        <Separator Width="15" Height="{Binding Height, ElementName=stkpnl_menu2}" Opacity="0"/>
+                        <Separator Width="15" Opacity="0"/>
 
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Name="btn_validate" Click="btn_validate_Click" Background="White">
@@ -120,7 +116,7 @@
                             </Button>
                             <Label Content="Validate" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
                         </StackPanel>
-                        <Separator Width="15" Height="{Binding Height, ElementName=stkpnl_menu2}" Opacity="0"/>
+                        <Separator Width="15"  Opacity="0"/>
 
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Name="btn_close" Click="btn_close_Click" Background="White">
@@ -138,14 +134,14 @@
                 <DataGrid   SelectionUnit="CellOrRowHeader" SelectionMode="Extended" HorizontalAlignment="Stretch"
                       x:Name="dg_grid1"
                       AutoGenerateColumns="False"
-                        ColumnWidth="90"
+                        ColumnWidth="80"
                         CanUserReorderColumns="False"
                         CanUserSortColumns="True"
                         CanUserAddRows="True"
                         CanUserDeleteRows="True"
                         CanUserResizeColumns="True" FontSize="14" RowHeaderWidth="10"
                         ItemsSource="{Binding Source={StaticResource cvsTasks}}"
-                        IsSynchronizedWithCurrentItem="True"
+                        IsSynchronizedWithCurrentItem="True" Foreground="Black" Background="#FFF5EDED"
                         >
 
                     <!-- This is required to handle CTRL + C when something is selected in the DataGrid -->

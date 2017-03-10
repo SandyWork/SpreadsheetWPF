@@ -7,9 +7,11 @@ Imports Microsoft.Office.Interop
 Imports Microsoft.Office.Interop.Excel
 Imports System.Data.OleDb
 Imports System.Data
+Imports System.IO
+Imports System.Collections.Specialized
 
 Namespace gridData
-    Public Class userData : Implements INotifyPropertyChanged
+    Public Class userData : Implements INotifyPropertyChanged, IEditableObject
         Public Property name As String
         Public Property selection As String
         Public Property attribute1 As String
@@ -49,13 +51,21 @@ Namespace gridData
 
         Public Event PropertyChanged(sender As Object, e As PropertyChangedEventArgs) Implements INotifyPropertyChanged.PropertyChanged
 
-
-
         Protected Sub OnPropertyChanged(PropertyName As String)
-            MsgBox("Editing")
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(PropertyName))
         End Sub
 
+        Public Sub BeginEdit() Implements IEditableObject.BeginEdit
+            ''Console.WriteLine("Editing")
+        End Sub
+
+        Public Sub EndEdit() Implements IEditableObject.EndEdit
+            ''Console.WriteLine("End")
+        End Sub
+
+        Public Sub CancelEdit() Implements IEditableObject.CancelEdit
+            ''Console.WriteLine("Cancel Editing")
+        End Sub
     End Class
 
     Public Class PresentData
@@ -69,29 +79,40 @@ Namespace gridData
             Add(New userData())
         End Sub
 
+        Protected Overrides Sub OnCollectionChanged(e As NotifyCollectionChangedEventArgs)
+            MyBase.OnCollectionChanged(e)
+        End Sub
     End Class
-
-
 
     Class MainWindow
 
         Dim collection As PresentData
-        Dim obj, obj2 As userData
-        Dim rowData(20) As String, headerSelected As String = ""
-        Dim lastCellAddedIndex As Short = 0, rowIndex As Short = 0, columnIndex As Short = 0
+
+        'header of the column where user right clicked
+        Dim headerSelected As String = "", configurationFileName As String = "..\selectionConfigFile.txt"
+
+        'rowIndex and columnIndex stores the location of the cell where user right clicked to open the context Menu
+        Dim rowIndex As Short = 0, columnIndex As Short = 0
+
+        'rowEditIndex, colEditIndex stores the location of the cell where user left clicked
+        'This is used for Add Row and Delete Row Buttons to know exactly where users wants to perform Row operations
+
         Dim rowEditIndex As Integer, colEditIndex As Integer = 0
+
+        'Filter Value that user entered when prompted
         Dim filterValue As String = ""
         Dim copyActivated As Boolean = False, cutActivated As Boolean = False, pasteActivated As Boolean = False
         Private filterSelected As Boolean = False
-
-
+        Dim configHeaderList As List(Of List(Of String)) = New List(Of List(Of String))()
+        Dim configIndexCount As Integer = 0
         Public Sub New()
             ' This call is required by the designer.
             InitializeComponent()
 
         End Sub
 
-        Private Sub colSize(sender As Object, e As SizeChangedEventArgs)
+        'This method is used to automatically resize the dock panel when user resizes Window
+        Private Sub resizeWindow(sender As Object, e As SizeChangedEventArgs)
 
             pnl_dock.Width = win_main.ActualWidth
             pnl_dock.Height = win_main.ActualHeight
@@ -99,48 +120,8 @@ Namespace gridData
 
         End Sub
 
-        Private Sub columnHeader_PreviewMouseRightButtonUp(sender As Object, e As MouseButtonEventArgs) Handles dg_grid1.PreviewMouseRightButtonUp
 
-            Dim dep As DependencyObject = e.OriginalSource
-
-            While (Not (dep Is Nothing) AndAlso Not (TypeOf dep Is DataGridCell) AndAlso Not (TypeOf dep Is Primitives.DataGridColumnHeader))
-                dep = VisualTreeHelper.GetParent(dep)
-            End While
-
-            If dep Is Nothing Then
-                Return
-            End If
-
-            If (TypeOf dep Is Primitives.DataGridColumnHeader) Then
-                Dim header As Primitives.DataGridColumnHeader = dep
-                headerSelected = header.Content.ToString
-            End If
-
-            If (TypeOf dep Is DataGridColumn) Then
-                Dim header As DataGridColumn = dep
-                headerSelected = header.Header.ToString
-            End If
-
-            If (TypeOf dep Is DataGridCell) Then
-                Dim cell As DataGridCell = dep
-                While (Not (dep Is Nothing) AndAlso Not (TypeOf dep Is DataGridRow))
-                    dep = VisualTreeHelper.GetParent(dep)
-
-                End While
-                Dim row As DataGridRow = dep
-
-                rowIndex = FindRowIndex(row)
-                columnIndex = cell.Column.DisplayIndex
-
-                ''MsgBox(rowIndex & " " & columnIndex)
-                ''If needed to find header of that row/column
-                'headerSelected = cell.Column.Header.ToString
-            End If
-            e.Handled = False
-            Return
-        End Sub
-
-        ''All the Helper Functions
+        ''**********All the Helper Functions
 
         Private Function FindRowIndex(row As DataGridRow) As Integer
             Dim dataGrid As DataGrid = ItemsControl.ItemsControlFromItemContainer(row)
@@ -148,6 +129,16 @@ Namespace gridData
             Return index
         End Function
 
+        Private Sub releaseObject(ByVal obj As Object)
+            Try
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj)
+                obj = Nothing
+            Catch ex As Exception
+                obj = Nothing
+            Finally
+                GC.Collect()
+            End Try
+        End Sub
 
         Private Function determineColumn(headerName As String, objectRef As userData) As Object
             headerName = headerName.Trim
@@ -186,24 +177,154 @@ Namespace gridData
                 Case "maximumval"
                     Return objectRef.maxVal
                 Case Else
-                    MsgBox("Bug Column Name Determination : " + headerName)
+                    MsgBox("Bug in determineColumn : " + headerName)
                     Return ""
             End Select
         End Function
 
-        ''End of Helper Functions
+
+        Private Sub fileRead()
+            Try
+                'Check if an existing configuration file exists.
+                'If not create a new one with default Values
+                If File.Exists(configurationFileName) = False Then
+
+                    Console.WriteLine("No Configuration File")
+                    Console.WriteLine("Creating One With Default Values")
+
+                    Using sw As StreamWriter = File.CreateText(configurationFileName)
+                        sw.WriteLine("<-- Format to specify columns to highlight for specific Value is : -->")
+                        sw.WriteLine("<-- [Value] [List of Columns separated by "" "" ]                  -->")
+                        sw.WriteLine("<-- e.g.  1 Attribute1 Attribute2 Attribute3                       -->")
+                        sw.WriteLine("1 Attribute8 Attribute9 Attribute10")
+                        sw.WriteLine("2 Attribute6 Attribute7 Attribute8")
+                        sw.WriteLine("3 Attribute1 Attribute4 Attribute10")
+                        sw.Flush()
+                    End Using
+                End If
+                Console.WriteLine("Already there")
+                ' Open the file to read from.
+                Using sr As StreamReader = File.OpenText(configurationFileName)
+                    Dim lineCount As Integer = File.ReadLines(configurationFileName).Count()
+                    Dim temp As String = ""
+                    Dim attributeList As String()
+                    While sr.Peek() >= 0
+                        temp = sr.ReadLine()
+                        If Not temp.Contains("<--") Then
+                            configHeaderList.Add(New List(Of String)())
+
+                            attributeList = temp.Split(" ")
+                            For counter As Integer = 0 To attributeList.Count - 1
+                                configHeaderList(configIndexCount).Add(attributeList(counter))
+                            Next
+                            configIndexCount += 1
+                        End If
+                    End While
+                End Using
+
+            Catch e As Exception
+                ' Let the user know what went wrong.
+                Console.WriteLine("The file could not be read:")
+                Console.WriteLine(e.Message)
+            End Try
+        End Sub
+        ''**********End of Helper Functions
+
         Private Sub win_main_Initialized(sender As Object, e As EventArgs)
             collection = Me.Resources("presentData")
             collection.Clear()
 
-            obj = New userData("Name", "10", "1", "10", "3", "dd", "asd", "dd", "ad", "2", "20", "3", "3", 1, 2, 3)
+            Dim obj = New userData("Name", "10", "1", "10", "3", "dd", "asd", "dd", "ad", "2", "20", "3", "3", 1, 2, 3)
             collection.Add(obj)
-            obj2 = New userData("Name", "abc", "1", "abc", "111", "dd", "abc", "dd", "abc", "435", "2", "3", "3", 5, 6, 7)
+            Dim obj2 = New userData("Name", "abc", "1", "abc", "111", "dd", "abc", "dd", "abc", "435", "2", "3", "3", 5, 6, 7)
             collection.Add(obj2)
             obj2 = New userData("Something", "12", "12", "2", "222", "dd", "12", "12", "ad", "22", "1", "3", "12", 1, 2, 3)
             collection.Add(obj2)
-            ''dg_grid1.ItemsSource = collection
 
+        End Sub
+
+
+        'This method determines the where user performed mouse right click and stores the location of click.
+        Private Sub columnHeader_PreviewMouseRightButtonUp(sender As Object, e As MouseButtonEventArgs) Handles dg_grid1.PreviewMouseRightButtonUp
+
+            Dim dep As DependencyObject = e.OriginalSource
+
+            'No Matter where user click inside the Datagrid, be it row or column or header, the sender is always DataGrid.
+            'Hence we must find the parent element where user actually clicked.
+            While (Not (dep Is Nothing) AndAlso Not (TypeOf dep Is DataGridCell) AndAlso Not (TypeOf dep Is Primitives.DataGridColumnHeader))
+                dep = VisualTreeHelper.GetParent(dep)
+            End While
+
+
+            If dep Is Nothing Then
+                Return
+
+            ElseIf (TypeOf dep Is Primitives.DataGridColumnHeader) Then
+                Dim header As Primitives.DataGridColumnHeader = dep
+                headerSelected = header.Content.ToString
+
+                'If user clicks on 
+            ElseIf (TypeOf dep Is DataGridColumn) Then
+                Dim header As DataGridColumn = dep
+                headerSelected = header.Header.ToString
+
+                'If user clicks anywhere in the rows, store the row and column index
+            ElseIf (TypeOf dep Is DataGridCell) Then
+                Dim cell As DataGridCell = dep
+                While (Not (dep Is Nothing) AndAlso Not (TypeOf dep Is DataGridRow))
+                    dep = VisualTreeHelper.GetParent(dep)
+
+                End While
+                Dim row As DataGridRow = dep
+
+                rowIndex = FindRowIndex(row)
+                columnIndex = cell.Column.DisplayIndex
+
+                ''MsgBox(rowIndex & " " & columnIndex)
+                ''If needed to find header of that row/column
+                'headerSelected = cell.Column.Header.ToString
+            End If
+
+            'By default e.Handled is True. It signifies that right click has been handled, and sometimes context menu don't pop up
+            'To avoid this, set it to False, so context menu gets visible
+            e.Handled = False
+
+            Return
+
+        End Sub
+
+        'This method determines the where user performed mouse right click and stores the location of click.
+        'More specifically, it is used to determine on which row, the user has clicked the Add Row Button
+
+
+        Private Sub detectCellClicked(sender As Object, e As MouseButtonEventArgs) Handles dg_grid1.PreviewMouseLeftButtonUp
+
+            Dim dep As DependencyObject = e.OriginalSource
+
+            While (Not (dep Is Nothing) AndAlso Not (TypeOf dep Is DataGridCell) AndAlso Not (TypeOf dep Is Primitives.DataGridColumnHeader))
+                dep = VisualTreeHelper.GetParent(dep)
+            End While
+
+            If dep Is Nothing Then
+                Return
+
+
+            ElseIf (TypeOf dep Is DataGridCell) Then
+                Dim cell As DataGridCell = dep
+                While (Not (dep Is Nothing) AndAlso Not (TypeOf dep Is DataGridRow))
+                    dep = VisualTreeHelper.GetParent(dep)
+                End While
+                Dim row As DataGridRow = dep
+
+                rowEditIndex = FindRowIndex(row)
+                colEditIndex = cell.Column.DisplayIndex
+            End If
+
+            'By default e.Handled is True. It signifies that right click has been handled, and sometimes context menu don't pop up
+            'To avoid this, set it to False, so context menu gets visible
+            e.Handled = False
+
+            Return
 
         End Sub
 
@@ -223,8 +344,6 @@ Namespace gridData
             End If
 
         End Sub
-
-
 
         Private Sub CollectionViewSource_Filter(sender As Object, e As FilterEventArgs)
             If filterSelected Then
@@ -259,6 +378,8 @@ Namespace gridData
                 filterStatus.Content = "Currently Filter is applied to Column : " & headerSelected & " with Value : " & filterValue
             End If
         End Sub
+
+        ''*********Miscellaneous Tasks. Copy Cut Paste
 
         Private Sub CutCommand_Executed(sender As Object, e As ExecutedRoutedEventArgs)
             If Not cutActivated Then
@@ -311,22 +432,35 @@ Namespace gridData
 
         End Sub
 
+        ''*********End of Miscellaneous tasks
+
+
+
+        ''********Row Header Context Menu Tasks
+        'Performs the same Function as Add Row Button. i.e. Adding Row
+        'This is based on context menu click of Row Header
         Private Sub addRowHeader_Click(sender As Object, e As RoutedEventArgs)
-            If colEditIndex = 16 Then
-                collection.Insert(rowEditIndex + 1L, New userData())
+            If columnIndex = 16 Then
+                collection.Insert(rowIndex + 1L, New userData())
             End If
         End Sub
 
+
+        'Performs the same Function as Delete Row Button. i.e. Deleting Row
+        'This is based on context menu click of Row Header
         Private Sub deleteRowHeader_Click(sender As Object, e As RoutedEventArgs)
-            If colEditIndex = 17 Then
-                collection.RemoveAt(rowEditIndex)
+            If columnIndex = 17 Then
+                collection.RemoveAt(rowIndex)
                 If collection.Count = 0 Then
                     collection.Add(New userData())
                 End If
             End If
 
         End Sub
+        ''********End of Row Header Context Menu Tasks
 
+
+        ''********Row Context Menu Tasks
         Private Sub copyCells_Click(sender As Object, e As RoutedEventArgs)
 
         End Sub
@@ -336,60 +470,92 @@ Namespace gridData
         End Sub
 
         Private Sub highlightCells_Click(sender As Object, e As RoutedEventArgs)
-            If columnIndex = 1 Then
-                Dim obj As userData = collection.Item(rowIndex)
-                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(1))
-                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
-                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                End If
 
-                If obj.selection.Equals(obj.attribute1) Then
-                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(2))
-                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                End If
-                If obj.selection.Equals(obj.attribute2) Then
-                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(3))
-                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                End If
-                If obj.selection.Equals(obj.attribute3) Then
-                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(4))
-                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                End If
-                If obj.selection.Equals(obj.attribute4) Then
-                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(5))
-                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                End If
-                If obj.selection.Equals(obj.unitattri4) Then
-                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(6))
-                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                End If
-                If obj.selection.Equals(obj.attribute5) Then
-                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(7))
-                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                End If
-                If obj.selection.Equals(obj.attribute6) Then
-                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(8))
-                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                End If
-                If obj.selection.Equals(obj.attribute7) Then
-                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(9))
-                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                End If
-                If obj.selection.Equals(obj.attribute8) Then
-                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(10))
-                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                End If
-                If obj.selection.Equals(obj.attribute9) Then
-                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(11))
-                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                End If
-                If obj.selection.Equals(obj.attribute10) Then
-                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(12))
+
+            ''Highlight option is available for every row cell
+            ''This is to ensure that it works only when it is clicked on Selection Column
+            Dim foundSelection As Boolean = False
+            If columnIndex = 1 Then
+                '' First Read the Configuration file, to get the current Selection configuration
+                '' In such Way, even if the config file is changed in middle of application, it won't be affected
+                fileRead()
+                Dim obj As userData = collection.Item(rowIndex)
+                For Each List In configHeaderList
+
+                    If obj.selection.Equals(List.Item(0)) Then
+                        foundSelection = True
+                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(1))
+                        If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                            dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                        End If
+                        For i As Integer = 1 To List.Count - 1
+
+                            If List.Item(i).Equals("Attribute1") Then
+                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(2))
+                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+
+                            ElseIf List.Item(i).Equals("Attribute2") Then
+                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(3))
+                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+
+                            ElseIf List.Item(i).Equals("Attribute3") Then
+                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(4))
+                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+
+                            ElseIf List.Item(i).Equals("Attribute4") Then
+                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(5))
+                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+
+                            ElseIf obj.selection.Equals("obj.unitattri4") Then
+                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(6))
+                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+
+                            ElseIf List.Item(i).Equals("Attribute5") Then
+                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(7))
+                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+
+                            ElseIf List.Item(i).Equals("Attribute6") Then
+                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(8))
+                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+
+                            ElseIf List.Item(i).Equals("Attribute7") Then
+                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(9))
+                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+
+                            ElseIf List.Item(i).Equals("Attribute8") Then
+                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(10))
+                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+
+                            ElseIf List.Item(i).Equals("Attribute9") Then
+                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(11))
+                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+
+                            ElseIf List.Item(i).Equals("Attribute10") Then
+                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(12))
+                                dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                            End If
+                        Next
+                        Exit For
+                    End If
+                Next
+
+                '' If none of the selection value in Configuration File Matches, default selection is selected
+                '' i.e only Selection cell and Name Cell
+                If foundSelection = False Then
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(1))
+
+                    If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
+                        dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                    End If
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(0))
                     dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
                 End If
 
             End If
         End Sub
+        ''********End Of Row Context Menu tasks
+
+
 
         Private Sub CompleteFilter_Changed(sender As Object, e As RoutedEventArgs)
             If cbCompleteFilter.IsChecked = False Then
@@ -402,34 +568,7 @@ Namespace gridData
 
         End Sub
 
-        Private Sub detectCellClicked(sender As Object, e As MouseButtonEventArgs) Handles dg_grid1.PreviewMouseLeftButtonUp
 
-            Dim dep As DependencyObject = e.OriginalSource
-
-            While (Not (dep Is Nothing) AndAlso Not (TypeOf dep Is DataGridCell) AndAlso Not (TypeOf dep Is Primitives.DataGridColumnHeader))
-                dep = VisualTreeHelper.GetParent(dep)
-            End While
-
-            If dep Is Nothing Then
-                Return
-            End If
-
-            If (TypeOf dep Is DataGridCell) Then
-                Dim cell As DataGridCell = dep
-                While (Not (dep Is Nothing) AndAlso Not (TypeOf dep Is DataGridRow))
-                    dep = VisualTreeHelper.GetParent(dep)
-                End While
-                Dim row As DataGridRow = dep
-
-                rowEditIndex = FindRowIndex(row)
-                colEditIndex = cell.Column.DisplayIndex
-            End If
-            e.Handled = False
-            Return
-
-        End Sub
-
-        ''Yet to be Impleted Codes
         Private Sub btn_export_Click(sender As Object, e As RoutedEventArgs)
 
             '' Main Content
@@ -473,17 +612,6 @@ Namespace gridData
                 End If
             Catch ex As Exception
                 MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK)
-            End Try
-        End Sub
-
-        Private Sub releaseObject(ByVal obj As Object)
-            Try
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj)
-                obj = Nothing
-            Catch ex As Exception
-                obj = Nothing
-            Finally
-                GC.Collect()
             End Try
         End Sub
 
@@ -562,6 +690,12 @@ Namespace gridData
 
 
         Private Sub btn_validate_Click(sender As Object, e As RoutedEventArgs)
+
+        End Sub
+
+        Private Sub validate_Mandatory(nRows As Integer)
+
+
 
         End Sub
 
