@@ -141,7 +141,7 @@
                         CanUserDeleteRows="True"
                         CanUserResizeColumns="True" FontSize="14" RowHeaderWidth="10"
                         ItemsSource="{Binding Source={StaticResource cvsTasks}}"
-                        IsSynchronizedWithCurrentItem="True" Foreground="Black" Background="#FFF5EDED"
+                        IsSynchronizedWithCurrentItem="True" Foreground="Black" Background="#FFF5EDED" Margin="0,0,25,0"
                         >
 
                     <!-- This is required to handle CTRL + C when something is selected in the DataGrid -->
@@ -159,6 +159,8 @@
                     </DataGrid.InputBindings>
 
                     <DataGrid.Resources x:Uid="resources">
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}"/>
                         <ContextMenu x:Key="colHeaderContextMenu">
                             <MenuItem Header="Filter Column" Click="menuFilter_Click"  x:Name="menuFilter">
                             </MenuItem>
