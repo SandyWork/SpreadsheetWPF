@@ -130,7 +130,7 @@
                 </TabItem>
 
             </TabControl>
-            <ScrollViewer   x:Name="scrlVw_grid" HorizontalAlignment='Stretch' VerticalAlignment='Stretch' HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Row="2" Grid.RowSpan="7" Margin="0,15" >
+            <ScrollViewer   x:Name="scrlVw_grid" HorizontalAlignment='Stretch' VerticalAlignment='Stretch' HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Row="2" Grid.RowSpan="7" Margin="0,15,0,20" >
                 <DataGrid   SelectionUnit="CellOrRowHeader" SelectionMode="Extended" HorizontalAlignment="Stretch"
                       x:Name="dg_grid1"
                       AutoGenerateColumns="False"
@@ -237,12 +237,17 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>
-            <StackPanel Orientation="Horizontal" Grid.Row="8" Margin="25,35,0,39" VerticalAlignment="Center" Grid.RowSpan="2" Background="White">
-                <TextBlock Text="Apply Filter " VerticalAlignment="Center" />
-                <CheckBox x:Name="cbCompleteFilter" IsEnabled="False" VerticalAlignment="Center"
+            <StackPanel Orientation ="Vertical"  Grid.Row="8" Margin="25,34,0,39" VerticalAlignment="Center" Grid.RowSpan="2" Background="White">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Apply Filter " VerticalAlignment="Center" />
+                    <CheckBox x:Name="cbCompleteFilter" IsEnabled="False" VerticalAlignment="Center"
                       Checked="CompleteFilter_Changed" Unchecked="CompleteFilter_Changed" />
-                <Label x:Name="filterStatus" Content="Currently No Filters Have Been Applied" TextBlock.Foreground="Red" VerticalAlignment="Center" Margin="100,0,0,0"/>
+                    <Label x:Name="filterStatus" Content="Currently No Filters Have Been Applied" TextBlock.Foreground="Red" VerticalAlignment="Center" Margin="100,0,0,0"/>
+                    
+                </StackPanel>
+                    <Label x:Name="errorStatus" Content="" TextBlock.Foreground="Red" VerticalAlignment="Center" Margin="100,-7,0,0"/>
             </StackPanel>
+            
 
         </Grid>
 
