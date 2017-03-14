@@ -140,6 +140,7 @@
                         CanUserAddRows="True"
                         CanUserDeleteRows="True"
                         CanUserResizeColumns="True" FontSize="14" RowHeaderWidth="10"
+                        
                         ItemsSource="{Binding Source={StaticResource cvsTasks}}"
                         IsSynchronizedWithCurrentItem="True" Foreground="Black" Background="#FFF5EDED" Margin="0,0,25,0"
                         >
@@ -192,6 +193,7 @@
                     </DataGrid.ColumnHeaderStyle>
                     <!-- Styles to change column header in vertical orientation-->
 
+
                     <DataGrid.RowStyle>
                         <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
                             <Setter Property="ContextMenu" Value="{StaticResource rowContextMenu}"/>
@@ -204,23 +206,364 @@
                         </Style>
                     </DataGrid.RowHeaderStyle>
 
+                    <!--<DataGrid.CellStyle>
+                        <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                            <Setter Property="BorderThickness" Value="5"></Setter>
+                        </Style>
+                    </DataGrid.CellStyle>-->
                     <DataGrid.Columns>
-                        <DataGridTextColumn  Binding="{Binding Path = name}" x:Name="dgtxtcol_nam" Header="Name"/>
-                        <DataGridTextColumn  Binding="{Binding Path = selection}" x:Name="dgtxtcol_sel" Header="Selection"/>
-                        <DataGridTextColumn Binding="{Binding Path = attribute1}" x:Name="dgtxtcol_attri1" Header="Attribute1"/>
-                        <DataGridTextColumn  Binding="{Binding Path = attribute2}" x:Name="dgtxtcol_attri2" Header="Attribute2"/>
-                        <DataGridTextColumn  Binding="{Binding Path = attribute3}" x:Name="dgtxtcol_attri3" Header="Attribute3"/>
-                        <DataGridTextColumn  Binding="{Binding Path = attribute4}" x:Name="dgtxtcol_attri4" Header="Attribute4"/>
-                        <DataGridTextColumn  Binding="{Binding Path = unitattri4}" x:Name="dgtxtcol_unitattri4" Header="Unit_Attri4"/>
-                        <DataGridTextColumn  Binding="{Binding Path = attribute5}" x:Name="dgtxtcol_attri5" Header="Attribute5"/>
-                        <DataGridTextColumn  Binding="{Binding Path = attribute6}" x:Name="dgtxtcol_attri6" Header="Attribute6"/>
-                        <DataGridTextColumn  Binding="{Binding Path = attribute7}" x:Name="dgtxtcol_attri7" Header="Attribute7"/>
-                        <DataGridTextColumn  Binding="{Binding Path = attribute8}" x:Name="dgtxtcol_attri8" Header="Attribute8"/>
-                        <DataGridTextColumn  Binding="{Binding Path = attribute9}" x:Name="dgtxtcol_attri9" Header="Attribute9"/>
-                        <DataGridTextColumn  Binding="{Binding Path = attribute10}" x:Name="dgtxtcol_attri10" Header="Attribute10"/>
-                        <DataGridTextColumn Binding="{Binding Path = minVal, TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_minval" Header="MinimumVal"/>
-                        <DataGridTextColumn  Binding="{Binding Path = normVal, TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_normval" Header="NormalVal"/>
-                        <DataGridTextColumn Binding="{Binding Path = maxVal, TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_maxval" Header="MaximumVal"/>
+                        <DataGridTextColumn  Binding="{Binding Path = name}" x:Name="dgtxtcol_nam">
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Name" />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_name" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn  Binding="{Binding Path = selection}" x:Name="dgtxtcol_sel" >
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Selection" />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_sel" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding Path = attribute1}" x:Name="dgtxtcol_attri1" >
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Attribute1" />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri1" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn  Binding="{Binding Path = attribute2}" x:Name="dgtxtcol_attri2">
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Attribute2" />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri2" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn  Binding="{Binding Path = attribute3}" x:Name="dgtxtcol_attri3">
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Attribute3" />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri3" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn  Binding="{Binding Path = attribute4}" x:Name="dgtxtcol_attri4">
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Attribute4" />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri4" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn  Binding="{Binding Path = unitattri4}" x:Name="dgtxtcol_unitattri4">
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Unit_Attri4" />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_unitattri4" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn  Binding="{Binding Path = attribute5}" x:Name="dgtxtcol_attri5">
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Attribute5" />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri5" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn  Binding="{Binding Path = attribute6}" x:Name="dgtxtcol_attri6">
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Attribute6" />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri6" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn  Binding="{Binding Path = attribute7}" x:Name="dgtxtcol_attri7">
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Attribute7" />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri7" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn  Binding="{Binding Path = attribute8}" x:Name="dgtxtcol_attri8">
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Attribute8" />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri8" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn  Binding="{Binding Path = attribute9}" x:Name="dgtxtcol_attri9">
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Attribute9" />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri9" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn  Binding="{Binding Path = attribute10}" x:Name="dgtxtcol_attri10">
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Attribute10" />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri10" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding Path = minVal, TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_minval">
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="MinVal" />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_minval" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn  Binding="{Binding Path = normVal, TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_normval">
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="NormalVal" />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_normval" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding Path = maxVal, TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_maxval">
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="MaxVal" />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-37,0,42,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_maxval" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
 
                         <DataGridTemplateColumn Header="Add Row">
                             <DataGridTemplateColumn.CellTemplate>
@@ -245,11 +588,11 @@
                     <CheckBox x:Name="cbCompleteFilter" IsEnabled="False" VerticalAlignment="Center"
                       Checked="CompleteFilter_Changed" Unchecked="CompleteFilter_Changed" />
                     <Label x:Name="filterStatus" Content="Currently No Filters Have Been Applied" TextBlock.Foreground="Red" VerticalAlignment="Center" Margin="100,0,0,0"/>
-                    
+
                 </StackPanel>
-                    <Label x:Name="errorStatus" Content="" TextBlock.Foreground="Purple" VerticalAlignment="Center" Margin="100,-7,0,0"/>
+                <Label x:Name="errorStatus" Content="" TextBlock.Foreground="Purple" VerticalAlignment="Center" Margin="100,-7,0,0"/>
             </StackPanel>
-            
+
 
         </Grid>
 
