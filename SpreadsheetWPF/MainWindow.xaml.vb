@@ -29,6 +29,18 @@ Namespace gridData
         Public Property maxVal As Nullable(Of Integer)
         Public Property normVal As Nullable(Of Integer)
 
+        'Public Property PhoneNumber() As String
+        '    Get
+        '        Return Me.attribute10
+        '    End Get
+        '    Set
+        '        If Value <> Me.attribute10 Then
+        '            Me.attribute10 = Value
+        '            OnPropertyChanged("Attribute10")
+        '        End If
+        '    End Set
+        'End Property
+
         Public Sub New(Optional name As String = "", Optional selection As String = "", Optional attribute1 As String = "", Optional attribute2 As String = "", Optional attribute3 As String = "", Optional attribute4 As String = "", Optional unitattri4 As String = "", Optional attribute5 As String = "", Optional attribute6 As String = "", Optional attribute7 As String = "", Optional attribute8 As String = "", Optional attribute9 As String = "", Optional attribute10 As String = "", Optional minVal As Nullable(Of Integer) = Nothing, Optional normVal As Nullable(Of Integer) = Nothing, Optional maxVal As Nullable(Of Integer) = Nothing)
 
             Me.name = name
@@ -644,9 +656,9 @@ Namespace gridData
 
                     'Create an array with 16 columns and n rows
                     Dim DataArray(rowCount, colCount) As Object
-                    Dim headersList(colCount) As Object
+                    Dim headersList(colCount) As String
 
-                    For counter As Integer = 0 To colCount - 2
+                    For counter As Integer = 0 To colCount - 3
                         Dim col = dg_grid1.Columns.Item(counter)
                         headersList(counter) = col.Header.Children.Item(0).Text
                     Next
@@ -668,7 +680,6 @@ Namespace gridData
                     releaseObject(xlApp)
                     releaseObject(xlWorkBook)
                     releaseObject(xlWorkSheet)
-                    MsgBox("Exported")
                 End If
             Catch ex As Exception
                 MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK)
@@ -694,12 +705,79 @@ Namespace gridData
                         Dim sheetName As String = excel.getSheetName()
                         displayExcelFile(filename, sheetName)
                     End If
-
-                    ''displayExcelFile(filename)
                 End If
 
             End If
         End Sub
+
+        Private Sub displayExcelFile(filename As String, sheetName As String)
+
+            Dim excelApp As Excel.Application = New Excel.Application()
+            Dim workbook As Excel.Workbook = excelApp.Workbooks.Open(filename)
+            Dim worksheet As Excel.Worksheet = workbook.Sheets(sheetName)
+
+            Dim col As Integer = 0, row As Integer = 0
+            Dim range As Excel.Range = worksheet.UsedRange
+            Dim warning As String = "This will close the existing opened spreadhsheet" & vbNewLine & " Do you want to save it before you import ?"
+
+
+            If (MessageBox.Show(warning, "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning) = MessageBoxResult.Yes) Then
+                btn_export_Click(New Object(), New Object())
+            Else
+                ' Load all cells into 2d array.
+                Dim array(,) As Object = range.Value(XlRangeValueDataType.xlRangeValueDefault)
+
+                ' Scan the cells.
+                If array IsNot Nothing Then
+                    Console.WriteLine("Length: {0}", array.Length)
+
+                    ' Get bounds of the array.
+                    Dim bound0 As Integer = array.GetUpperBound(0)
+                    Dim bound1 As Integer = array.GetUpperBound(1)
+
+                    Console.WriteLine("Dimension 0: {0}", bound0)
+                    Console.WriteLine("Dimension 1: {0}", bound1)
+
+                    ' Loop over all elements.
+                    For rowCount As Integer = 1 To bound0
+                        For colCount As Integer = 1 To bound1
+                            'array(rowCount, colCount)
+                        Next
+                        Console.WriteLine()
+                    Next
+                End If
+
+            End If
+
+            workbook.Save()
+            workbook.Close()
+            excelApp.Quit()
+
+        End Sub
+
+        Private Function arraytoUserDataObject(list As Object(,)) As userData()
+            Dim temp(dg_grid1.Columns.Count) As Object
+
+            For i As Integer = 0 To temp.Length
+                temp(i) = vbNull
+            Next
+            For i As Integer = 1 To list.GetUpperBound(0)
+
+                temp = arraySlice(list, i, list.GetUpperBound(1))
+
+
+            Next
+
+        End Function
+
+        Private Function arraySlice(list As Object(,), currRow As Integer, nCols As Integer) As Object()
+            Dim temp() As Object = New Object()
+            temp(0) = Nothing
+            For j As Integer = 1 To nCols
+                temp(j) = list(currRow, j)
+            Next
+            Return temp
+        End Function
 
         Private Sub btn_filter_Click(sender As Object, e As RoutedEventArgs)
             If TypeOf sender Is System.Windows.Controls.Button Then
@@ -718,7 +796,6 @@ Namespace gridData
                 Next
             End If
 
-
             Dim inputDialog As FilterWindow = New FilterWindow()
             inputDialog.ShowInTaskbar = True
             inputDialog.Owner = Me
@@ -736,33 +813,9 @@ Namespace gridData
         End Sub
 
 
-        private sub btn_save_click(sender as object, e as routedeventargs)
+        Private Sub btn_save_click(sender As Object, e As RoutedEventArgs)
 
-        end sub
-
-        'Private Sub btn_filter_attri7_Click(sender As Object, e As RoutedEventArgs)
-
-        'End Sub
-
-        'Private Sub btn_filter_minval_Click(sender As Object, e As RoutedEventArgs)
-
-        'End Sub
-
-        'Private Sub btn_filter_maxval_Click(sender As Object, e As RoutedEventArgs)
-
-        'End Sub
-
-        'Private Sub btn_filter_normval_Click(sender As Object, e As RoutedEventArgs)
-
-        'End Sub
-
-        'Private Sub btn_filter_attri10_Click(sender As Object, e As RoutedEventArgs)
-
-        'End Sub
-
-        'Private Sub btn_filter_attri9_Click(sender As Object, e As RoutedEventArgs)
-
-        'End Sub
+        End Sub
 
         Private Function GetExcelSheetNames(ByVal fileName As String) As List(Of String)
             Dim strconn As String = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" &
@@ -784,22 +837,6 @@ Namespace gridData
             Return listSheet
 
         End Function
-
-        Private Sub displayExcelFile(filename As String, sheetName As String)
-
-            Dim excelApp As Excel.Application = New Excel.Application()
-            Dim workbook As Excel.Workbook = excelApp.Workbooks.Open(filename)
-            Dim worksheet As Excel.Worksheet = workbook.Sheets(sheetName)
-
-            Dim col As Integer = 0, row As Integer = 0
-            Dim range As Excel.Range = worksheet.UsedRange
-            MsgBox(range.Rows.Count)
-
-            workbook.Save()
-            workbook.Close()
-            excelApp.Quit()
-
-        End Sub
 
 
         Private Sub btn_validate_Click(sender As Object, e As RoutedEventArgs)
@@ -937,13 +974,13 @@ Namespace gridData
         End Sub
 
         Private Sub btn_close_Click(sender As Object, e As RoutedEventArgs)
-            Dim colCount As Integer = dg_grid1.Columns.Count
-            Dim headersList(colCount) As String
-            For counter As Integer = 0 To colCount - 3
-                Dim col = dg_grid1.Columns.Item(counter)
-                headersList(counter) = col.Header.Children.Item(0).Text
-                Console.WriteLine(headersList(counter))
-            Next
+            'Dim colCount As Integer = dg_grid1.Columns.Count
+            'Dim headersList(colCount) As String
+            'For counter As Integer = 0 To colCount - 3
+            '    Dim col = dg_grid1.Columns.Item(counter)
+            '    headersList(counter) = col.Header.Children.Item(0).Text
+            '    Console.WriteLine(headersList(counter))
+            'Next
         End Sub
 
     End Class
