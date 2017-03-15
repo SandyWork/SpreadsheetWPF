@@ -9,7 +9,7 @@ Imports System.Data.OleDb
 Imports System.Data
 Imports System.IO
 Imports System.Collections.Specialized
-'This is comment
+'This is comments
 Namespace gridData
     Public Class userData : Implements INotifyPropertyChanged, IEditableObject
         Public Property name As String
