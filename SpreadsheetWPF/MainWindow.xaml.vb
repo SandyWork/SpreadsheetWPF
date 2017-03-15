@@ -119,13 +119,44 @@ Namespace gridData
         Dim configIndexCount As Integer = 0
         Dim redcellsColored As List(Of DataGridCell) = New List(Of DataGridCell)
         Dim greencellsColored As List(Of DataGridCell) = New List(Of DataGridCell)
-        Dim errorHighlight As Boolean = False, valHighlight As Boolean = False
-
+        Dim blueCellsColored As List(Of DataGridCell) = New List(Of DataGridCell)
+        Dim errorHighlight As Boolean = False, valHighlight As Boolean = False, blueHighlight As Boolean = False, blueFlag As Boolean = False
         Dim btnNamesArray() As String = {"btn_filter_name", "btn_filter_sel", "btn_filter_attri1", "btn_filter_attri2", "btn_filter_attri3", "btn_filter_attri4", "btn_filter_unitattri4", "btn_filter_attri5", "btn_filter_attri6", "btn_filter_attri7", "btn_filter_attri8", "btn_filter_attri9", "btn_filter_attri10", "btn_filter_minval", "btn_filter_normval", "btn_filter_maxval"}
 
         Public Sub New()
             ' This call is required by the designer.
             InitializeComponent()
+
+            collection = Me.Resources("presentData")
+            collection.Clear()
+
+            Dim obj = New userData("Name", "10", "1", "10", "3", "dd", "asd", "dd", "ad", "2", "20", "3", "3", 1, 2, 3)
+            collection.Add(obj)
+            Dim obj2 = New userData("Name", "abc", "1", "abc", "111", "dd", "abc", "dd", "abc", "435", "2", "3", "3", 5, 6, 7)
+            collection.Add(obj2)
+            obj2 = New userData("Something", "12", "12", "2", "222", "dd", "12", "12", "ad", "22", "1", "3", "12", 1, 2, 3)
+            collection.Add(obj2)
+        End Sub
+
+        Public Sub New(list As userData())
+
+            ' This call is required by the designer.
+            InitializeComponent()
+            collection = Me.Resources("presentData")
+            collection.Clear()
+
+            If list.Count > 0 Then
+                For Each element In list
+                    collection.Add(element)
+                Next
+            Else
+                Dim obj = New userData("Name", "10", "1", "10", "3", "dd", "asd", "dd", "ad", "2", "20", "3", "3", 1, 2, 3)
+                collection.Add(obj)
+                Dim obj2 = New userData("Name", "abc", "1", "abc", "111", "dd", "abc", "dd", "abc", "435", "2", "3", "3", 5, 6, 7)
+                collection.Add(obj2)
+                obj2 = New userData("Something", "12", "12", "2", "222", "dd", "12", "12", "ad", "22", "1", "3", "12", 1, 2, 3)
+                collection.Add(obj2)
+            End If
 
         End Sub
 
@@ -272,6 +303,11 @@ Namespace gridData
                 valHighlight = True
             End If
 
+            If bgColor = Colors.Blue Then
+                blueCellsColored.Add(dataCell)
+                valHighlight = True
+            End If
+
             If bgColor = Colors.Red Then
                 redcellsColored.Add(dataCell)
                 errorHighlight = True
@@ -283,15 +319,6 @@ Namespace gridData
         ''**********End of Helper Functions
 
         Private Sub win_main_Initialized(sender As Object, e As EventArgs)
-            collection = Me.Resources("presentData")
-            collection.Clear()
-
-            Dim obj = New userData("Name", "10", "1", "10", "3", "dd", "asd", "dd", "ad", "2", "20", "3", "3", 1, 2, 3)
-            collection.Add(obj)
-            Dim obj2 = New userData("Name", "abc", "1", "abc", "111", "dd", "abc", "dd", "abc", "435", "2", "3", "3", 5, 6, 7)
-            collection.Add(obj2)
-            obj2 = New userData("Something", "12", "12", "2", "222", "dd", "12", "12", "ad", "22", "1", "3", "12", 1, 2, 3)
-            collection.Add(obj2)
 
         End Sub
 
@@ -299,6 +326,7 @@ Namespace gridData
         'This method determines the where user performed mouse right click and stores the location of click.
         Private Sub columnHeader_PreviewMouseRightButtonUp(sender As Object, e As MouseButtonEventArgs) Handles dg_grid1.PreviewMouseRightButtonUp
 
+            HighlightClear()
             Dim dep As DependencyObject = e.OriginalSource
 
             'No Matter where user click inside the Datagrid, be it row or column or header, the sender is always DataGrid.
@@ -346,9 +374,24 @@ Namespace gridData
 
         'This method determines the where user performed mouse right click and stores the location of click.
         'More specifically, it is used to determine on which row, the user has clicked the Add Row Button
+        Private Sub HighlightClear()
+            If blueHighlight = True Then
+                If blueFlag = False Then
+                    For Each cell In blueCellsColored
+                        cell.BorderBrush = New SolidColorBrush(Colors.Black)
+                        cell.BorderThickness = New Thickness(0.0)
+                    Next
+                    blueCellsColored.Clear()
+                    blueFlag = True
+                End If
+                blueHighlight = False
+            End If
 
+        End Sub
 
         Private Sub detectCellClicked(sender As Object, e As MouseButtonEventArgs) Handles dg_grid1.PreviewMouseLeftButtonUp
+
+            HighlightClear()
 
             Dim dep As DependencyObject = e.OriginalSource
 
@@ -522,7 +565,8 @@ Namespace gridData
         End Sub
 
         Private Sub highlightCells_Click(sender As Object, e As RoutedEventArgs)
-
+            blueFlag = False
+            blueHighlight = False
             ''Highlight option is available for every row cell
             ''This is to ensure that it works only when it is clicked on Selection Column
             Dim foundSelection As Boolean = False
@@ -536,76 +580,52 @@ Namespace gridData
                     If obj.selection.Equals(List.Item(0)) Then
                         foundSelection = True
                         dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(1))
-                        If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
-                            dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                        End If
+                        changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
                         For i As Integer = 1 To List.Count - 1
 
                             If List.Item(i).Equals("Attribute1") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(2))
-                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                                End If
+                                changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
 
                             ElseIf List.Item(i).Equals("Attribute2") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(3))
-                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                                End If
+                                changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
 
                             ElseIf List.Item(i).Equals("Attribute3") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(4))
-                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                                End If
+                                changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
 
                             ElseIf List.Item(i).Equals("Attribute4") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(5))
-                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                                End If
+                                changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
 
                             ElseIf List.Item(i).Equals("Unit_Attri4") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(6))
-                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                                End If
+                                changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
 
                             ElseIf List.Item(i).Equals("Attribute5") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(7))
-                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                                End If
+                                changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
 
                             ElseIf List.Item(i).Equals("Attribute6") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(8))
-                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                                End If
+                                changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
 
                             ElseIf List.Item(i).Equals("Attribute7") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(9))
-                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                                End If
+                                changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
 
                             ElseIf List.Item(i).Equals("Attribute8") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(10))
-                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                                End If
+                                changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
 
                             ElseIf List.Item(i).Equals("Attribute9") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(11))
-                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                                End If
+                                changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
 
                             ElseIf List.Item(i).Equals("Attribute10") Then
                                 dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(12))
-                                If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
-                                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                                End If
+                                changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
                             End If
                         Next
                         Exit For
@@ -616,13 +636,12 @@ Namespace gridData
                 '' i.e only Selection cell and Name Cell
                 If foundSelection = False Then
                     dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(1))
-
-                    If Not dg_grid1.SelectedCells.Contains(dg_grid1.CurrentCell) Then
-                        dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
-                    End If
+                    changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
                     dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(0))
-                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+                    changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
                 End If
+
+                blueHighlight = True
 
             End If
         End Sub
