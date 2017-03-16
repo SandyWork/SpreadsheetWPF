@@ -528,8 +528,8 @@ Namespace gridData
             End If
             collection.RemoveAt(currRowIndex)
             collection.Insert(currRowIndex, curruserData)
-            'dg_grid1.SelectedCells.Add(cell)
-            'dg_grid1.CurrentCell = cell
+            dg_grid1.SelectedCells.Add(cell)
+            dg_grid1.CurrentCell = cell
         End Sub
 
         Private Sub PasteCommand_Executed(sender As Object, e As ExecutedRoutedEventArgs)
