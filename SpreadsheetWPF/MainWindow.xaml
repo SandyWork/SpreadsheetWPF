@@ -131,13 +131,12 @@
                 <DataGrid   SelectionUnit="CellOrRowHeader" SelectionMode="Extended" HorizontalAlignment="Stretch"
                       x:Name="dg_grid1"
                       AutoGenerateColumns="False"
-                        ColumnWidth="80"
                         CanUserReorderColumns="False"
                         CanUserSortColumns="False"
                         CanUserAddRows="True"
                         CanUserDeleteRows="True"
                         CanUserResizeColumns="True" FontSize="14" RowHeaderWidth="10"
-                        
+                        ColumnWidth ="80"
                         ItemsSource="{Binding Source={StaticResource cvsTasks}}"
                         IsSynchronizedWithCurrentItem="True" Foreground="Black" Background="#FFF5EDED" Margin="0,0,25,0"
                         >
@@ -147,6 +146,7 @@
                         <CommandBinding Command="Copy" Executed="CopyCommand" />
                         <CommandBinding Command="Cut" x:Name="CutCommand" Executed="CutCommand_Executed" />
                         <CommandBinding Command="Paste" x:Name="PasteCommand" Executed="PasteCommand_Executed" />
+                        <CommandBinding Command="Delete" x:Name="DeleteCommand" Executed="DeleteCommand_Executed"/>
                     </DataGrid.CommandBindings>
 
                      <!--This is required to handle CTRL + C when something is selected in the DataGrid--> 
@@ -154,6 +154,7 @@
                         <KeyBinding Key="C" Modifiers="Control" Command="Copy" />
                         <KeyBinding Key="X" Modifiers="Control" Command="Cut" />
                         <KeyBinding Key="V" Modifiers="Control" Command="Paste" />
+                        <KeyBinding Key="Delete"  Command="Delete" />
                     </DataGrid.InputBindings>
 
                     <DataGrid.Resources x:Uid="resources">
@@ -181,11 +182,13 @@
                                     </TransformGroup>
                                 </Setter.Value>
                             </Setter>
+                            
                             <Setter Property="ContextMenu" Value="{StaticResource colHeaderContextMenu}"/>
                         </Style>
+                        
 
                     </DataGrid.ColumnHeaderStyle>
-                     <!--Styles to change column header in vertical orientation-->
+                    <!--Styles to change column header in vertical orientation-->
 
 
                     <DataGrid.RowStyle>
@@ -203,7 +206,7 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" />
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,46,-50"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
