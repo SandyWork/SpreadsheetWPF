@@ -65,7 +65,7 @@ Namespace gridData
     Class MainWindow
 
         Dim collection As PresentData
-        Dim headerList() As String = {"Name", "Selection", "Attribute1", "Attribute2", "Attribute3", "Attribute4", "Attribute5", "Attribute6", "Attribute7", "Attribute8", "Attribute9", "Attribute10", "Attribute11", "MinVal", "NormVal", "MaxVal"}
+        Dim headerList() As String = {"Item Tag Name", "Selection", "Attribute1", "Attribute2", "Attribute3", "Attribute4", "Attribute5", "Attribute6", "Attribute7", "Attribute8", "Attribute9", "Attribute10", "Attribute11", "MinVal", "NormVal", "MaxVal"}
         Dim btnNamesArray() As String = {"btn_filter_name", "btn_filter_sel", "btn_filter_attri1", "btn_filter_attri2", "btn_filter_attri3", "btn_filter_attri4", "btn_filter_unitattri4", "btn_filter_attri5", "btn_filter_attri6", "btn_filter_attri7", "btn_filter_attri8", "btn_filter_attri9", "btn_filter_attri10", "btn_filter_minval", "btn_filter_normval", "btn_filter_maxval"}
         Dim colNames() As String = {"dgtxtcol_name", "dgtxtcol_sel", "dgtxtcol_attri1", "dgtxtcol_attri2", "dgtxtcol_attri3", "dgtxtcol_attri4", "dgtxtcol_attri5", "dgtxtcol_attri6", "dgtxtcol_attri7", "dgtxtcol_attri8", "dgtxtcol_attri9", "dgtxtcol_attri10", "dgtxtcol_attri11", "dgtxtcol_minval", "dgtxtcol_normval", "dgtxtcol_maxval"}
 

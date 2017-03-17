@@ -206,7 +206,7 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" />
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,46,-50"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,42,-50"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
@@ -220,6 +220,7 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
+                       
                         <DataGridTextColumn  Binding="{Binding Path = col_list.Item[1]}" x:Name="dgtxtcol_sel" >
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
