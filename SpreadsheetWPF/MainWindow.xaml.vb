@@ -25,9 +25,11 @@ Namespace gridData
         Public Property attribute9 As String
         Public Property attribute10 As String
         Public Property unitattri4 As String
-        Public Property minVal As Nullable(Of Integer)
-        Public Property maxVal As Nullable(Of Integer)
-        Public Property normVal As Nullable(Of Integer)
+        Public Property minVal As String
+        Public Property maxVal As String
+        Public Property normVal As String
+        Public Property unitofdifferentialpressure As String
+
 
         'Public Property PhoneNumber() As String
         '    Get
@@ -41,7 +43,7 @@ Namespace gridData
         '    End Set
         'End Property
 
-        Public Sub New(Optional name As String = "", Optional selection As String = "", Optional attribute1 As String = "", Optional attribute2 As String = "", Optional attribute3 As String = "", Optional attribute4 As String = "", Optional unitattri4 As String = "", Optional attribute5 As String = "", Optional attribute6 As String = "", Optional attribute7 As String = "", Optional attribute8 As String = "", Optional attribute9 As String = "", Optional attribute10 As String = "", Optional minVal As Nullable(Of Integer) = Nothing, Optional normVal As Nullable(Of Integer) = Nothing, Optional maxVal As Nullable(Of Integer) = Nothing)
+        Public Sub New(Optional name As String = "", Optional selection As String = "", Optional attribute1 As String = "", Optional attribute2 As String = "", Optional attribute3 As String = "", Optional attribute4 As String = "", Optional unitattri4 As String = "", Optional attribute5 As String = "", Optional attribute6 As String = "", Optional attribute7 As String = "", Optional attribute8 As String = "", Optional attribute9 As String = "", Optional attribute10 As String = "", Optional minVal As String = Nothing, Optional normVal As String = Nothing, Optional maxVal As String = Nothing, Optional unitofdifferentialpressure As String = Nothing)
 
             Me.name = name
             Me.selection = selection
@@ -59,6 +61,7 @@ Namespace gridData
             Me.normVal = normVal
             Me.maxVal = maxVal
             Me.unitattri4 = unitattri4
+            Me.unitofdifferentialpressure = unitofdifferentialpressure
         End Sub
 
         Public Event PropertyChanged(sender As Object, e As PropertyChangedEventArgs) Implements INotifyPropertyChanged.PropertyChanged
@@ -121,7 +124,7 @@ Namespace gridData
         Dim greencellsColored As List(Of DataGridCell) = New List(Of DataGridCell)
         Dim blueCellsColored As List(Of DataGridCell) = New List(Of DataGridCell)
         Dim errorHighlight As Boolean = False, valHighlight As Boolean = False, blueHighlight As Boolean = False, blueFlag As Boolean = False
-        Dim btnNamesArray() As String = {"btn_filter_name", "btn_filter_sel", "btn_filter_attri1", "btn_filter_attri2", "btn_filter_attri3", "btn_filter_attri4", "btn_filter_unitattri4", "btn_filter_attri5", "btn_filter_attri6", "btn_filter_attri7", "btn_filter_attri8", "btn_filter_attri9", "btn_filter_attri10", "btn_filter_minval", "btn_filter_normval", "btn_filter_maxval"}
+        Dim btnNamesArray() As String = {"btn_filter_name", "btn_filter_sel", "btn_filter_attri1", "btn_filter_attri2", "btn_filter_attri3", "btn_filter_attri4", "btn_filter_unitattri4", "btn_filter_attri5", "btn_filter_attri6", "btn_filter_attri7", "btn_filter_attri8", "btn_filter_attri9", "btn_filter_attri10", "btn_filter_minval", "btn_filter_normval", "btn_filter_maxval", "btn_filter_unitofdifferentialpressure"}
 
         Public Sub New()
             ' This call is required by the designer.
@@ -130,12 +133,12 @@ Namespace gridData
             collection = Me.Resources("presentData")
             collection.Clear()
 
-            Dim obj = New userData("Name", "10", "1", "10", "3", "dd", "asd", "dd", "ad", "2", "20", "3", "3", 1, 2, 3)
+            Dim obj = New userData("F11001", "FIS-A-", "0002", "New", "MFM", "", "6", "12", "bara", "50", "120", "200", "°C", "", "0.4", "0.8", "bar")
             collection.Add(obj)
-            Dim obj2 = New userData("Name", "abc", "1", "abc", "111", "dd", "abc", "dd", "abc", "435", "2", "3", "3", 5, 6, 7)
-            collection.Add(obj2)
-            obj2 = New userData("Something", "12", "12", "2", "222", "dd", "12", "12", "ad", "22", "1", "3", "12", 1, 2, 3)
-            collection.Add(obj2)
+            ' Dim obj2 = New userData("Name", "abc", "1", "abc", "111", "dd", "abc", "dd", "abc", "435", "2", "3", "3", 5, 6, 7)
+            'collection.Add(obj2)
+            'obj2 = New userData("Something", "12", "12", "2", "222", "dd", "12", "12", "ad", "22", "1", "3", "12", 1, 2, 3)
+            'collection.Add(obj2)
         End Sub
 
         Public Sub New(list As userData())
@@ -227,6 +230,8 @@ Namespace gridData
                     Return objectRef.normVal
                 Case "maximumval"
                     Return objectRef.maxVal
+                Case "unitofdifferentialpressure"
+                    Return objectRef.unitofdifferentialpressure
                 Case Else
                     MsgBox("Bug in determineColumn : " + headerName)
                     Return ""
@@ -788,6 +793,10 @@ Namespace gridData
             Next
 
         End Function
+
+        Private Sub dg_grid1_SelectionChanged(sender As Object, e As SelectionChangedEventArgs) Handles dg_grid1.SelectionChanged
+
+        End Sub
 
         Private Function arraySlice(list As Object(,), currRow As Integer, nCols As Integer) As Object()
             Dim temp() As Object = New Object()

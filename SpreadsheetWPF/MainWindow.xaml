@@ -130,7 +130,7 @@
                 </TabItem>
 
             </TabControl>
-            <ScrollViewer   x:Name="scrlVw_grid" HorizontalAlignment='Stretch' VerticalAlignment='Stretch' HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Row="2" Grid.RowSpan="7" Margin="0,15,0,30" >
+            <ScrollViewer   x:Name="scrlVw_grid" HorizontalAlignment='Stretch' VerticalAlignment='Stretch' HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Row="3" Grid.RowSpan="7" Margin="25,10,-25,35" >
                 <DataGrid   SelectionUnit="CellOrRowHeader" SelectionMode="Extended" HorizontalAlignment="Stretch"
                       x:Name="dg_grid1"
                       AutoGenerateColumns="False"
@@ -219,7 +219,7 @@
                                         <ColumnDefinition Width="70"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Name" />
+                                    <TextBlock Grid.Column="0" Text="Item Tag Name" />
                                     <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_name" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
@@ -241,7 +241,7 @@
                                         <ColumnDefinition Width="70"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Selection" />
+                                    <TextBlock Grid.Column="0" Text="Adjustment Location" />
                                     <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_sel" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
@@ -263,7 +263,7 @@
                                         <ColumnDefinition Width="70"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Attribute1" />
+                                    <TextBlock Grid.Column="0" Text="PID Sheet Number" />
                                     <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri1" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
@@ -285,7 +285,7 @@
                                         <ColumnDefinition Width="70"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Attribute2" />
+                                    <TextBlock Grid.Column="0" Text="Construction Status" />
                                     <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri2" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
@@ -307,7 +307,7 @@
                                         <ColumnDefinition Width="70"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Attribute3" />
+                                    <TextBlock Grid.Column="0" Text="Measuring Principle" />
                                     <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri3" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
@@ -329,7 +329,7 @@
                                         <ColumnDefinition Width="70"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Attribute4" />
+                                    <TextBlock Grid.Column="0" Text="pressure P1 minimum" />
                                     <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri4" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
@@ -351,7 +351,7 @@
                                         <ColumnDefinition Width="70"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Unit_Attri4" />
+                                    <TextBlock Grid.Column="0" Text="pressure P1 in operation" />
                                     <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_unitattri4" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
@@ -373,7 +373,7 @@
                                         <ColumnDefinition Width="70"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Attribute5" />
+                                    <TextBlock Grid.Column="0" Text="pressure P1 maximum" />
                                     <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri5" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
@@ -395,7 +395,7 @@
                                         <ColumnDefinition Width="70"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Attribute6" />
+                                    <TextBlock Grid.Column="0" Text="unit of pressure P1" />
                                     <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri6" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
@@ -417,7 +417,7 @@
                                         <ColumnDefinition Width="70"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Attribute7" />
+                                    <TextBlock Grid.Column="0" Text="temperature minimum" />
                                     <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri7" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
@@ -439,7 +439,7 @@
                                         <ColumnDefinition Width="70"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Attribute8" />
+                                    <TextBlock Grid.Column="0" Text="temperature in operation" />
                                     <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri8" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
@@ -461,7 +461,7 @@
                                         <ColumnDefinition Width="70"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Attribute9" />
+                                    <TextBlock Grid.Column="0" Text="temperature maximum" />
                                     <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri9" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
@@ -483,7 +483,7 @@
                                         <ColumnDefinition Width="70"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Attribute10" />
+                                    <TextBlock Grid.Column="0" Text="unit of temperature" />
                                     <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_attri10" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
@@ -505,7 +505,7 @@
                                         <ColumnDefinition Width="70"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="MinVal" />
+                                    <TextBlock Grid.Column="0" Text="differential pressure minimum" />
                                     <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_minval" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
@@ -527,7 +527,7 @@
                                         <ColumnDefinition Width="70"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="NormalVal" />
+                                    <TextBlock Grid.Column="0" Text="differential pressure in operation" />
                                     <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-68,0,45,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_normval" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
@@ -549,7 +549,7 @@
                                         <ColumnDefinition Width="70"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="MaxVal" />
+                                    <TextBlock Grid.Column="0" Text="differential pressure maximum" />
                                     <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-37,0,42,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_maxval" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
@@ -564,6 +564,33 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
+
+
+
+                        <DataGridTextColumn Binding="{Binding Path = unitofdifferentialpressure, TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_unitofdifferentialpressure">
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="unit of differential pressure" />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-37,0,42,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_unitofdifferentialpressure" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+
+
 
                         <DataGridTemplateColumn Header="Add Row">
                             <DataGridTemplateColumn.CellTemplate>
