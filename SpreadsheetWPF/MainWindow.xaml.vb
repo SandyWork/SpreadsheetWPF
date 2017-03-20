@@ -65,9 +65,9 @@ Namespace gridData
     Class MainWindow
 
         Dim collection As PresentData
-        Dim headerList() As String = {"Item Tag Name", "Selection", "Attribute1", "Attribute2", "Attribute3", "Attribute4", "Attribute5", "Attribute6", "Attribute7", "Attribute8", "Attribute9", "Attribute10", "Attribute11", "MinVal", "NormVal", "MaxVal"}
-        Dim btnNamesArray() As String = {"btn_filter_name", "btn_filter_sel", "btn_filter_attri1", "btn_filter_attri2", "btn_filter_attri3", "btn_filter_attri4", "btn_filter_unitattri4", "btn_filter_attri5", "btn_filter_attri6", "btn_filter_attri7", "btn_filter_attri8", "btn_filter_attri9", "btn_filter_attri10", "btn_filter_minval", "btn_filter_normval", "btn_filter_maxval"}
-        Dim colNames() As String = {"dgtxtcol_name", "dgtxtcol_sel", "dgtxtcol_attri1", "dgtxtcol_attri2", "dgtxtcol_attri3", "dgtxtcol_attri4", "dgtxtcol_attri5", "dgtxtcol_attri6", "dgtxtcol_attri7", "dgtxtcol_attri8", "dgtxtcol_attri9", "dgtxtcol_attri10", "dgtxtcol_attri11", "dgtxtcol_minval", "dgtxtcol_normval", "dgtxtcol_maxval"}
+        Dim headerList() As String = {"Item Tag Name", "Adjustment Location", "PID Sheet Number", "Construction Status", "Measuring Principle", "pressure P1 minimum", "pressure P1 in operation", "pressure P1 maximum", "unit of presuure P1", "temperature minimum", "temperature in operation", "temperature maximum", "unit of temperature", "differential pressure minimum", "differential pressure in operation", "differential pressure maximum", "unit of differential pressue"}
+        Dim btnNamesArray() As String = {"btn_filter_name", "btn_filter_sel", "btn_filter_attri1", "btn_filter_attri2", "btn_filter_attri3", "btn_filter_attri4", "btn_filter_unitattri4", "btn_filter_attri5", "btn_filter_attri6", "btn_filter_attri7", "btn_filter_attri8", "btn_filter_attri9", "btn_filter_attri10", "btn_filter_minval", "btn_filter_normval", "btn_filter_maxval", "btn_filter_unitofdifferentialpressue"}
+        Dim colNames() As String = {"dgtxtcol_name", "dgtxtcol_sel", "dgtxtcol_attri1", "dgtxtcol_attri2", "dgtxtcol_attri3", "dgtxtcol_attri4", "dgtxtcol_attri5", "dgtxtcol_attri6", "dgtxtcol_attri7", "dgtxtcol_attri8", "dgtxtcol_attri9", "dgtxtcol_attri10", "dgtxtcol_attri11", "dgtxtcol_minval", "dgtxtcol_normval", "dgtxtcol_maxval", "dgtxtcol_unitofdifferentalpressure"}
 
         'header of the column where user right clicked
         Dim headerSelected As String = "", configurationFileName As String = "..\selectionConfigFile.txt"
@@ -172,7 +172,7 @@ Namespace gridData
                     Console.WriteLine("Creating One With Default Values")
 
                     Using sw As StreamWriter = File.CreateText(configurationFileName)
-                        sw.WriteLine("<-- Format to specify columns to highlight for specific Value Is : -->")
+                        sw.WriteLine("<-- Format to specify columns to highlight for specific Value Is :   -->")
                         sw.WriteLine("<-- [Value] [List of Columns separated by "" "" ]                  -->")
                         sw.WriteLine("<-- e.g.  1 Attribute1 Attribute2 Attribute3                       -->")
                         sw.WriteLine("1 Attribute8 Attribute9 Attribute10")

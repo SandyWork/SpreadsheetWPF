@@ -551,6 +551,28 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding Path = col_list.Item[16], TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_unitofdifferentialpressure">
+                            <DataGridTextColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"   />
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-37,0,42,-50" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" Name="btn_filter_unitofdifferentialpressure" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                        <Button.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="90"/>
+                                            </TransformGroup>
+                                        </Button.RenderTransform>
+                                        <Button.Content>
+                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
 
                         <DataGridTemplateColumn Header="Add Row" x:Name="addRow">
                             <DataGridTemplateColumn.CellTemplate>
