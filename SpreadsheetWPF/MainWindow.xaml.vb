@@ -15,17 +15,48 @@ Namespace gridData
 
         Public Property col_list As List(Of String)
 
-        Public Sub New(Optional list As List(Of String) = Nothing, Optional colCount As Integer = 0)
+        Public Sub New(list As List(Of String))
 
-            If list Is Nothing AndAlso colCount > 0 Then
-                col_list = New List(Of String)
-                For i As Integer = 0 To colCount - 3
-                    col_list.Add("")
-                Next
-            Else
-                col_list = list
+            If list IsNot Nothing Then
+                If list.Count > 0 Then
+                    col_list = New List(Of String)()
+                    For Each value In list
+                        col_list.Add(value)
+                    Next
+                End If
             End If
+        End Sub
 
+        Public Sub New(list() As String, Optional columnCount As Integer = 0)
+
+            If list Is Nothing Then
+
+                If columnCount = 0 Then
+                    Console.WriteLine("Invalid Parameters passed to userData constructor ")
+                ElseIf columnCount > 0
+                    col_list = New List(Of String)()
+                    For i As Integer = 0 To columnCount - 1
+                        col_list.Add("")
+                    Next
+                End If
+            Else
+                If list.Length < columnCount Then
+                    columnCount = columnCount - list.Length
+
+                    col_list = New List(Of String)()
+                    For i As Integer = 0 To list.Length - 1
+                        col_list.Add(list(i))
+                    Next
+                    For i As Integer = 0 To columnCount - 1
+                        col_list.Add("")
+                    Next
+                Else
+                    col_list = New List(Of String)()
+                    For i As Integer = 0 To list.Length - 1
+                        col_list.Add(list(i))
+                    Next
+                End If
+            End If
         End Sub
 
         Public Event PropertyChanged(sender As Object, e As PropertyChangedEventArgs) Implements INotifyPropertyChanged.PropertyChanged
@@ -102,15 +133,45 @@ Namespace gridData
         End Sub
 
         Private Sub defaultData_dgGrid()
-            For i As Integer = 0 To 200 Step 100
-                Dim tempList As List(Of String) = New List(Of String)()
-                For j As Integer = 0 To dg_grid1.Columns.Count - 3
-                    tempList.Add(i + j)
-                Next
-                Dim obj As userData = New userData(tempList)
-                collection.Add(obj)
+            'For i As Integer = 0 To 200 Step 100
+            '    Dim tempList As List(Of String) = New List(Of String)()
+            '    For j As Integer = 0 To dg_grid1.Columns.Count - 3
+            '        tempList.Add(i + j)
+            '    Next
+            '    Dim obj As userData = New userData(tempList)
+            '    collection.Add(obj)
+            'Next
+
+            Dim arrayData(dg_grid1.Columns.Count - 2) As String
+            Dim obj As userData
+
+            For i As Integer = 0 To arrayData.Length - 1
+                arrayData(i) = ""
             Next
-            Console.WriteLine(dg_grid1.Columns.Count)
+
+            ''Insert the data you need to insert below. 
+            ''If you Then need multiple rows To be inserted,clear the array, insert new values,and add to collection
+            ''Given below is an example
+
+            'Adding Values to array, you can skip to enter rightmost values. 
+            'If you are skipping values, please do pass the number of columns as an arguemnt
+            'dg_grid1.Columns.Count will give you the number of columns, no need to count it
+            'But If you want an empty value to be present in between, you must enter it Like below
+            arrayData = {"1", "2", "", "4", "5", "6"}
+
+            'Adding object to collection
+            obj = New userData(arrayData)
+            collection.Add(obj)
+
+            'Method to clear Array
+            Array.Clear(arrayData, 0, arrayData.Length)
+
+            arrayData = {"10", "20", "30", "40", "56", "65", "11", "00"}
+            obj = New userData(arrayData)
+            collection.Add(obj)
+
+            Console.WriteLine("Columns Count" & dg_grid1.Columns.Count)
+            Console.WriteLine("Attributes Count" & obj.col_list.Count)
         End Sub
 
         Public Sub New(list As userData)
@@ -840,16 +901,29 @@ Namespace gridData
             Next
             greencellsColored.Clear()
             Dim minVal As Integer, normVal As Integer, maxVal As Integer
-            Dim tempIndex = 0
+            Dim minIndex As Integer, normIndex As Integer, maxIndex As Integer
+            For i As Integer = 0 To dg_grid1.Columns.Count - 1
+                If colNames(i).Equals("dgtxtcol_minval") Then
+                    minIndex = i
+                    If colNames(i + 1).Equals("dgtxtcol_normval") Then
+                        normIndex = i + 1
+                        If colNames(i + 2).Equals("dgtxtcol_maxval") Then
+                            maxIndex = i + 2
+                            Exit For
+                        End If
+                    End If
+                End If
+            Next
             For counter As Integer = 0 To nRows - 1
                 Dim temp_userdata As userData = collection.Item(counter)
-                tempIndex = temp_userdata.col_list.Count
-                minVal = CInt(temp_userdata.col_list.Item(tempIndex - 3))
-                normVal = CInt(temp_userdata.col_list.Item(tempIndex - 2))
-                maxVal = CInt(temp_userdata.col_list.Item(tempIndex - 1))
+
+
+                minVal = CInt(temp_userdata.col_list.Item(minIndex))
+                normVal = CInt(temp_userdata.col_list.Item(normIndex))
+                maxVal = CInt(temp_userdata.col_list.Item(maxIndex))
                 If (minVal > normVal) Or (normVal > maxVal) Or (minVal > maxVal) Then
                     For i As Integer = 0 To 2
-                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(tempIndex - 1 - i))
+                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(minIndex + i))
                         changeCellColor(dg_grid1.CurrentCell, Colors.DarkRed, Colors.White)
                     Next
                 End If

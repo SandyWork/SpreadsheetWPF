@@ -485,7 +485,8 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Binding="{Binding Path = col_list.Item[13], TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_minval">
+                        <!--TargetNullValue={x:Static sys:String.Empty}-->
+                        <DataGridTextColumn Binding="{Binding Path = col_list.Item[13] ,TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_minval">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -507,7 +508,7 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[14], TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_normval">
+                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[14],TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_normval">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -529,7 +530,7 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Binding="{Binding Path = col_list.Item[15], TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_maxval">
+                        <DataGridTextColumn Binding="{Binding Path = col_list.Item[15],TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_maxval">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -551,7 +552,7 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Binding="{Binding Path = col_list.Item[16], TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_unitofdifferentialpressure">
+                        <DataGridTextColumn Binding="{Binding Path = col_list.Item[16],TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_unitofdifferentialpressure">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
