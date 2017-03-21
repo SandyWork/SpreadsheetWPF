@@ -143,7 +143,7 @@ Namespace gridData
             'Next
 
             Dim arrayData(dg_grid1.Columns.Count - 2) As String
-            Dim obj As userData
+            Dim obj As userData, obj2 As userData, obj3 As userData
 
             For i As Integer = 0 To arrayData.Length - 1
                 arrayData(i) = ""
@@ -168,8 +168,8 @@ Namespace gridData
             Array.Clear(arrayData, 0, arrayData.Length)
 
             arrayData = {"10", "20", "30", "40", "56", "65", "11", "00"}
-            obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
-            collection.Add(obj)
+            obj2 = New userData(arrayData, dg_grid1.Columns.Count - 2)
+            collection.Add(obj2)
 
             'Method to clear Array
             Array.Clear(arrayData, 0, arrayData.Length)
@@ -177,8 +177,8 @@ Namespace gridData
             'In Below Example, I have included all the values to be entered for all the columns.
             'So no need to pass the columns count in this case. Just pass the array in such cases
             arrayData = {"10", "20", "30", "40", "56", "65", "11", "00", "10", "20", "30", "40", "56", "65", "11", "00", "18"}
-            obj = New userData(arrayData)
-            collection.Add(obj)
+            obj3 = New userData(arrayData)
+            collection.Add(obj3)
 
             Console.WriteLine("Columns Count" & dg_grid1.Columns.Count)
             Console.WriteLine("Attributes Count" & obj.col_list.Count)
@@ -199,11 +199,47 @@ Namespace gridData
             End If
         End Sub
 
+        Public Sub New(list() As userData)
+
+            ' This call is required by the designer.
+            InitializeComponent()
+            collection = Me.Resources("presentData")
+            collection.Clear()
+            AddColumns()
+
+            If list.Count > 0 Then
+                For Each item In list
+                    collection.Add(item)
+                Next
+            Else
+                defaultData_dgGrid()
+            End If
+        End Sub
+
+        Public Sub New(arr() As String, colCount As Integer)
+
+            ' This call is required by the designer.
+            InitializeComponent()
+            collection = Me.Resources("presentData")
+            collection.Clear()
+            AddColumns()
+            ' Add any initialization after the InitializeComponent() call.
+
+
+            If arr.Length > 0 Then
+                Dim obj As userData = New userData(arr)
+
+            End If
+
+        End Sub
+
         Private Sub AddColumns()
 
             For i As Integer = 0 To dg_grid1.Columns.Count - 3
                 Dim col = dg_grid1.Columns.Item(i)
                 col.Header.Children.Item(0).Text = headerList(i)
+
+
             Next
 
         End Sub
@@ -242,34 +278,48 @@ Namespace gridData
                     Console.WriteLine("No Configuration File")
                     Console.WriteLine("Creating One With Default Values")
 
+
                     Using sw As StreamWriter = File.CreateText(configurationFileName)
                         sw.WriteLine("<-- Format to specify columns to highlight for specific Value Is :     -->")
-                        sw.WriteLine("<-- [Value] [List of Columns separated by "" "" ]                  -->")
-                        sw.WriteLine("<-- e.g.  1 Attribute1 Attribute2 Attribute3                       -->")
-                        sw.WriteLine("1 Attribute8 Attribute9 Attribute10")
-                        sw.WriteLine("2 Attribute6 Attribute7 Attribute8")
-                        sw.WriteLine("3 Attribute1 Attribute4 Attribute10")
+                        sw.WriteLine("<-- *[Value] -->" & vbNewLine & "Column Names in separate line" & "-->")
+                        sw.WriteLine("**@ 1" & vbNewLine & "Measuring Principle" & vbNewLine & "Construction Status" & vbNewLine & "PID Sheet Number")
+                        sw.WriteLine("**@ 2" & vbNewLine & "pressure P1 minimum" & vbNewLine & "pressure P1 maximum" & vbNewLine & "Measuring Principle")
+                        sw.WriteLine("**@ 3" & vbNewLine & "pressure P1 maximum" & vbNewLine & "pressure P1 in operation" & vbNewLine & "Measuring Principle")
                         sw.Flush()
                     End Using
                 End If
                 ' Open the file to read from.
                 Using sr As StreamReader = File.OpenText(configurationFileName)
-                    Dim lineCount As Integer = File.ReadLines(configurationFileName).Count()
+                    Dim counter As Integer = -1
                     Dim temp As String = ""
-                    Dim attributeList As String()
                     While sr.Peek() >= 0
                         temp = sr.ReadLine()
-                        If Not temp.Contains("<--") Then
-                            configHeaderList.Add(New List(Of String)())
+                        temp = temp.Trim()
 
-                            attributeList = temp.Split(" ")
-                            For counter As Integer = 0 To attributeList.Count - 1
-                                configHeaderList(configIndexCount).Add(attributeList(counter))
-                            Next
-                            configIndexCount += 1
+                        If temp.Contains("**@") Then
+                            configHeaderList.Add(New List(Of String)())
+                            temp = temp.Substring(4)
+                            counter = counter + 1
+                            configHeaderList(counter).Add(temp)
+                            Continue While
+                        Else
+                            If Not temp.Equals("") Then
+                                If counter >= 0 Then
+                                    configHeaderList(counter).Add(temp)
+                                End If
+                            Else
+                                Continue While
+                            End If
                         End If
                     End While
                 End Using
+
+                For i As Integer = 0 To configHeaderList.Count - 1
+                    For j As Integer = 0 To configHeaderList(i).Count - 1
+                        Console.WriteLine(configHeaderList(i).Item(j))
+                    Next
+
+                Next
 
             Catch e As Exception
                 ' Let the user know what went wrong.
@@ -638,22 +688,22 @@ Namespace gridData
                 fileRead()
                 Dim obj As userData = collection.Item(rowIndex)
                 For Each List In configHeaderList
-
-                    If obj.col_list.Item(1).Equals(List.Item(0)) Then
-                        foundSelection = True
-                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(1))
-                        changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
-                        For i As Integer = 1 To List.Count - 1
-                            For j As Integer = 2 To dg_grid1.Columns.Count - 3
-                                If List.Item(i).Equals(headerList(j)) Then
-                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(j))
-                                    changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
-                                End If
+                    If List.Item(0) IsNot Nothing Then
+                        If obj.col_list.Item(1).Equals(List.Item(0)) Then
+                            foundSelection = True
+                            dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(1))
+                            changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
+                            For i As Integer = 1 To List.Count - 1
+                                For j As Integer = 2 To dg_grid1.Columns.Count - 3
+                                    If List.Item(i).Equals(headerList(j)) Then
+                                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(j))
+                                        changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
+                                    End If
+                                Next
                             Next
-                        Next
-                        Exit For
+                            Exit For
+                        End If
                     End If
-
                 Next
 
                 '' If none of the selection value in Configuration File Matches, default selection is selected
@@ -941,6 +991,7 @@ Namespace gridData
         End Sub
 
         Private Sub btn_close_Click(sender As Object, e As RoutedEventArgs)
+            fileRead()
         End Sub
 
     End Class
