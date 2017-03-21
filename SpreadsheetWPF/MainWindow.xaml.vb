@@ -290,6 +290,7 @@ Namespace gridData
                 End If
                 ' Open the file to read from.
                 Using sr As StreamReader = File.OpenText(configurationFileName)
+                    configHeaderList.Clear()
                     Dim counter As Integer = -1
                     Dim temp As String = ""
                     While sr.Peek() >= 0
