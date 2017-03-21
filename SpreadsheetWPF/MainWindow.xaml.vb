@@ -155,18 +155,28 @@ Namespace gridData
 
             'Adding Values to array, you can skip to enter rightmost values. 
             'If you are skipping values, please do pass the number of columns as an arguemnt
-            'dg_grid1.Columns.Count will give you the number of columns, no need to count it
+            'dg_grid1.Columns.Count will give you the number of columns ( including add row and delete row columns )
+            'So actual number of columns will be dg_grid1.Columns.Count - 2  
             'But If you want an empty value to be present in between, you must enter it Like below
             arrayData = {"1", "2", "", "4", "5", "6"}
 
             'Adding object to collection
-            obj = New userData(arrayData)
+            obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
             collection.Add(obj)
 
             'Method to clear Array
             Array.Clear(arrayData, 0, arrayData.Length)
 
             arrayData = {"10", "20", "30", "40", "56", "65", "11", "00"}
+            obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
+            collection.Add(obj)
+
+            'Method to clear Array
+            Array.Clear(arrayData, 0, arrayData.Length)
+
+            'In Below Example, I have included all the values to be entered for all the columns.
+            'So no need to pass the columns count in this case. Just pass the array in such cases
+            arrayData = {"10", "20", "30", "40", "56", "65", "11", "00", "10", "20", "30", "40", "56", "65", "11", "00", "18"}
             obj = New userData(arrayData)
             collection.Add(obj)
 
@@ -233,7 +243,7 @@ Namespace gridData
                     Console.WriteLine("Creating One With Default Values")
 
                     Using sw As StreamWriter = File.CreateText(configurationFileName)
-                        sw.WriteLine("<-- Format to specify columns to highlight for specific Value Is :   -->")
+                        sw.WriteLine("<-- Format to specify columns to highlight for specific Value Is :     -->")
                         sw.WriteLine("<-- [Value] [List of Columns separated by "" "" ]                  -->")
                         sw.WriteLine("<-- e.g.  1 Attribute1 Attribute2 Attribute3                       -->")
                         sw.WriteLine("1 Attribute8 Attribute9 Attribute10")
