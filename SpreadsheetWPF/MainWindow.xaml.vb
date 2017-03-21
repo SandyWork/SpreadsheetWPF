@@ -133,17 +133,17 @@ Namespace gridData
         End Sub
 
         Private Sub defaultData_dgGrid()
-            'For i As Integer = 0 To 200 Step 100
-            '    Dim tempList As List(Of String) = New List(Of String)()
-            '    For j As Integer = 0 To dg_grid1.Columns.Count - 3
-            '        tempList.Add(i + j)
-            '    Next
-            '    Dim obj As userData = New userData(tempList)
-            '    collection.Add(obj)
-            'Next
+            For i As Integer = 0 To 200 Step 100
+                Dim templist As List(Of String) = New List(Of String)()
+                For j As Integer = 0 To dg_grid1.Columns.Count - 3
+                    templist.Add(i + j)
+                Next
+                Dim obj2 As userData = New userData(templist)
+                collection.Add(obj2)
+            Next
 
             Dim arrayData(dg_grid1.Columns.Count - 2) As String
-            Dim obj As userData, obj2 As userData, obj3 As userData
+            Dim obj As userData
 
             For i As Integer = 0 To arrayData.Length - 1
                 arrayData(i) = ""
@@ -168,8 +168,8 @@ Namespace gridData
             Array.Clear(arrayData, 0, arrayData.Length)
 
             arrayData = {"10", "20", "30", "40", "56", "65", "11", "00"}
-            obj2 = New userData(arrayData, dg_grid1.Columns.Count - 2)
-            collection.Add(obj2)
+            obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
+            collection.Add(obj)
 
             'Method to clear Array
             Array.Clear(arrayData, 0, arrayData.Length)
@@ -177,8 +177,8 @@ Namespace gridData
             'In Below Example, I have included all the values to be entered for all the columns.
             'So no need to pass the columns count in this case. Just pass the array in such cases
             arrayData = {"10", "20", "30", "40", "56", "65", "11", "00", "10", "20", "30", "40", "56", "65", "11", "00", "18"}
-            obj3 = New userData(arrayData)
-            collection.Add(obj3)
+            obj = New userData(arrayData)
+            collection.Add(obj)
 
             Console.WriteLine("Columns Count" & dg_grid1.Columns.Count)
             Console.WriteLine("Attributes Count" & obj.col_list.Count)
@@ -547,18 +547,6 @@ Namespace gridData
             HoldCells(sender, e)
             cutActivated = True
         End Sub
-        'Private Sub sortList(ByRef list As List(Of DataGridCellInfo))
-        '    For i As Integer = 0 To list.Count - 1
-        '        For j As Integer = i + 1 To list.Count - 1
-        '            If list.Item(i).Column.DisplayIndex > list.Item(j).Column.DisplayIndex Then
-        '                Dim temp = list.Item(i).Column.DisplayIndex
-        '                list.Item(i).Column.DisplayIndex = list.Item(j).Column.DisplayIndex
-        '                list.Item(j).Column.DisplayIndex = temp
-        '            End If
-        '        Next
-        '    Next
-        'End Sub
-
 
         Private Sub HoldCells(sender As Object, e As ExecutedRoutedEventArgs)
             Dim cellsSelected As IList(Of DataGridCellInfo) = dg_grid1.SelectedCells
@@ -568,7 +556,6 @@ Namespace gridData
                 For Each cell In cellsSelected
                     previousSelectedCells.Add(cell)
                 Next
-                'sortList(previousSelectedCells)
             End If
         End Sub
 
@@ -949,7 +936,6 @@ Namespace gridData
                         Next
                         Exit For
                     End If
-
                 Next
             Next
         End Sub
