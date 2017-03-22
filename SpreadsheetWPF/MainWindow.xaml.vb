@@ -96,7 +96,7 @@ Namespace gridData
     Class MainWindow
 
         Dim collection As PresentData
-        Dim headerList() As String = {"Item Tag Name", "Adjustment Location", "PID Sheet Number", "Construction Status", "Measuring Principle", "pressure P1 minimum", "pressure P1 in operation", "pressure P1 maximum", "unit of presuure P1", "temperature minimum", "temperature in operation", "temperature maximum", "unit of temperature", "differential pressure minimum", "differential pressure in operation", "differential pressure maximum", "unit of differential pressue"}
+        Dim headerList() As String = {"Item Tag Name", "Measuring Principle", "Measuring/Adjust Location", "PID Sheet Number", "Construction Status", "pressure P1 minimum", "pressure P1 in operation", "pressure P1 maximum", "unit of pressure P1", "temperature minimum", "temperature in operation", "temperature maximum", "unit of temperature", "differential pressure minimum", "differential pressure in operation", "differential pressure maximum", "unit of differential pressue"}
         Dim btnNamesArray() As String = {"btn_filter_name", "btn_filter_sel", "btn_filter_attri1", "btn_filter_attri2", "btn_filter_attri3", "btn_filter_attri4", "btn_filter_unitattri4", "btn_filter_attri5", "btn_filter_attri6", "btn_filter_attri7", "btn_filter_attri8", "btn_filter_attri9", "btn_filter_attri10", "btn_filter_minval", "btn_filter_normval", "btn_filter_maxval", "btn_filter_unitofdifferentialpressue"}
         Dim colNames() As String = {"dgtxtcol_name", "dgtxtcol_sel", "dgtxtcol_attri1", "dgtxtcol_attri2", "dgtxtcol_attri3", "dgtxtcol_attri4", "dgtxtcol_attri5", "dgtxtcol_attri6", "dgtxtcol_attri7", "dgtxtcol_attri8", "dgtxtcol_attri9", "dgtxtcol_attri10", "dgtxtcol_attri11", "dgtxtcol_minval", "dgtxtcol_normval", "dgtxtcol_maxval", "dgtxtcol_unitofdifferentalpressure"}
 
@@ -133,14 +133,14 @@ Namespace gridData
         End Sub
 
         Private Sub defaultData_dgGrid()
-            For i As Integer = 0 To 200 Step 100
-                Dim templist As List(Of String) = New List(Of String)()
-                For j As Integer = 0 To dg_grid1.Columns.Count - 3
-                    templist.Add(i + j)
-                Next
-                Dim obj2 As userData = New userData(templist)
-                collection.Add(obj2)
-            Next
+            'For i As Integer = 0 To 200 Step 100
+            '    Dim templist As List(Of String) = New List(Of String)()
+            '    For j As Integer = 0 To dg_grid1.Columns.Count - 3
+            '        templist.Add(i + j)
+            '    Next
+            '    Dim obj2 As userData = New userData(templist)
+            '    collection.Add(obj2)
+            'Next
 
             Dim arrayData(dg_grid1.Columns.Count - 2) As String
             Dim obj As userData
@@ -158,7 +158,7 @@ Namespace gridData
             'dg_grid1.Columns.Count will give you the number of columns ( including add row and delete row columns )
             'So actual number of columns will be dg_grid1.Columns.Count - 2  
             'But If you want an empty value to be present in between, you must enter it Like below
-            arrayData = {"1", "2", "", "4", "5", "6"}
+            arrayData = {"F11001", "MFM", "M1", "0002", "New", "", "6", "12", "bara", "50", "120", "200", "C", "", "0.4", "0.8", "bar"}
 
             'Adding object to collection
             obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
