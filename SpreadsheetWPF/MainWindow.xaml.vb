@@ -33,7 +33,7 @@ Namespace gridData
 
                 If columnCount = 0 Then
                     Console.WriteLine("Invalid Parameters passed to userData constructor ")
-                ElseIf columnCount > 0
+                ElseIf columnCount > 0 Then
                     col_list = New List(Of String)()
                     For i As Integer = 0 To columnCount - 1
                         col_list.Add("")
@@ -96,8 +96,11 @@ Namespace gridData
     Class MainWindow
 
         Dim collection As PresentData
-        Dim headerList() As String = {"Item Tag Name", "Measuring Principle", "Measuring/Adjust Location", "PID Sheet Number", "Construction Status", "pressure P1 minimum", "pressure P1 in operation", "pressure P1 maximum", "unit of pressure P1", "temperature minimum", "temperature in operation", "temperature maximum", "unit of temperature", "differential pressure minimum", "differential pressure in operation", "differential pressure maximum", "unit of differential pressure"}
+
+        Dim headerList() As String = {"Item Tag Name", "Measuring Principle", "Measuring/Adjust Location", "PID Sheet Number", "Construction Status", "Pressure P1 Minimum", "Pressure P1 In Operation", "Pressure P1 Maximum", "Unit Of Pressure P1", "Temperature Minimum", "Temperature In Operation", "Temperature Maximum", "Unit Of Temperature", "Differential Pressure Minimum", "Differential Pressure In Operation", "Differential Pressure Maximum", "Unit of Differential Pressure"}
+
         Dim btnNamesArray() As String = {"btn_filter_name", "btn_filter_sel", "btn_filter_attri1", "btn_filter_attri2", "btn_filter_attri3", "btn_filter_attri4", "btn_filter_unitattri4", "btn_filter_attri5", "btn_filter_attri6", "btn_filter_attri7", "btn_filter_attri8", "btn_filter_attri9", "btn_filter_attri10", "btn_filter_minval", "btn_filter_normval", "btn_filter_maxval", "btn_filter_unitofdifferentialpressue"}
+
         Dim colNames() As String = {"dgtxtcol_name", "dgtxtcol_sel", "dgtxtcol_attri1", "dgtxtcol_attri2", "dgtxtcol_attri3", "dgtxtcol_attri4", "dgtxtcol_attri5", "dgtxtcol_attri6", "dgtxtcol_attri7", "dgtxtcol_attri8", "dgtxtcol_attri9", "dgtxtcol_attri10", "dgtxtcol_attri11", "dgtxtcol_minval", "dgtxtcol_normval", "dgtxtcol_maxval", "dgtxtcol_unitofdifferentalpressure"}
 
         'header of the column where user right clicked
@@ -110,17 +113,18 @@ Namespace gridData
         'This is used for Add Row and Delete Row Buttons to know exactly where users wants to perform Row operations
 
         Dim rowEditIndex As Integer, colEditIndex As Integer = 0
+        Dim oldWindowHeight As Double = 600
 
         'Filter Value that user entered when prompted
         Dim filterValue As String = ""
         Dim copyActivated As Boolean = False, cutActivated As Boolean = False, pasteActivated As Boolean = False
-        Private filterSelected As Boolean = False
+        Private filterSelected As Boolean = False, caseSensitive As Boolean = False
         Dim configHeaderList As List(Of List(Of String)) = New List(Of List(Of String))()
-        Dim configIndexCount As Integer = 0
         Dim redcellsColored As List(Of DataGridCell) = New List(Of DataGridCell)
         Dim greencellsColored As List(Of DataGridCell) = New List(Of DataGridCell)
         Dim blueCellsColored As List(Of DataGridCell) = New List(Of DataGridCell)
-        Dim errorHighlight As Boolean = False, valHighlight As Boolean = False, blueHighlight As Boolean = False, blueFlag As Boolean = False
+        Dim errorHighlight As Boolean = False, valHighlight As Boolean = False,
+            blueHighlight As Boolean = False, blueFlag As Boolean = False
 
         Dim previousSelectedCells As List(Of DataGridCellInfo) = New List(Of DataGridCellInfo)()
         Public Sub New()
@@ -254,8 +258,6 @@ Namespace gridData
             For i As Integer = 0 To dg_grid1.Columns.Count - 3
                 Dim col = dg_grid1.Columns.Item(i)
                 col.Header.Children.Item(0).Text = headerList(i)
-
-
             Next
 
         End Sub
@@ -263,6 +265,13 @@ Namespace gridData
         Private Sub resizeWindow(sender As Object, e As SizeChangedEventArgs)
             pnl_dock.Width = win_main.ActualWidth
             pnl_dock.Height = win_main.ActualHeight
+            tabControl1.Width = win_main.ActualWidth
+            Dim topValue As Double = scrlVw_grid.Margin.Top - (win_main.ActualHeight - oldWindowHeight) / 10
+            Dim leftValue As Double = scrlVw_grid.Margin.Left
+            Dim rightValue As Double = scrlVw_grid.Margin.Right
+            Dim downValue As Double = scrlVw_grid.Margin.Bottom
+            scrlVw_grid.Margin = New Thickness(leftValue, topValue, rightValue, downValue)
+            oldWindowHeight = win_main.ActualHeight
         End Sub
 
 
@@ -402,10 +411,19 @@ Namespace gridData
                     ' if filter is turned on, filter completed items.
                     If Me.cbCompleteFilter.IsChecked = True Then
                         Dim headerIndex As Integer = determineIndex(headerSelected)
-                        If obj.col_list.Item(headerIndex).Equals(filterValue) Then
-                            e.Accepted = True
+                        If caseSensitive = True Then
+                            If obj.col_list.Item(headerIndex).Equals(filterValue) Then
+                                e.Accepted = True
+                            Else
+                                e.Accepted = False
+
+                            End If
                         Else
-                            e.Accepted = False
+                            If (obj.col_list.Item(headerIndex).ToLower()).Equals(filterValue.ToLower) Then
+                                e.Accepted = True
+                            Else
+                                e.Accepted = False
+                            End If
                         End If
                     End If
                 End If
@@ -414,7 +432,7 @@ Namespace gridData
 
         Private Function determineIndex(header As String) As Integer
 
-            For i As Integer = 0 To dg_grid1.Columns.Count
+            For i As Integer = 0 To dg_grid1.Columns.Count - 3
                 If headerList(i).Equals(header) Then
                     Return i
                 End If
@@ -545,6 +563,8 @@ Namespace gridData
 
             If inputDialog.ShowDialog = True Then
                 filterSelected = True
+                caseSensitive = inputDialog.returnCaseSensitive()
+                Console.WriteLine(caseSensitive.ToString)
                 cbCompleteFilter.IsEnabled = True
                 cbCompleteFilter.IsChecked = True
                 filterValue = inputDialog.returnFilterValue()
@@ -874,6 +894,7 @@ Namespace gridData
                 filterSelected = True
                 cbCompleteFilter.IsEnabled = True
                 cbCompleteFilter.IsChecked = True
+                caseSensitive = inputDialog.returnCaseSensitive
                 filterValue = inputDialog.returnFilterValue()
                 CollectionViewSource.GetDefaultView(dg_grid1.ItemsSource).Refresh()
                 filterStatus.Content = "Currently Filter Is applied to Column  " & headerSelected & " with Value : " & filterValue
@@ -963,7 +984,7 @@ Namespace gridData
                 cell.BorderThickness = New Thickness(0.0)
             Next
             greencellsColored.Clear()
-            Dim minVal As Integer, normVal As Integer, maxVal As Integer
+            Dim minVal As Double, normVal As Double, maxVal As Double
             Dim minIndex As Integer, normIndex As Integer, maxIndex As Integer
             For i As Integer = 0 To dg_grid1.Columns.Count - 1
                 If colNames(i).Equals("dgtxtcol_minval") Then
@@ -980,10 +1001,33 @@ Namespace gridData
             For counter As Integer = 0 To nRows - 1
                 Dim temp_userdata As userData = collection.Item(counter)
 
+                Dim minValue As String, normValue As String, maxValue As String
+                minValue = temp_userdata.col_list.Item(minIndex)
+                normValue = temp_userdata.col_list.Item(normIndex)
+                maxValue = temp_userdata.col_list.Item(maxIndex)
 
-                minVal = CInt(temp_userdata.col_list.Item(minIndex))
-                normVal = CInt(temp_userdata.col_list.Item(normIndex))
-                maxVal = CInt(temp_userdata.col_list.Item(maxIndex))
+                If minValue.Equals("") AndAlso normValue.Equals("") AndAlso maxValue.Equals("") Then
+                    Return
+                End If
+
+                If Not minValue.Equals("") Then
+                    minVal = CDbl(minValue)
+                Else
+                    minVal = 0
+                End If
+
+                If Not normValue.Equals("") Then
+                    normVal = CDbl(normValue)
+                Else
+                    normVal = 0
+                End If
+
+                If Not maxValue.Equals("") Then
+                    maxVal = CDbl(maxValue)
+                Else
+                    maxVal = 0
+                End If
+
                 If (minVal > normVal) Or (normVal > maxVal) Or (minVal > maxVal) Then
                     For i As Integer = 0 To 2
                         dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(minIndex + i))
