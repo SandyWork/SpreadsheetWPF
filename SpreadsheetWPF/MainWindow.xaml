@@ -28,18 +28,11 @@
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
+                <RowDefinition Height="135"/>
                 <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
-            <TabControl x:Name="tabControl1" Width="500" Height="135" Grid.Row="0" Grid.RowSpan="2" FontWeight="Bold" Margin="0,0,0,-15" Background="White">
+            <TabControl x:Name="tabControl1" Width="500" Grid.Row="0" FontWeight="Bold" Margin="0,0,0,-15" Background="White">
                 <TabItem HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <TabItem.Background>
                         <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -127,7 +120,7 @@
                 </TabItem>
 
             </TabControl>
-            <ScrollViewer x:Name="scrlVw_grid" HorizontalAlignment='Stretch' VerticalAlignment='Stretch' HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Row="2" Grid.RowSpan="7" Margin="0,15,0,30" >
+            <ScrollViewer x:Name="scrlVw_grid" HorizontalAlignment='Stretch' VerticalAlignment='Stretch' HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Row="1" Margin="0,15,0,50" >
                 <DataGrid   SelectionUnit="CellOrRowHeader" SelectionMode="Extended" HorizontalAlignment="Stretch"
                       x:Name="dg_grid1"
                       AutoGenerateColumns="False"
@@ -591,7 +584,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>
-            <StackPanel Orientation ="Vertical"  Grid.Row="8" Margin="25,20,0,30" Grid.RowSpan="2" Background="White" Height="40">
+            <StackPanel Orientation ="Vertical"  Grid.Row="3" Margin="19,-49,0,0" Background="White">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Apply Filter " VerticalAlignment="Center" />
                     <CheckBox x:Name="cbCompleteFilter" IsEnabled="False" VerticalAlignment="Center"
@@ -599,7 +592,7 @@
                     <Label x:Name="filterStatus" Content="Currently No Filters Have Been Applied" TextBlock.Foreground="Red" VerticalAlignment="Center" Margin="100,-3,0,0"/>
 
                 </StackPanel>
-                <Label x:Name="errorStatus" Content="" TextBlock.Foreground="DarkRed" VerticalAlignment="Center" Margin="176,-7,0,0" />
+                <Label x:Name="errorStatus" Content="" TextBlock.Foreground="DarkRed" VerticalAlignment="Center" Margin="180,-10,0,0" />
             </StackPanel>
 
 

@@ -267,6 +267,9 @@ Namespace gridData
             pnl_dock.Height = win_main.ActualHeight
             tabControl1.Width = win_main.ActualWidth
             Dim topValue As Double = scrlVw_grid.Margin.Top - (win_main.ActualHeight - oldWindowHeight) / 10
+            If topValue < -20.0 Then
+                topValue = -20.0
+            End If
             Dim leftValue As Double = scrlVw_grid.Margin.Left
             Dim rightValue As Double = scrlVw_grid.Margin.Right
             Dim downValue As Double = scrlVw_grid.Margin.Bottom
@@ -936,11 +939,11 @@ Namespace gridData
             filterStatus.Visibility = Visibility.Hidden
             errorStatus.Content = ""
             If errorHighlight = True Then
-                errorStatus.Content = errorStatus.Content & vbNewLine & "Cells Highlighted in Red Must Not be left Blank"
+                errorStatus.Content = errorStatus.Content & vbTab & "Cells Highlighted in Red Must Not be left Blank"
             End If
 
             If valHighlight = True Then
-                errorStatus.Content = errorStatus.Content & vbNewLine & "Value highlighted in Dark Red don't match with validation conditions"
+                errorStatus.Content = errorStatus.Content & vbTab & "Value highlighted in Dark Red don't match with validation conditions"
             End If
 
 
