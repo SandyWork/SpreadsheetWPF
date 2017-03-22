@@ -96,7 +96,7 @@ Namespace gridData
     Class MainWindow
 
         Dim collection As PresentData
-        Dim headerList() As String = {"Item Tag Name", "Measuring Principle", "Measuring/Adjust Location", "PID Sheet Number", "Construction Status", "pressure P1 minimum", "pressure P1 in operation", "pressure P1 maximum", "unit of pressure P1", "temperature minimum", "temperature in operation", "temperature maximum", "unit of temperature", "differential pressure minimum", "differential pressure in operation", "differential pressure maximum", "unit of differential pressue"}
+        Dim headerList() As String = {"Item Tag Name", "Measuring Principle", "Measuring/Adjust Location", "PID Sheet Number", "Construction Status", "pressure P1 minimum", "pressure P1 in operation", "pressure P1 maximum", "unit of pressure P1", "temperature minimum", "temperature in operation", "temperature maximum", "unit of temperature", "differential pressure minimum", "differential pressure in operation", "differential pressure maximum", "unit of differential pressure"}
         Dim btnNamesArray() As String = {"btn_filter_name", "btn_filter_sel", "btn_filter_attri1", "btn_filter_attri2", "btn_filter_attri3", "btn_filter_attri4", "btn_filter_unitattri4", "btn_filter_attri5", "btn_filter_attri6", "btn_filter_attri7", "btn_filter_attri8", "btn_filter_attri9", "btn_filter_attri10", "btn_filter_minval", "btn_filter_normval", "btn_filter_maxval", "btn_filter_unitofdifferentialpressue"}
         Dim colNames() As String = {"dgtxtcol_name", "dgtxtcol_sel", "dgtxtcol_attri1", "dgtxtcol_attri2", "dgtxtcol_attri3", "dgtxtcol_attri4", "dgtxtcol_attri5", "dgtxtcol_attri6", "dgtxtcol_attri7", "dgtxtcol_attri8", "dgtxtcol_attri9", "dgtxtcol_attri10", "dgtxtcol_attri11", "dgtxtcol_minval", "dgtxtcol_normval", "dgtxtcol_maxval", "dgtxtcol_unitofdifferentalpressure"}
 
@@ -158,7 +158,7 @@ Namespace gridData
             'dg_grid1.Columns.Count will give you the number of columns ( including add row and delete row columns )
             'So actual number of columns will be dg_grid1.Columns.Count - 2  
             'But If you want an empty value to be present in between, you must enter it Like below
-            arrayData = {"F11001", "MFM", "M1", "0002", "New", "", "6", "12", "bara", "50", "120", "200", "C", "", "0.4", "0.8", "bar"}
+            arrayData = {"F11001", "MFM", "M1", "0002", "New", "", "6", "12", "bara", "50", "120", "200", "°C", "", "0.4", "0.8", "bar"}
 
             'Adding object to collection
             obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
@@ -167,7 +167,7 @@ Namespace gridData
             'Method to clear Array
             Array.Clear(arrayData, 0, arrayData.Length)
 
-            arrayData = {"10", "20", "30", "40", "56", "65", "11", "00"}
+            arrayData = {"H11001", "BAV", "S1", "0002", "New", "", "", "12", "bara", "50", "120", "200", "°C", "", "", "", ""}
             obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
             collection.Add(obj)
 
@@ -176,8 +176,24 @@ Namespace gridData
 
             'In Below Example, I have included all the values to be entered for all the columns.
             'So no need to pass the columns count in this case. Just pass the array in such cases
-            arrayData = {"10", "20", "30", "40", "56", "65", "11", "00", "10", "20", "30", "40", "56", "65", "11", "00", "18"}
+            arrayData = {"H16601", "BUC", "S1", "0001", "New", "0.8", "1.2", "1.5", "bar(pe)", "20", "25", "50", "°C", "100", "150", "300", "mbar"}
             obj = New userData(arrayData)
+            collection.Add(obj)
+
+            arrayData = {"H16632", "BUV", "S1", "0001", "New", "", "", "4", "bar(pe)", "12", "28", "50", "°C", "", "", "", ""}
+            obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
+            collection.Add(obj)
+
+            arrayData = {"L11001", "DPT", "M1", "0002", "New", "1", "1.3", "2.4", "bar(abs)", "", "94.8", "200", "°C", "", "1.3", "1.5", "bar"}
+            obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
+            collection.Add(obj)
+
+            arrayData = {"L11003", "LST", "M1", "0002", "New", "", "", "12", "bara", "", "120", "200", "°C", "", "", "", ""}
+            obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
+            collection.Add(obj)
+
+            arrayData = {"L16608", "LCT", "M1", "0001", "New", "", "", "10.5", "bar(abs)", "", "", "45", "°C", "", "", "", ""}
+            obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
             collection.Add(obj)
 
             Console.WriteLine("Columns Count" & dg_grid1.Columns.Count)
