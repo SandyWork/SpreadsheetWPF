@@ -266,15 +266,15 @@ Namespace gridData
             pnl_dock.Width = win_main.ActualWidth
             pnl_dock.Height = win_main.ActualHeight
             tabControl1.Width = win_main.ActualWidth
-            Dim topValue As Double = scrlVw_grid.Margin.Top - (win_main.ActualHeight - oldWindowHeight) / 10
-            If topValue < -20.0 Then
-                topValue = -20.0
-            End If
-            Dim leftValue As Double = scrlVw_grid.Margin.Left
-            Dim rightValue As Double = scrlVw_grid.Margin.Right
-            Dim downValue As Double = scrlVw_grid.Margin.Bottom
-            scrlVw_grid.Margin = New Thickness(leftValue, topValue, rightValue, downValue)
-            oldWindowHeight = win_main.ActualHeight
+            'Dim topValue As Double = scrlVw_grid.Margin.Top - (win_main.ActualHeight - oldWindowHeight) / 10
+            'If topValue < -20.0 Then
+            '    topValue = -20.0
+            'End If
+            'Dim leftValue As Double = scrlVw_grid.Margin.Left
+            'Dim rightValue As Double = scrlVw_grid.Margin.Right
+            'Dim downValue As Double = scrlVw_grid.Margin.Bottom
+            'scrlVw_grid.Margin = New Thickness(leftValue, topValue, rightValue, downValue)
+            'oldWindowHeight = win_main.ActualHeight
         End Sub
 
 
