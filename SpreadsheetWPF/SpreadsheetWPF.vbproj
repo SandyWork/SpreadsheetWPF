@@ -200,5 +200,8 @@
   <ItemGroup>
     <Resource Include="filter-512.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Save.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

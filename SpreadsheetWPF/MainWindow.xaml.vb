@@ -93,14 +93,25 @@ Namespace gridData
         End Sub
     End Class
 
+    Public Module MyExtensions
+
+        <System.Runtime.CompilerServices.Extension()>
+        Public Function IsInteger(ByVal value As String) As Boolean
+            If String.IsNullOrEmpty(value) Then
+                Return False
+            Else
+                Return Integer.TryParse(value, Nothing)
+            End If
+        End Function
+
+    End Module
+
     Class MainWindow
 
         Dim collection As PresentData
-
         Dim headerList() As String = {"Item Tag Name", "Measuring Principle", "Measuring/Adjust Location", "PID Sheet Number", "Construction Status", "Pressure P1 Minimum", "Pressure P1 In Operation", "Pressure P1 Maximum", "Unit Of Pressure P1", "Temperature Minimum", "Temperature In Operation", "Temperature Maximum", "Unit Of Temperature", "Differential Pressure Minimum", "Differential Pressure In Operation", "Differential Pressure Maximum", "Unit of Differential Pressure"}
 
         Dim btnNamesArray() As String = {"btn_filter_name", "btn_filter_sel", "btn_filter_attri1", "btn_filter_attri2", "btn_filter_attri3", "btn_filter_attri4", "btn_filter_unitattri4", "btn_filter_attri5", "btn_filter_attri6", "btn_filter_attri7", "btn_filter_attri8", "btn_filter_attri9", "btn_filter_attri10", "btn_filter_minval", "btn_filter_normval", "btn_filter_maxval", "btn_filter_unitofdifferentialpressue"}
-
         Dim colNames() As String = {"dgtxtcol_name", "dgtxtcol_sel", "dgtxtcol_attri1", "dgtxtcol_attri2", "dgtxtcol_attri3", "dgtxtcol_attri4", "dgtxtcol_attri5", "dgtxtcol_attri6", "dgtxtcol_attri7", "dgtxtcol_attri8", "dgtxtcol_attri9", "dgtxtcol_attri10", "dgtxtcol_attri11", "dgtxtcol_minval", "dgtxtcol_normval", "dgtxtcol_maxval", "dgtxtcol_unitofdifferentalpressure"}
 
         'header of the column where user right clicked
@@ -114,17 +125,18 @@ Namespace gridData
 
         Dim rowEditIndex As Integer, colEditIndex As Integer = 0
         Dim oldWindowHeight As Double = 600
-
         'Filter Value that user entered when prompted
         Dim filterValue As String = ""
         Dim copyActivated As Boolean = False, cutActivated As Boolean = False, pasteActivated As Boolean = False
         Private filterSelected As Boolean = False, caseSensitive As Boolean = False
         Dim configHeaderList As List(Of List(Of String)) = New List(Of List(Of String))()
+        Dim configIndexCount As Integer = 0
         Dim redcellsColored As List(Of DataGridCell) = New List(Of DataGridCell)
         Dim greencellsColored As List(Of DataGridCell) = New List(Of DataGridCell)
+        Dim violetcellsColored As List(Of DataGridCell) = New List(Of DataGridCell)
         Dim blueCellsColored As List(Of DataGridCell) = New List(Of DataGridCell)
         Dim errorHighlight As Boolean = False, valHighlight As Boolean = False,
-            blueHighlight As Boolean = False, blueFlag As Boolean = False
+            blueHighlight As Boolean = False, blueFlag As Boolean = False, intHighlight As Boolean = False
 
         Dim previousSelectedCells As List(Of DataGridCellInfo) = New List(Of DataGridCellInfo)()
         Public Sub New()
@@ -183,7 +195,6 @@ Namespace gridData
             arrayData = {"H16601", "BUC", "S1", "0001", "New", "0.8", "1.2", "1.5", "bar(pe)", "20", "25", "50", "°C", "100", "150", "300", "mbar"}
             obj = New userData(arrayData)
             collection.Add(obj)
-
             arrayData = {"H16632", "BUV", "S1", "0001", "New", "", "", "4", "bar(pe)", "12", "28", "50", "°C", "", "", "", ""}
             obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
             collection.Add(obj)
@@ -343,12 +354,11 @@ Namespace gridData
                     End While
                 End Using
 
-                For i As Integer = 0 To configHeaderList.Count - 1
-                    For j As Integer = 0 To configHeaderList(i).Count - 1
-                        Console.WriteLine(configHeaderList(i).Item(j))
-                    Next
-
-                Next
+                'For i As Integer = 0 To configHeaderList.Count - 1
+                '    For j As Integer = 0 To configHeaderList(i).Count - 1
+                '        Console.WriteLine(configHeaderList(i).Item(j))
+                '    Next
+                'Next
 
             Catch e As Exception
                 ' Let the user know what went wrong.
@@ -387,6 +397,11 @@ Namespace gridData
             If bgColor = Colors.DarkRed Then
                 greencellsColored.Add(dataCell)
                 valHighlight = True
+            End If
+
+            If bgColor = Colors.Violet Then
+                violetcellsColored.Add(dataCell)
+                intHighlight = True
             End If
 
             If bgColor = Colors.Blue Then
@@ -567,7 +582,7 @@ Namespace gridData
             If inputDialog.ShowDialog = True Then
                 filterSelected = True
                 caseSensitive = inputDialog.returnCaseSensitive()
-                Console.WriteLine(caseSensitive.ToString)
+                'Console.WriteLine(caseSensitive.ToString)
                 cbCompleteFilter.IsEnabled = True
                 cbCompleteFilter.IsChecked = True
                 filterValue = inputDialog.returnFilterValue()
@@ -722,7 +737,7 @@ Namespace gridData
                             changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
                             For i As Integer = 1 To List.Count - 1
                                 For j As Integer = 2 To dg_grid1.Columns.Count - 3
-                                    If List.Item(i).Equals(headerList(j)) Then
+                                    If (List.Item(i).ToLower()).Equals(headerList(j).ToLower()) Then
                                         dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(j))
                                         changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
                                     End If
@@ -775,10 +790,10 @@ Namespace gridData
                     Dim xlApp As Excel.Application = New Excel.Application()
                     Dim xlWorkBook As Excel.Workbook = xlApp.Workbooks.Add
                     Dim xlWorkSheet As Excel.Worksheet = xlWorkBook.Worksheets(1)
-                    Dim colCount = dg_grid1.Columns.Count - 2, rowCount = collection.Count
+                    Dim colCount = dg_grid1.Columns.Count, rowCount = collection.Count
 
-                    'Create an array with 16 columns and n rows
-                    Dim DataArray(rowCount, colCount) As Object
+                    'Create an array with n columns and n rows
+                    Dim DataArray(rowCount, colCount - 2) As Object
 
                     For row As Short = 0 To rowCount - 1
                         For col As Short = 0 To colCount - 3
@@ -793,7 +808,7 @@ Namespace gridData
                     xlWorkSheet.SaveAs(f.FileName)
                     xlWorkBook.Close()
                     xlApp.Quit()
-
+                    MessageBox.Show("done")
                     releaseObject(xlApp)
                     releaseObject(xlWorkBook)
                     releaseObject(xlWorkSheet)
@@ -848,14 +863,14 @@ Namespace gridData
 
             ' scan the cells.
             If array IsNot Nothing Then
-                Console.WriteLine("length {0}", array.Length)
+                'Console.WriteLine("length {0}", array.Length)
 
                 ' get bounds of the array.
                 Dim bound0 As Integer = array.GetUpperBound(0)
                 Dim bound1 As Integer = array.GetUpperBound(1)
 
-                Console.WriteLine("dimension 0 {0}", bound0)
-                Console.WriteLine("dimension 1 {0}", bound1)
+                'Console.WriteLine("dimension 0 {0}", bound0)
+                'Console.WriteLine("dimension 1 {0}", bound1)
 
 
                 collection.Clear()
@@ -936,6 +951,7 @@ Namespace gridData
         Private Sub btn_validate_Click(sender As Object, e As RoutedEventArgs)
             validate_Mandatory(collection.Count)
             validate_Integers(collection.Count)
+            validate_integerValue(collection.Count)
             filterStatus.Visibility = Visibility.Hidden
             errorStatus.Content = ""
             If errorHighlight = True Then
@@ -946,7 +962,49 @@ Namespace gridData
                 errorStatus.Content = errorStatus.Content & vbTab & "Value highlighted in Dark Red don't match with validation conditions"
             End If
 
+            If intHighlight = True Then
+                errorStatus.Content = errorStatus.Content & vbTab & "Value highlighted in Violet must be a numeric value"
+            End If
+        End Sub
 
+        Private Sub validate_integerValue(nRows As Integer)
+            For Each cell In violetcellsColored
+                cell.BorderBrush = New SolidColorBrush(Colors.Black)
+                cell.BorderThickness = New Thickness(0.0)
+            Next
+            violetcellsColored.Clear()
+            intHighlight = False
+            Dim result As Integer = 0
+            Dim columnsToValidate() As String =
+            {
+            "Pressure P1 Minimum", "Pressure P1 In Operation", "Pressure P1 Maximum",
+             "Temperature Minimum", "Temperature In Operation", "Temperature Maximum",
+            "Differential Pressure Minimum", "Differential Pressure In Operation",
+            "Differential Pressure Maximum"}
+
+            Dim indexArray As List(Of Integer) = New List(Of Integer)
+
+            For i As Integer = 0 To headerList.Length - 1
+                For j As Integer = 0 To columnsToValidate.Length - 1
+                    If (headerList(i).ToLower()).Equals(columnsToValidate(j).ToLower()) Then
+                        indexArray.Add(i)
+                        Exit For
+                    End If
+                Next
+            Next
+            For counter As Integer = 0 To nRows - 1
+                Dim temp_userdata As userData = collection.Item(counter)
+
+                For i As Integer = 0 To indexArray.Count - 1
+                    If temp_userdata.col_list.Item(indexArray.Item(i)).Equals("") Then
+                        Continue For
+                    End If
+                    If Not IsNumeric(temp_userdata.col_list.Item(indexArray.Item(i))) Then
+                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(indexArray.Item(i)))
+                        changeCellColor(dg_grid1.CurrentCell, Colors.Violet, Colors.White)
+                    End If
+                Next
+            Next
         End Sub
 
         Private Sub validate_Mandatory(nRows As Integer)
@@ -959,14 +1017,33 @@ Namespace gridData
             redcellsColored.Clear()
             errorHighlight = False
 
+            Dim indexList As List(Of Integer) = New List(Of Integer)()
+            Dim pgotIt As Boolean = False
+            'Get the index of Unit of Pressure and Unit of Temperature to check for values
+
+            For i As Integer = 0 To headerList.Length - 1
+                If (headerList(i).ToLower()).Contains("unit of pressure") Then
+                    indexList.Add(i)
+                    Continue For
+                End If
+                If (headerList(i).ToLower()).Contains("unit of temperature") Then
+                    indexList.Add(i)
+                    Continue For
+                End If
+            Next
+
             For counter As Integer = 0 To nRows - 1
+                'Get the current Row userData object
                 Dim temp_userdata As userData = collection.Item(counter)
+
+                'Check if the columns corresponding the selection column in configuration file is empty or not
+                'If empty highlight it
                 For Each list In configHeaderList
                     If temp_userdata.col_list.Item(1).Equals(list.Item(0)) Then
-                        Console.WriteLine("Selection Equals " & list.Item(0))
+                        'Console.WriteLine("Selection Equals " & list.Item(0))
                         For i As Integer = 1 To list.Count - 1
                             For j As Integer = 2 To dg_grid1.Columns.Count - 3
-                                If list.Item(i).Equals(headerList(j)) Then
+                                If (list.Item(i).ToLower()).Equals(headerList(j).ToLower()) Then
                                     If temp_userdata.col_list.Item(j).Equals("") Then
                                         dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(j))
                                         changeCellColor(dg_grid1.CurrentCell, Colors.Red, Colors.White)
@@ -975,6 +1052,15 @@ Namespace gridData
                             Next
                         Next
                         Exit For
+                    End If
+                Next
+
+                ' Check if Unit of Pressure / Unit of Temperature is Empty or Not
+                'If empty highlight it 
+                For Each item In indexList
+                    If temp_userdata.col_list(item).Equals("") Then
+                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(item))
+                        changeCellColor(dg_grid1.CurrentCell, Colors.Red, Colors.White)
                     End If
                 Next
             Next
@@ -987,6 +1073,8 @@ Namespace gridData
                 cell.BorderThickness = New Thickness(0.0)
             Next
             greencellsColored.Clear()
+            valHighlight = False
+
             Dim minVal As Double, normVal As Double, maxVal As Double
             Dim minIndex As Integer, normIndex As Integer, maxIndex As Integer
             For i As Integer = 0 To dg_grid1.Columns.Count - 1
@@ -1010,25 +1098,25 @@ Namespace gridData
                 maxValue = temp_userdata.col_list.Item(maxIndex)
 
                 If minValue.Equals("") AndAlso normValue.Equals("") AndAlso maxValue.Equals("") Then
-                    Return
+                    Continue For
                 End If
 
                 If Not minValue.Equals("") Then
                     minVal = CDbl(minValue)
                 Else
-                    minVal = 0
+                    minVal = 0.0
                 End If
 
                 If Not normValue.Equals("") Then
                     normVal = CDbl(normValue)
                 Else
-                    normVal = 0
+                    normVal = 0.0
                 End If
 
                 If Not maxValue.Equals("") Then
                     maxVal = CDbl(maxValue)
                 Else
-                    maxVal = 0
+                    maxVal = 0.0
                 End If
 
                 If (minVal > normVal) Or (normVal > maxVal) Or (minVal > maxVal) Then
@@ -1038,6 +1126,7 @@ Namespace gridData
                     Next
                 End If
             Next
+
         End Sub
 
         Private Sub btn_close_Click(sender As Object, e As RoutedEventArgs)

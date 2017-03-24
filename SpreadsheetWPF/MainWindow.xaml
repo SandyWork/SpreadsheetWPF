@@ -28,11 +28,12 @@
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="135"/>
+                <RowDefinition Height="100"/>
                 <RowDefinition/>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
-            <TabControl x:Name="tabControl1" Width="500" Grid.Row="0" FontWeight="Bold" Margin="0,0,0,-15" Background="White">
+            <ProgressBar Minimum="0" Maximum="100" Visibility="Hidden"  Name="pbStatus" IsIndeterminate="True" Cursor="Wait" Foreground="#FFFF8E06" />
+            <TabControl x:Name="tabControl1" Width="500" Grid.Row="0" FontWeight="Bold" Margin="0,0,0,-15" Background="White" SelectedIndex="1">
                 <TabItem HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <TabItem.Background>
                         <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -57,7 +58,7 @@
                     <StackPanel x:Name="stckpnl_menu1" Width="Auto" Height="Auto" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" x:Name="btn_import" Click="btn_import_Click" Background="White">
-                                <Image Source="import-icon.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60"/>
+                                <Image Source="import-icon.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="30" MinHeight="30" Width="45" Height="45"/>
                             </Button>
 
                             <Label Content="Import Excel" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
@@ -65,14 +66,14 @@
                         <Separator Width="15" Opacity="0"/>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" x:Name="btn_export" Click="btn_export_Click" Background="White">
-                                <Image Source="export-icon.png"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60"/>
+                                <Image Source="export-icon.png"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  MinWidth="30" MinHeight="30" Width="45" Height="45"/>
                             </Button>
-                            <Label Content="Export Excel" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
+                            <Label Content="Publish" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
                         </StackPanel>
                     </StackPanel>
 
                 </TabItem>
-                <TabItem HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TabItem HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <Image Source="/Menu2.png" Width="20" Height="20" >
@@ -91,7 +92,7 @@
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Name="btn_save" Click="btn_save_Click" Background="White">
                                 <Button.Content>
-                                    <Image Source="/menu2.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60"/>
+                                    <Image Source="/menu2.png" MinWidth="30" MinHeight="30" Width="45" Height="45"/>
                                 </Button.Content>
                             </Button>
                             <Label Content="Save" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
@@ -101,7 +102,7 @@
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Name="btn_validate" Click="btn_validate_Click" Background="White">
                                 <Button.Content>
-                                    <Image Source="validate.jpg" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60"/>
+                                    <Image Source="validate.jpg" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  MinWidth="30" MinHeight="30" Width="45" Height="45"/>
                                 </Button.Content>
                             </Button>
                             <Label Content="Validate" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
@@ -111,7 +112,7 @@
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Name="btn_close" Click="btn_close_Click" Background="White">
                                 <Button.Content>
-                                    <Image Source="close.png"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60"/>
+                                    <Image Source="close.png"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  MinWidth="30" MinHeight="30" Width="45" Height="45"/>
                                 </Button.Content>
                             </Button>
                             <Label Content="Close" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
@@ -199,14 +200,14 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" Text="Differential Pressure In Operation Something"  TextWrapping="Wrap"/>
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,72,-6,-10"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60"/>
+                                            <Image Source="filter-512.png"  Width="15" Height ="15"  MaxWidth="60" MaxHeight="60"/>
                                         </Button.Content>
                                     </Button>
                                 </Grid>
@@ -221,14 +222,14 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" TextWrapping="Wrap"/>
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,72,-6,-10"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_sel" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_sel" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -243,14 +244,14 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" TextWrapping="Wrap"  />
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,72,-6,-10"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri1" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri1" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -265,14 +266,14 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" TextWrapping="Wrap"  />
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,72,-6,-10"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri2" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri2" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -287,14 +288,14 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" TextWrapping="Wrap"   />
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,72,-6,-10"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri3" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri3" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -309,14 +310,14 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" TextWrapping="Wrap"   />
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,72,-6,-10"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri4" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri4" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -331,14 +332,14 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" TextWrapping="Wrap"   />
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,72,-6,-10"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_unitattri4" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_unitattri4" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -353,14 +354,14 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" TextWrapping="Wrap"   />
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,72,-6,-10"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri5" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri5" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -375,14 +376,14 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" TextWrapping="Wrap"   />
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,72,-6,-10"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri6" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri6" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -397,14 +398,14 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" TextWrapping="Wrap"   />
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,72,-6,-10"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri7" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri7" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -419,14 +420,14 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" TextWrapping="Wrap"   />
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,72,-6,-10"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri8" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri8" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -441,14 +442,14 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" TextWrapping="Wrap"   />
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,72,-6,-10"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri9" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri9" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -463,14 +464,14 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" TextWrapping="Wrap"   />
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,72,-6,-10"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri10" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_attri10" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -486,14 +487,14 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" TextWrapping="Wrap"   />
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,72,-6,-10"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_minval" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_minval" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -508,14 +509,14 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" TextWrapping="Wrap"   />
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,72,-6,-10"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_normval" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_normval" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -530,14 +531,14 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" TextWrapping="Wrap"   />
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,72,-6,-10"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_maxval" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_maxval" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -552,14 +553,14 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" TextWrapping="Wrap"   />
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,72,-6,-10"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_unitofdifferentialpressure" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Name="btn_filter_unitofdifferentialpressure" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  MinWidth="20" MinHeight="20" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
