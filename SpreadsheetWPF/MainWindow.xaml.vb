@@ -835,30 +835,62 @@ Namespace gridData
         End Sub
 
         Private Sub btn_import_click(sender As Object, e As RoutedEventArgs)
-            Dim openfiledialog As OpenFileDialog = New OpenFileDialog()
-            openfiledialog.Filter = "excel 97-2003 worksheet (*.xls)|*.xls|excel workbook (*.xlsx) |*.xlsx|all files (*.*)|*.*"
-            openfiledialog.Multiselect = False
+            If spfsessioninfo IsNot Nothing Then
+                datadisplay()
+            Else
+                Dim openfiledialog As OpenFileDialog = New OpenFileDialog()
+                openfiledialog.Filter = "excel 97-2003 worksheet (*.xls)|*.xls|excel workbook (*.xlsx) |*.xlsx|all files (*.*)|*.*"
+                openfiledialog.Multiselect = False
 
-            If (openfiledialog.ShowDialog() = True) Then
-                If openfiledialog.CheckFileExists = True Then
-                    Dim filename = openfiledialog.FileName
+                If (openfiledialog.ShowDialog() = True) Then
+                    If openfiledialog.CheckFileExists = True Then
+                        Dim filename = openfiledialog.FileName
 
 
-                    Dim sheetnames As List(Of String) = getexcelsheetnames(filename)
-                    Dim excel As ImportExcel = New ImportExcel(sheetnames)
-                    excel.ShowInTaskbar = True
-                    excel.Owner = Me
+                        Dim sheetnames As List(Of String) = getexcelsheetnames(filename)
+                        Dim excel As ImportExcel = New ImportExcel(sheetnames)
+                        excel.ShowInTaskbar = True
+                        excel.Owner = Me
 
-                    If excel.ShowDialog = True Then
-                        Dim sheetname As String = excel.getSheetName()
-                        displayexcelfile(filename, sheetname)
+                        If excel.ShowDialog = True Then
+                            Dim sheetname As String = excel.getSheetName()
+                            displayexcelfile(filename, sheetname)
+                        End If
                     End If
-                End If
 
+                End If
             End If
         End Sub
 
-
+        Private Sub datadisplay()
+            Dim lobjitemcollection As IObjectDictionary = spfsessioninfo.GetObjectsByName("*", "IInstrumentOcc")
+            Dim dataforUI(lobjitemcollection.Count - 1) As userData
+            Dim i As Integer = 0
+            With lobjitemcollection.GetEnumerator
+                While .MoveNext
+                    Dim testarray(16) As String '= {"1", "2"}
+                    'dataforUI(i) = New userData
+                    testarray(0) = Convert.ToString(.Value.Interfaces("IObject").Properties("Name"))
+                    testarray(2) = Convert.ToString(.Value.Interfaces("IProcessCustomBASF").Properties("B_MeasuringAdjustLocation"))
+                    testarray(3) = "001"
+                    testarray(4) = Convert.ToString(.Value.Interfaces("IPBSItem").Properties("ConstructionStatus"))
+                    Dim spfobj As userData = New userData(testarray, 1)
+                    dataforUI(i) = New userData(Nothing, 17)
+                    dataforUI(i) = spfobj
+                    i = i + 1
+                End While
+            End With
+            collection = Me.Resources("presentData")
+            collection.Clear()
+            AddColumns()
+            If dataforUI.Count > 0 Then
+                For Each item In dataforUI
+                    collection.Add(item)
+                Next
+                'Else
+                '   defaultData_dgGrid()
+            End If
+        End Sub
 
         Private Sub displayexcelfile(filename As String, sheetname As String)
 
