@@ -951,6 +951,8 @@ Namespace gridData
         Private Sub btn_validate_Click(sender As Object, e As RoutedEventArgs)
             validate_Mandatory(collection.Count)
             validate_Integers(collection.Count)
+            validate_Integers1(collection.Count)
+            validate_Integers2(collection.Count)
             validate_integerValue(collection.Count)
             filterStatus.Visibility = Visibility.Hidden
             errorStatus.Content = ""
@@ -1078,11 +1080,137 @@ Namespace gridData
             Dim minVal As Double, normVal As Double, maxVal As Double
             Dim minIndex As Integer, normIndex As Integer, maxIndex As Integer
             For i As Integer = 0 To dg_grid1.Columns.Count - 1
-                If colNames(i).Equals("dgtxtcol_minval") Then
+                If headerList(i).Equals("Pressure P1 Minimum") Then
                     minIndex = i
-                    If colNames(i + 1).Equals("dgtxtcol_normval") Then
+                    If headerList(i + 1).Equals("Pressure P1 In Operation") Then
                         normIndex = i + 1
-                        If colNames(i + 2).Equals("dgtxtcol_maxval") Then
+                        If headerList(i + 2).Equals("Pressure P1 Maximum") Then
+                            maxIndex = i + 2
+                            Exit For
+                        End If
+                    End If
+                End If
+            Next
+            For counter As Integer = 0 To nRows - 1
+                Dim temp_userdata As userData = collection.Item(counter)
+
+                Dim minValue As String, normValue As String, maxValue As String
+                minValue = temp_userdata.col_list.Item(minIndex)
+                normValue = temp_userdata.col_list.Item(normIndex)
+                maxValue = temp_userdata.col_list.Item(maxIndex)
+
+                If minValue.Equals("") AndAlso normValue.Equals("") AndAlso maxValue.Equals("") Then
+                    Continue For
+                End If
+
+                If Not minValue.Equals("") Then
+                    minVal = CDbl(minValue)
+                Else
+                    minVal = 0.0
+                End If
+
+                If Not normValue.Equals("") Then
+                    normVal = CDbl(normValue)
+                Else
+                    normVal = 0.0
+                End If
+
+                If Not maxValue.Equals("") Then
+                    maxVal = CDbl(maxValue)
+                Else
+                    maxVal = 0.0
+                End If
+
+                If (minVal > normVal) Or (normVal > maxVal) Or (minVal > maxVal) Then
+                    For i As Integer = 0 To 2
+                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(minIndex + i))
+                        changeCellColor(dg_grid1.CurrentCell, Colors.DarkRed, Colors.White)
+                    Next
+                End If
+            Next
+
+        End Sub
+
+        Private Sub validate_Integers1(nRows As Integer)
+            fileRead()
+            For Each cell In greencellsColored
+                cell.BorderBrush = New SolidColorBrush(Colors.Black)
+                cell.BorderThickness = New Thickness(0.0)
+            Next
+            greencellsColored.Clear()
+            valHighlight = False
+
+            Dim minVal As Double, normVal As Double, maxVal As Double
+            Dim minIndex As Integer, normIndex As Integer, maxIndex As Integer
+            For i As Integer = 0 To dg_grid1.Columns.Count - 1
+                If headerList(i).Equals("Temperature Minimum") Then
+                    minIndex = i
+                    If headerList(i + 1).Equals("Temperature In Operation") Then
+                        normIndex = i + 1
+                        If headerList(i + 2).Equals("Temperature Maximum") Then
+                            maxIndex = i + 2
+                            Exit For
+                        End If
+                    End If
+                End If
+            Next
+            For counter As Integer = 0 To nRows - 1
+                Dim temp_userdata As userData = collection.Item(counter)
+
+                Dim minValue As String, normValue As String, maxValue As String
+                minValue = temp_userdata.col_list.Item(minIndex)
+                normValue = temp_userdata.col_list.Item(normIndex)
+                maxValue = temp_userdata.col_list.Item(maxIndex)
+
+                If minValue.Equals("") AndAlso normValue.Equals("") AndAlso maxValue.Equals("") Then
+                    Continue For
+                End If
+
+                If Not minValue.Equals("") Then
+                    minVal = CDbl(minValue)
+                Else
+                    minVal = 0.0
+                End If
+
+                If Not normValue.Equals("") Then
+                    normVal = CDbl(normValue)
+                Else
+                    normVal = 0.0
+                End If
+
+                If Not maxValue.Equals("") Then
+                    maxVal = CDbl(maxValue)
+                Else
+                    maxVal = 0.0
+                End If
+
+                If (minVal > normVal) Or (normVal > maxVal) Or (minVal > maxVal) Then
+                    For i As Integer = 0 To 2
+                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(minIndex + i))
+                        changeCellColor(dg_grid1.CurrentCell, Colors.DarkRed, Colors.White)
+                    Next
+                End If
+            Next
+
+        End Sub
+
+        Private Sub validate_Integers2(nRows As Integer)
+            fileRead()
+            For Each cell In greencellsColored
+                cell.BorderBrush = New SolidColorBrush(Colors.Black)
+                cell.BorderThickness = New Thickness(0.0)
+            Next
+            greencellsColored.Clear()
+            valHighlight = False
+
+            Dim minVal As Double, normVal As Double, maxVal As Double
+            Dim minIndex As Integer, normIndex As Integer, maxIndex As Integer
+            For i As Integer = 0 To dg_grid1.Columns.Count - 1
+                If headerList(i).Equals("Differential Pressure Minimum") Then
+                    minIndex = i
+                    If headerList(i + 1).Equals("Differential Pressure In Operation") Then
+                        normIndex = i + 1
+                        If headerList(i + 2).Equals("Differential Pressure Maximum") Then
                             maxIndex = i + 2
                             Exit For
                         End If
