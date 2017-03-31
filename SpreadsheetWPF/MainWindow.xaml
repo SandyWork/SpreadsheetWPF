@@ -199,7 +199,7 @@
                                         <ColumnDefinition Width="15"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="1" Text="Differential Pressure In Operation Something"  TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Column="1" TextWrapping="Wrap"/>
                                     <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
