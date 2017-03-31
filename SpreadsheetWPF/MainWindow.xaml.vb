@@ -9,11 +9,6 @@ Imports System.Data.OleDb
 Imports System.Data
 Imports System.IO
 Imports System.Collections.Specialized
-
-Imports SPF.Client.Administration
-Imports SPF.Client.Schema.Collection
-Imports SPF.Client.Schema.Interface
-Imports SPF.Client
 'This is comment
 Namespace gridData
     Public Class userData : Implements INotifyPropertyChanged, IEditableObject
@@ -112,7 +107,7 @@ Namespace gridData
     End Module
 
     Class MainWindow
-        Dim spfsessioninfo As SPFSession = Nothing
+
         Dim collection As PresentData
         Dim headerList() As String = {"Item Tag Name", "Measuring Principle", "Measuring/Adjust Location", "PID Sheet Number", "Construction Status", "Pressure P1 Minimum", "Pressure P1 In Operation", "Pressure P1 Maximum", "Unit Of Pressure P1", "Temperature Minimum", "Temperature In Operation", "Temperature Maximum", "Unit Of Temperature", "Differential Pressure Minimum", "Differential Pressure In Operation", "Differential Pressure Maximum", "Unit of Differential Pressure"}
 
@@ -234,20 +229,9 @@ Namespace gridData
                 defaultData_dgGrid()
             End If
         End Sub
-        Public Sub New(spfsessionid As Object)
-            spfsessioninfo = CType(spfsessionid, SPFSession)
-            ' This call is required by the designer.
-            InitializeComponent()
 
-            collection = Me.Resources("presentData")
-            collection.Clear()
-            AddColumns()
+        Public Sub New(list() As userData)
 
-
-        End Sub
-
-        Public Sub New(list() As userData, Optional Spfsessionid As SPFSession = Nothing)
-            spfsessioninfo = CType(Spfsessionid, SPFSession)
             ' This call is required by the designer.
             InitializeComponent()
             collection = Me.Resources("presentData")
