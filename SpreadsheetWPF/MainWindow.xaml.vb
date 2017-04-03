@@ -14,6 +14,7 @@ Imports SPF.Client.Administration
 Imports SPF.Client.Schema.Collection
 Imports SPF.Client.Schema.Interface
 Imports SPF.Client
+'Imports SPF.Client.api.wpf
 'This is comment
 Namespace gridData
     Public Class userData : Implements INotifyPropertyChanged, IEditableObject
@@ -970,6 +971,7 @@ Namespace gridData
 
         Private Sub btn_save_click(sender As Object, e As RoutedEventArgs)
             Try
+
                 If spfsessioninfo Is Nothing Then
                     '    MessageBox.Show(" Connection to SmartPlant Foundation is not possible", "Warning")
                     'Else
@@ -978,7 +980,7 @@ Namespace gridData
                     Dim colCountSPF = dg_grid1.Columns.Count - 2, rowCountSPF = collection.Count
 
                     'Create an array with 16 columns and n rows
-                    Dim DataArray(rowCountSPF - 1, colCountSPF - 1) As Object
+                    Dim DataArray(rowCountSPF - 1, colCountSPF - 1) As String
 
                     For row As Short = 0 To rowCountSPF - 1
                         For col As Short = 0 To colCountSPF - 1
@@ -989,52 +991,54 @@ Namespace gridData
                     Dim ObjToCreate As String = DataArray.GetLength(0) - 1
 
                     'Transaction to create obj
-                    Dim lObjContainer As ObjectDictionary = New ObjectDictionary(spfsessioninfo)
+                    ' Dim datatoSPF As New CommunicationLayer
+                    'datatoSPF.SaveData_AuthDomain(DataArray)
+                    '    Dim lObjContainer As ObjectDictionary = New ObjectDictionary(spfsessioninfo)
 
-                    For i As Integer = 0 To ObjToCreate
-                        'For j As Integer = 0 To colCountSPF
-                        Dim lObjAuthTag As IObject = Nothing
-                        lObjAuthTag = spfsessioninfo.GetObjectByName(DataArray(0, 1), "IVDExp_InstrumentCustomBASF")
+                    '    For i As Integer = 0 To ObjToCreate
+                    '        'For j As Integer = 0 To colCountSPF
+                    '        Dim lObjAuthTag As IObject = Nothing
+                    '        lObjAuthTag = spfsessioninfo.GetObjectByName(DataArray(0, 1), "IVDExp_InstrumentCustomBASF")
 
-                        If lObjAuthTag Is Nothing Then
+                    '        If lObjAuthTag Is Nothing Then
 
-                        End If
-                        lObjAuthTag = SPF.Client.Schema.Utilities.CreateObject(spfsessioninfo, "VDExp_Instrument")
-                        lObjAuthTag.Name = DataArray(i, 0) ' "TestTag"
+                    '        End If
+                    '        lObjAuthTag = SPF.Client.Schema.Utilities.CreateObject(spfsessioninfo, "VDExp_Instrument")
+                    '        lObjAuthTag.Name = DataArray(i, 0) ' "TestTag"
 
-                        If String.IsNullOrEmpty(DataArray(i, 5)) = False Then
-                            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_P1_Min").SetValue(DataArray(i, 5) & "~" & DataArray(i, 8))
-                        End If
-                        If String.IsNullOrEmpty(DataArray(i, 6)) = False Then
-                            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_P1_Op").SetValue(DataArray(i, 6) & "~" & DataArray(i, 8))
-                        End If
-                        If String.IsNullOrEmpty(DataArray(i, 7)) = False Then
-                            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_P1_Max").SetValue(DataArray(i, 7) & "~" & DataArray(i, 8))
-                        End If
-                        If String.IsNullOrEmpty(DataArray(i, 9)) = False Then
-                            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_T_Min").SetValue(DataArray(i, 9) & "~" & DataArray(i, 12))
-                        End If
-                        If String.IsNullOrEmpty(DataArray(i, 10)) = False Then
-                            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_T_Op").SetValue(DataArray(i, 10) & "~" & DataArray(i, 12))
-                        End If
-                        If String.IsNullOrEmpty(DataArray(i, 11)) = False Then
-                            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_T_Max").SetValue(DataArray(i, 11) & "~" & DataArray(i, 12))
-                        End If
-                        If String.IsNullOrEmpty(DataArray(i, 13)) = False Then
-                            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_Diff_P_Min").SetValue(DataArray(i, 13) & "~" & DataArray(i, 16))
-                        End If
-                        If String.IsNullOrEmpty(DataArray(i, 14)) = False Then
-                            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_Diff_P_Op").SetValue(DataArray(i, 14) & "~" & DataArray(i, 16))
-                        End If
-                        If String.IsNullOrEmpty(DataArray(i, 15)) = False Then
-                            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_Diff_P_Max").SetValue(DataArray(i, 15) & "~" & DataArray(i, 16))
-                        End If
+                    '        If String.IsNullOrEmpty(DataArray(i, 5)) = False Then
+                    '            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_P1_Min").SetValue(DataArray(i, 5) & "~" & DataArray(i, 8))
+                    '        End If
+                    '        If String.IsNullOrEmpty(DataArray(i, 6)) = False Then
+                    '            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_P1_Op").SetValue(DataArray(i, 6) & "~" & DataArray(i, 8))
+                    '        End If
+                    '        If String.IsNullOrEmpty(DataArray(i, 7)) = False Then
+                    '            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_P1_Max").SetValue(DataArray(i, 7) & "~" & DataArray(i, 8))
+                    '        End If
+                    '        If String.IsNullOrEmpty(DataArray(i, 9)) = False Then
+                    '            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_T_Min").SetValue(DataArray(i, 9) & "~" & DataArray(i, 12))
+                    '        End If
+                    '        If String.IsNullOrEmpty(DataArray(i, 10)) = False Then
+                    '            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_T_Op").SetValue(DataArray(i, 10) & "~" & DataArray(i, 12))
+                    '        End If
+                    '        If String.IsNullOrEmpty(DataArray(i, 11)) = False Then
+                    '            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_T_Max").SetValue(DataArray(i, 11) & "~" & DataArray(i, 12))
+                    '        End If
+                    '        If String.IsNullOrEmpty(DataArray(i, 13)) = False Then
+                    '            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_Diff_P_Min").SetValue(DataArray(i, 13) & "~" & DataArray(i, 16))
+                    '        End If
+                    '        If String.IsNullOrEmpty(DataArray(i, 14)) = False Then
+                    '            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_Diff_P_Op").SetValue(DataArray(i, 14) & "~" & DataArray(i, 16))
+                    '        End If
+                    '        If String.IsNullOrEmpty(DataArray(i, 15)) = False Then
+                    '            lObjAuthTag.Interfaces("IVDExp_InstrumentCustomBASF").Properties("B_VD_Diff_P_Max").SetValue(DataArray(i, 15) & "~" & DataArray(i, 16))
+                    '        End If
 
 
-                        lObjContainer.Add(lObjAuthTag)
-                        'Next j
-                    Next i
-                    lObjContainer.Commit()
+                    '        lObjContainer.Add(lObjAuthTag)
+                    '        'Next j
+                    '    Next i
+                    '    lObjContainer.Commit()
                 End If
 
             Catch ex As Exception
