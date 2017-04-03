@@ -291,7 +291,7 @@ Namespace gridData
         Private Sub resizeWindow(sender As Object, e As SizeChangedEventArgs)
             pnl_dock.Width = win_main.ActualWidth
             pnl_dock.Height = win_main.ActualHeight
-            tabControl1.Width = win_main.ActualWidth
+
             'Dim topValue As Double = scrlVw_grid.Margin.Top - (win_main.ActualHeight - oldWindowHeight) / 10
             'If topValue < -20.0 Then
             '    topValue = -20.0
