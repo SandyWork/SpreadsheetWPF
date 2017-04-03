@@ -135,15 +135,13 @@
                         IsSynchronizedWithCurrentItem="True" Foreground="Black" Background="#FFF5EDED" Margin="0,0,20,0"
                         >
 
-                    <!--This is required to handle CTRL + C when something is selected in the DataGrid-->
                     <DataGrid.CommandBindings>
                         <CommandBinding Command="Copy" Executed="CopyCommand" />
                         <CommandBinding Command="Cut" x:Name="CutCommand" Executed="CutCommand_Executed" />
                         <CommandBinding Command="Paste" x:Name="PasteCommand" Executed="PasteCommand_Executed" />
                         <CommandBinding Command="Delete" x:Name="DeleteCommand" Executed="DeleteCommand_Executed"/>
                     </DataGrid.CommandBindings>
-
-                    <!--This is required to handle CTRL + C when something is selected in the DataGrid-->
+                    
                     <DataGrid.InputBindings>
                         <KeyBinding Key="C" Modifiers="Control" Command="Copy" />
                         <KeyBinding Key="X" Modifiers="Control" Command="Cut" />
@@ -154,10 +152,6 @@
                     <DataGrid.Resources x:Uid="resources">
                         <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{x:Static SystemColors.HighlightColor}"/>
                         <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}"/>
-                        <ContextMenu x:Key="colHeaderContextMenu">
-                            <MenuItem Header="Filter Column" Click="menuFilter_Click"  x:Name="menuFilter">
-                            </MenuItem>
-                        </ContextMenu>
                         <ContextMenu  x:Key="rowContextMenu" x:Name="rowContextMenu">
                             <MenuItem Header="Copy" x:Name="copyCells" Click="copyCells_Click" />
                             <MenuItem Header="Paste" x:Name="cutCells" Click="cutCells_Click" />
@@ -176,11 +170,7 @@
                                     </TransformGroup>
                                 </Setter.Value>
                             </Setter>
-
-                            <Setter Property="ContextMenu" Value="{StaticResource colHeaderContextMenu}"/>
                         </Style>
-
-
                     </DataGrid.ColumnHeaderStyle>
                     <!--Styles to change column header in vertical orientation-->
 
@@ -368,8 +358,17 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[8]}" x:Name="dgtxtcol_attri6">
-                            <DataGridTextColumn.Header>
+                        <DataGridTemplateColumn  x:Name="dgtxtcol_attri6">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox x:Name="cmb_unitofPressure"
+                                              ItemsSource="{Binding Path= pressureUnit}"
+                                              SelectedValue="{Binding Path= col_list.Item[8]}"
+                                              SelectionChanged="changeComboBoxValue" />
+
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="15"/>
@@ -388,8 +387,8 @@
                                         </Button.Content>
                                     </Button>
                                 </Grid>
-                            </DataGridTextColumn.Header>
-                        </DataGridTextColumn>
+                            </DataGridTemplateColumn.Header>
+                        </DataGridTemplateColumn>
                         <DataGridTextColumn  Binding="{Binding Path = col_list.Item[9]}" x:Name="dgtxtcol_attri7">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
@@ -456,8 +455,17 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[12]}" x:Name="dgtxtcol_attri10">
-                            <DataGridTextColumn.Header>
+                        <DataGridTemplateColumn  x:Name="dgtxtcol_attri10">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox x:Name="cmb_unitofTemperature"
+                                              ItemsSource="{Binding Path= tempUnit}"
+                                              SelectedValue="{Binding Path= col_list.Item[12]}"
+                                              SelectionChanged="changeComboBoxValue" />
+
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="15"/>
@@ -476,8 +484,9 @@
                                         </Button.Content>
                                     </Button>
                                 </Grid>
-                            </DataGridTextColumn.Header>
-                        </DataGridTextColumn>
+                            </DataGridTemplateColumn.Header>
+                        </DataGridTemplateColumn>
+                        
                         <!--TargetNullValue={x:Static sys:String.Empty}-->
                         <DataGridTextColumn Binding="{Binding Path = col_list.Item[13] ,TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_minval">
                             <DataGridTextColumn.Header>
@@ -545,8 +554,17 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Binding="{Binding Path = col_list.Item[16],TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_unitofdifferentialpressure">
-                            <DataGridTextColumn.Header>
+                        <DataGridTemplateColumn  x:Name="dgtxtcol_unitofdifferentialpressure">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox x:Name="cmb_unitofDiffPressure"
+                                              ItemsSource="{Binding Path= diffPressureUnit}"
+                                              SelectedValue="{Binding Path= col_list.Item[16]}"
+                                              SelectionChanged="changeComboBoxValue" />
+
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="15"/>
@@ -565,8 +583,8 @@
                                         </Button.Content>
                                     </Button>
                                 </Grid>
-                            </DataGridTextColumn.Header>
-                        </DataGridTextColumn>
+                            </DataGridTemplateColumn.Header>
+                        </DataGridTemplateColumn>
 
                         <DataGridTemplateColumn Header="Add Row" x:Name="addRow">
                             <DataGridTemplateColumn.CellTemplate>
@@ -595,7 +613,6 @@
                 </StackPanel>
                 <Label x:Name="errorStatus" Content="" TextBlock.Foreground="DarkRed" VerticalAlignment="Center" Margin="180,-10,0,0" />
             </StackPanel>
-
 
         </Grid>
 
