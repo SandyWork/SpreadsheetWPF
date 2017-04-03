@@ -16,9 +16,9 @@ Namespace gridData
 
     Public Class userData : Implements INotifyPropertyChanged, IEditableObject
 
-        Dim _tempUnit_() As String = {"°C", "°F", "°K"}
-        Dim _pressureUnit_() As String = {"bara", "bar(pe)", "bar(abs)"}
-        Dim _diffPressureUnit_() As String = {"bar", "mbar"}
+        Dim _tempUnit_() As String = {"°C"}
+        Dim _pressureUnit_() As String = {"bar", "pascal"}
+        Dim _diffPressureUnit_() As String = {"bar", "pascal"}
 
         Public Property col_list As List(Of String)
         Public Property pressureUnit As List(Of String)
