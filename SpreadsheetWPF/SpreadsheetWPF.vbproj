@@ -14,7 +14,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
@@ -54,6 +54,21 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="SPF.Client">
+      <HintPath>DesktopClient\SPF.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="SPF.Client.Desktop">
+      <HintPath>DesktopClient\SPF.Client.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="SPF.Client.UI">
+      <HintPath>DesktopClient\SPF.Client.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="SPF.Client.WinMngr">
+      <HintPath>DesktopClient\SPF.Client.WinMngr.dll</HintPath>
+    </Reference>
+    <Reference Include="SPFCommon">
+      <HintPath>DesktopClient\SPFCommon.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />

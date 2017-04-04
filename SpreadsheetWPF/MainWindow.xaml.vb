@@ -9,6 +9,10 @@ Imports System.Data.OleDb
 Imports System.Data
 Imports System.IO
 Imports System.Collections.Specialized
+Imports SPF.Client.Administration
+Imports SPF.Client.Schema.Collection
+Imports SPF.Client.Schema.Interface
+'Imports SPF.Client.api.wpf
 'This is comment
 
 
@@ -157,7 +161,7 @@ Namespace gridData
     End Module
 
     Class MainWindow
-
+        Dim spfsessioninfo As SPFSession = Nothing
         Dim collection As PresentData
         Dim headerList() As String = {"Item Tag Name", "Measuring Principle", "Measuring/Adjust Location", "PID Sheet Number", "Construction Status", "Pressure P1 Minimum", "Pressure P1 In Operation", "Pressure P1 Maximum", "Unit Of Pressure P1", "Temperature Minimum", "Temperature In Operation", "Temperature Maximum", "Unit Of Temperature", "Differential Pressure Minimum", "Differential Pressure In Operation", "Differential Pressure Maximum", "Unit of Differential Pressure"}
 
@@ -404,7 +408,22 @@ Namespace gridData
                 defaultData_dgGrid()
             End If
         End Sub
+        Public Sub New(list() As userData, Optional Spfsessionid As SPFSession = Nothing)
+            spfsessioninfo = CType(Spfsessionid, SPFSession)
+            ' This call is required by the designer.
+            InitializeComponent()
+            collection = Me.Resources("presentData")
+            collection.Clear()
+            ' AddColumns()
 
+            If list.Count > 0 Then
+                For Each item In list
+                    collection.Add(item)
+                Next
+            Else
+                defaultData_dgGrid()
+            End If
+        End Sub
         Public Sub New(arr() As String, colCount As Integer)
 
             ' This call is required by the designer.
@@ -1159,29 +1178,64 @@ Namespace gridData
 
         Private Sub btn_import_click(sender As Object, e As RoutedEventArgs)
             Try
-                Dim openfiledialog As OpenFileDialog = New OpenFileDialog()
-                openfiledialog.Filter = "Excel workbook (*.xlsx) |*.xlsx|All files (*.*)|*.*"
-                openfiledialog.Multiselect = False
+                If spfsessioninfo IsNot Nothing Then
+                    datadisplay()
+                Else
+                    Dim openfiledialog As OpenFileDialog = New OpenFileDialog()
+                    openfiledialog.Filter = "Excel workbook (*.xlsx) |*.xlsx|All files (*.*)|*.*"
+                    openfiledialog.Multiselect = False
 
-                If (openfiledialog.ShowDialog() = True) Then
-                    If openfiledialog.CheckFileExists = True Then
-                        Dim filename = openfiledialog.FileName
-                        Dim sheetnames As List(Of String) = getexcelsheetnames(filename)
-                        Dim excel As ImportExcel = New ImportExcel(sheetnames)
-                        excel.ShowInTaskbar = True
-                        excel.Owner = Me
+                    If (openfiledialog.ShowDialog() = True) Then
+                        If openfiledialog.CheckFileExists = True Then
+                            Dim filename = openfiledialog.FileName
+                            Dim sheetnames As List(Of String) = getexcelsheetnames(filename)
+                            Dim excel As ImportExcel = New ImportExcel(sheetnames)
+                            excel.ShowInTaskbar = True
+                            excel.Owner = Me
 
-                        If excel.ShowDialog = True Then
-                            Dim sheetname As String = excel.getSheetName()
-                            displayexcelfile(filename, sheetname)
+                            If excel.ShowDialog = True Then
+                                Dim sheetname As String = excel.getSheetName()
+                                displayexcelfile(filename, sheetname)
+                            End If
                         End If
                     End If
                 End If
+
             Catch ex As Exception
                 Console.WriteLine("Base: btn_import_click")
                 Console.WriteLine(ex.Message)
                 shutdown()
             End Try
+
+        End Sub
+        Private Sub datadisplay()
+            Dim lobjitemcollection As IObjectDictionary = spfsessioninfo.GetObjectsByName("*", "IInstrumentOcc")
+            Dim dataforUI(lobjitemcollection.Count - 1) As userData
+            Dim i As Integer = 0
+            With lobjitemcollection.GetEnumerator
+                While .MoveNext
+                    Dim testarray(16) As String '= {"1", "2"}
+                    'dataforUI(i) = New userData
+                    testarray(0) = Convert.ToString(.Value.Interfaces("IObject").Properties("Name"))
+                    testarray(2) = Convert.ToString(.Value.Interfaces("IProcessCustomBASF").Properties("B_MeasuringAdjustLocation"))
+                    testarray(3) = "001"
+                    testarray(4) = Convert.ToString(.Value.Interfaces("IPBSItem").Properties("ConstructionStatus"))
+                    Dim spfobj As userData = New userData(testarray, 1)
+                    dataforUI(i) = New userData(Nothing, 17)
+                    dataforUI(i) = spfobj
+                    i = i + 1
+                End While
+            End With
+            collection = Me.Resources("presentData")
+            collection.Clear()
+            'AddColumns()
+            If dataforUI.Count > 0 Then
+                For Each item In dataforUI
+                    collection.Add(item)
+                Next
+                'Else
+                '   defaultData_dgGrid()
+            End If
 
         End Sub
 
@@ -1239,6 +1293,32 @@ Namespace gridData
         ''Excel Related Functions
 
         Private Sub btn_save_click(sender As Object, e As RoutedEventArgs)
+
+            Try
+                If spfsessioninfo Is Nothing Then
+                    MessageBox.Show(" Connection to SmartPlant Foundation is not possible", "Warning")
+                Else
+
+                    Dim colCountSPF = dg_grid1.Columns.Count - 2, rowCountSPF = collection.Count
+
+                    'Create an array with 16 columns and n rows
+                    Dim DataArray(rowCountSPF - 1, colCountSPF - 1) As String
+
+                    For row As Short = 0 To rowCountSPF - 1
+                        For col As Short = 0 To colCountSPF - 1
+                            Dim index = determineIndex(headerList(col))
+                            DataArray(row, col) = collection.Item(row).col_list.Item(index)
+                        Next
+                    Next
+                    'Dim pobjcollection As SPF.Client.APIs.Model.ClientAPICollection = New ClientAPICollection
+                    ' Dim communicationLayer As New CommunicationLayer()
+                    '  communicationLayer.SaveData_AuthDomain(DataArray, spfsessioninfo)
+
+                End If
+
+            Catch ex As Exception
+                MessageBox.Show(ex.Message)
+            End Try
 
         End Sub
 
