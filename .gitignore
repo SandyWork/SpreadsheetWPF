@@ -240,5 +240,3 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
-/SpreadsheetWPF/DesktopClient/SPFUI.dll
-/SpreadsheetWPF/DesktopClient/SPFUI.xml

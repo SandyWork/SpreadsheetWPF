@@ -14,7 +14,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
@@ -62,21 +62,6 @@
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAPICodePack-Core.1.1.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="SPF.Client">
-      <HintPath>DesktopClient\SPF.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="SPF.Client.Desktop">
-      <HintPath>DesktopClient\SPF.Client.Desktop.dll</HintPath>
-    </Reference>
-    <Reference Include="SPF.Client.WinMngr">
-      <HintPath>DesktopClient\SPF.Client.WinMngr.dll</HintPath>
-    </Reference>
-    <Reference Include="SPFCommon">
-      <HintPath>DesktopClient\SPFCommon.dll</HintPath>
-    </Reference>
-    <Reference Include="SPFFrameworkClient">
-      <HintPath>DesktopClient\SPFFrameworkClient.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
