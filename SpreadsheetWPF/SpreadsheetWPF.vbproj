@@ -75,6 +75,9 @@
     <Reference Include="SPFCommon">
       <HintPath>DesktopClient\SPFCommon.dll</HintPath>
     </Reference>
+    <Reference Include="SPFFrameworkClient">
+      <HintPath>DesktopClient\SPFFrameworkClient.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
