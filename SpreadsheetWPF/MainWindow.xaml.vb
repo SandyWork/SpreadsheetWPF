@@ -19,17 +19,21 @@ Namespace gridData
         Dim _tempUnit_() As String = {"°C"}
         Dim _pressureUnit_() As String = {"bar", "pascal"}
         Dim _diffPressureUnit_() As String = {"bar", "pascal"}
+        Dim _measuringprinciple_() As String = {"BAV", "BUC", "BUV", "DPT", "LCT", "LST", "MFM", "PG", "PGS", "RTD", "TE", "THE"}
+
 
         Public Property col_list As List(Of String)
         Public Property pressureUnit As List(Of String)
         Public Property diffPressureUnit As List(Of String)
         Public Property tempUnit As List(Of String)
+        Public Property measuringprinciple As List(Of String)
 
 
         Private Sub addComboData(obj As userData)
             pressureUnit = New List(Of String)()
             diffPressureUnit = New List(Of String)()
             tempUnit = New List(Of String)()
+            measuringprinciple = New List(Of String)
 
 
             For Each item In _tempUnit_
@@ -42,6 +46,10 @@ Namespace gridData
 
             For Each item In _diffPressureUnit_
                 obj.diffPressureUnit.Add(item)
+            Next
+
+            For Each item In _measuringprinciple_
+                obj.measuringprinciple.Add(item)
             Next
 
         End Sub

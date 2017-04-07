@@ -204,8 +204,17 @@
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
 
-                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[1]}" x:Name="dgtxtcol_sel" >
-                            <DataGridTextColumn.Header>
+                        <DataGridTemplateColumn  x:Name="dgtxtcol_sel">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox x:Name="cmb_MeasuringPrinciple"
+                                              ItemsSource="{Binding Path= measuringprinciple}"
+                                              SelectedValue="{Binding Path= col_list.Item[1]}"
+                                              SelectionChanged="changeComboBoxValue" />
+
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="15"/>
@@ -224,8 +233,8 @@
                                         </Button.Content>
                                     </Button>
                                 </Grid>
-                            </DataGridTextColumn.Header>
-                        </DataGridTextColumn>
+                            </DataGridTemplateColumn.Header>
+                        </DataGridTemplateColumn>
                         <DataGridTextColumn Binding="{Binding Path = col_list.Item[2]}" x:Name="dgtxtcol_attri1" >
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
