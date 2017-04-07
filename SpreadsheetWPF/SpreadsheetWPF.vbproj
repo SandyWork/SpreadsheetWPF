@@ -55,19 +55,24 @@
       <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SPF.Client">
+    <Reference Include="SPF.Client, Version=6.0.0.104, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>DesktopClient\SPF.Client.dll</HintPath>
     </Reference>
-    <Reference Include="SPF.Client.Desktop">
+    <Reference Include="SPF.Client.Desktop, Version=6.0.0.106, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>DesktopClient\SPF.Client.Desktop.dll</HintPath>
     </Reference>
-    <Reference Include="SPF.Client.UI">
+    <Reference Include="SPF.Client.UI, Version=6.0.0.25, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>DesktopClient\SPF.Client.UI.dll</HintPath>
     </Reference>
-    <Reference Include="SPF.Client.WinMngr">
+    <Reference Include="SPF.Client.WinMngr, Version=6.0.0.25, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>DesktopClient\SPF.Client.WinMngr.dll</HintPath>
     </Reference>
-    <Reference Include="SPFCommon">
+    <Reference Include="SPFCommon, Version=6.0.0.101, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>DesktopClient\SPFCommon.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />

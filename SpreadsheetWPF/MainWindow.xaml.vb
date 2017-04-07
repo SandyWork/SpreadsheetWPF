@@ -164,7 +164,8 @@ Namespace gridData
 
     Class MainWindow
         Dim spfsessioninfo As SPFSession = Nothing
-        Dim formclient As SPFWindowsFormsClient = Nothing
+        Dim formclient As SPFWindowsFormsClient ' = New SPFWindowsFormsClient()
+
         Dim collection As PresentData
         Dim headerList() As String = {"Item Tag Name", "Measuring Principle", "Measuring/Adjust Location", "PID Sheet Number", "Construction Status", "Pressure P1 Minimum", "Pressure P1 In Operation", "Pressure P1 Maximum", "Unit Of Pressure P1", "Temperature Minimum", "Temperature In Operation", "Temperature Maximum", "Unit Of Temperature", "Differential Pressure Minimum", "Differential Pressure In Operation", "Differential Pressure Maximum", "Unit of Differential Pressure"}
 
@@ -411,20 +412,40 @@ Namespace gridData
                 defaultData_dgGrid()
             End If
         End Sub
-        Public Sub New(list() As userData, Optional Spfsessionid As SPFSession = Nothing, Optional spfwindowsfrmClient As SPFWindowsFormsClient = Nothing)
+        Public Sub New(list() As userData, Optional Spfsessionid As SPFSession = Nothing, Optional spfwindowsfrmClient As IObject = Nothing)
             spfsessioninfo = CType(Spfsessionid, SPFSession)
-            formclient = CType(spfwindowsfrmClient, SPFWindowsFormsClient)
+            'formclient = CType(spfwindowsfrmClient, SPFWindowsFormsClient)
             ' This call is required by the designer.
             InitializeComponent()
-            collection = Me.Resources("presentData")
-            collection.Clear()
+            'collection = Me.Resources("presentData")
+            'collection.Clear()
             ' AddColumns()
 
-            If list.Count > 0 Then
-                For Each item In list
-                    collection.Add(item)
-                Next
+            'If list.Count > 0 Then
+            '    For Each item In list
+            '        collection.Add(item)
+            '    Next
+            'Else
+            '    defaultData_dgGrid()
+            'End If
+
+            If list IsNot Nothing Then
+                If list.Count > 0 Then
+                    For Each item In list
+                        If item.col_list.Count = dg_grid1.Columns.Count - 2 Then
+                            collection.Add(item)
+                        Else
+                            Console.WriteLine("Base: userData Array in MainWindow Constructor" & vbNewLine & "userData object contains too less values.")
+                            Console.WriteLine("Possible Error if object created using a list of String" & vbNewLine & "Please specify all values")
+                            shutdown()
+                        End If
+                    Next
+                Else
+                    Console.WriteLine("Error : Empty userData Array passed to MainWindow Constructor." & vbNewLine & "Initializing Default Values")
+                    defaultData_dgGrid()
+                End If
             Else
+                Console.WriteLine("Error : Null Object Array Passed To MainWindow Constructor" & vbNewLine & "Initializing Default Values")
                 defaultData_dgGrid()
             End If
         End Sub
@@ -1129,7 +1150,9 @@ Namespace gridData
 
         ''Excel Related Files
         Private Sub btn_export_Click(sender As Object, e As RoutedEventArgs)
-            exportExcel()
+            'exportExcel(
+            'Dim communicationlayer As New communicationlayer
+
         End Sub
 
         Private Sub exportExcel()
@@ -1314,6 +1337,7 @@ Namespace gridData
                             DataArray(row, col) = collection.Item(row).col_list.Item(index)
                         Next
                     Next
+
                     'Dim pobjcollection As SPF.Client.APIs.Model.ClientAPICollection = New ClientAPICollection
                     ' Dim communicationLayer As New CommunicationLayer()
                     '  communicationLayer.SaveData_AuthDomain(DataArray, spfsessioninfo)
