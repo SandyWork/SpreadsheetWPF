@@ -203,5 +203,17 @@
   <ItemGroup>
     <Resource Include="Save.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="close.jpg" />
+    <Resource Include="filter-512.jpg" />
+    <Resource Include="import-icon.jpg" />
+    <Resource Include="import.jpg" />
+    <Resource Include="Menu1.jpg" />
+    <Resource Include="Menu2.jpg" />
+    <Resource Include="Save.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="export-icon.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

@@ -44,7 +44,7 @@
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
 
-                            <Image Source="/Menu1.png" Width="20" Height="20" >
+                            <Image Source="/Menu1.jpg" Width="20" Height="20" >
                                 <Image.OpacityMask>
                                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                         <GradientStop Color="Black" Offset="0"/>
@@ -58,7 +58,7 @@
                     <StackPanel x:Name="stckpnl_menu1" Width="Auto" Height="Auto" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" x:Name="btn_import" Click="btn_import_Click" Background="White">
-                                <Image Source="import-icon.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="30" MinHeight="30" Width="45" Height="45"/>
+                                <Image Source="import-icon.jpg" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="30" MinHeight="30" Width="45" Height="45"/>
                             </Button>
 
                             <Label Content="Import Excel" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
@@ -66,7 +66,7 @@
                         <Separator Width="15" Opacity="0"/>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" x:Name="btn_export" Click="btn_export_Click" Background="White">
-                                <Image Source="export-icon.png"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  MinWidth="30" MinHeight="30" Width="45" Height="45"/>
+                                <Image Source="export-icon.jpg"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  MinWidth="30" MinHeight="30" Width="45" Height="45"/>
                             </Button>
                             <Label Content="Publish" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
                         </StackPanel>
@@ -76,7 +76,7 @@
                 <TabItem HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                            <Image Source="/Menu2.png" Width="20" Height="20" >
+                            <Image Source="/Menu2.jpg" Width="20" Height="20" >
                                 <Image.OpacityMask>
                                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                         <GradientStop Color="Black" Offset="0"/>
@@ -92,7 +92,7 @@
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Name="btn_save" Click="btn_save_Click" Background="White">
                                 <Button.Content>
-                                    <Image Source="/menu2.png" MinWidth="30" MinHeight="30" Width="45" Height="45"/>
+                                    <Image Source="/save.jpg" MinWidth="30" MinHeight="30" Width="45" Height="45"/>
                                 </Button.Content>
                             </Button>
                             <Label Content="Save" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
@@ -112,7 +112,7 @@
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Name="btn_close" Click="btn_close_Click" Background="White">
                                 <Button.Content>
-                                    <Image Source="close.png"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  MinWidth="30" MinHeight="30" Width="45" Height="45"/>
+                                    <Image Source="close.jpg"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  MinWidth="30" MinHeight="30" Width="45" Height="45"/>
                                 </Button.Content>
                             </Button>
                             <Label Content="Close" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
@@ -197,7 +197,7 @@
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  Width="15" Height ="15"  MaxWidth="60" MaxHeight="60"/>
+                                            <Image Source="filter-512.jpg"  Width="15" Height ="15"  MaxWidth="60" MaxHeight="60"/>
                                         </Button.Content>
                                     </Button>
                                 </Grid>
@@ -228,7 +228,7 @@
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.jpg"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -250,7 +250,7 @@
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.jpg"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -272,7 +272,7 @@
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.jpg"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -294,7 +294,7 @@
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.jpg"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -316,7 +316,7 @@
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.jpg"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -338,7 +338,7 @@
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.jpg"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -360,7 +360,7 @@
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.jpg"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -391,7 +391,7 @@
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.jpg"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -413,7 +413,7 @@
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.jpg"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -435,7 +435,7 @@
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.jpg"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -457,7 +457,7 @@
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.jpg"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -488,7 +488,7 @@
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.jpg"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -512,7 +512,7 @@
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.jpg"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -534,7 +534,7 @@
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.jpg"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -556,7 +556,7 @@
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.jpg"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -587,7 +587,7 @@
                                             </TransformGroup>
                                         </Button.RenderTransform>
                                         <Button.Content>
-                                            <Image Source="filter-512.png"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
+                                            <Image Source="filter-512.jpg"  Width="15" Height="15" MaxWidth="60" MaxHeight="60">
                                             </Image>
                                         </Button.Content>
                                     </Button>
@@ -595,7 +595,7 @@
                             </DataGridTemplateColumn.Header>
                         </DataGridTemplateColumn>
 
-                        <DataGridTemplateColumn Header="Add Row" x:Name="addRow">
+                        <DataGridTemplateColumn Visibility="Hidden" Header="Add Row" x:Name="addRow">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button x:Name="btn_edit_row" Content="Add" Click="btn_edit_row_Click"/>
