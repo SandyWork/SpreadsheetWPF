@@ -333,7 +333,7 @@ Namespace gridData
             'IF you are specifying all the values, no need to pass the datagrid columns count
 
             'Initialize array Values
-            arrayData = {"F11001", "MFM", "M1", "0002", "New", "", "6", "12", "bara", "50", "120", "200", "°C", "", "0.4", "0.8", "bar"}
+            arrayData = {"F11001", "", "M1", "0002", "New", "", "6", "12", "bara", "50", "120", "200", "°C", "", "0.4", "0.8", "bar"}
 
             'Adding object to collection
             obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
@@ -347,22 +347,22 @@ Namespace gridData
             collection.Add(obj)
             Array.Clear(arrayData, 0, arrayData.Length)
 
-            arrayData = {"H16601", "BUC", "S1", "0001", "New", "0.8", "1.2", "1.5", "bar(pe)", "20", "25", "50", "°C", "100", "150", "300", "mbar"}
+            arrayData = {"H16601", "", "S1", "0001", "New", "0.8", "1.2", "1.5", "bar(pe)", "20", "25", "50", "°C", "100", "150", "300", "mbar"}
             obj = New userData(arrayData)
             collection.Add(obj)
-            arrayData = {"H16632", "BUV", "S1", "0001", "New", "", "", "4", "bar(pe)", "12", "28", "50", "°C", "", "", "", ""}
+            arrayData = {"H16632", "", "S1", "0001", "New", "", "", "4", "bar(pe)", "12", "28", "50", "°C", "", "", "", ""}
             obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
             collection.Add(obj)
 
-            arrayData = {"L11001", "DPT", "M1", "0002", "New", "1", "1.3", "2.4", "bar(abs)", "", "94.8", "200", "°C", "", "1.3", "1.5", "bar"}
+            arrayData = {"L11001", "", "M1", "0002", "New", "1", "1.3", "2.4", "bar(abs)", "", "94.8", "200", "°C", "", "1.3", "1.5", "bar"}
             obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
             collection.Add(obj)
 
-            arrayData = {"L11003", "LST", "M1", "0002", "New", "", "", "12", "bara", "", "120", "200", "°C", "", "", "", ""}
+            arrayData = {"L11003", "", "M1", "0002", "New", "", "", "12", "bara", "", "120", "200", "°C", "", "", "", ""}
             obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
             collection.Add(obj)
 
-            arrayData = {"L16608", "LCT", "M1", "0001", "New", "", "", "10.5", "bar(abs)", "", "", "45", "°C", "", "", "", ""}
+            arrayData = {"L16608", "", "M1", "0001", "New", "", "", "10.5", "bar(abs)", "", "", "45", "°C", "", "", "", ""}
             obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
             collection.Add(obj)
 
@@ -1403,31 +1403,36 @@ Namespace gridData
                     If temp_userdata IsNot Nothing Then
                         temp_userdata = setValues(temp_userdata)
                         If temp_userdata.col_list.Count > 0 Then
-                            For Each list In configHeaderList
-                                If temp_userdata.col_list.Item(1).Equals(list.Item(0)) Then
-                                    'Console.WriteLine("Selection Equals " & list.Item(0))
-                                    For i As Integer = 1 To list.Count - 1
-                                        For j As Integer = 0 To dg_grid1.Columns.Count - 3
-                                            If (list.Item(i).ToLower()).Equals(headerList(j).ToLower()) Then
-                                                If temp_userdata.col_list.Item(j).Equals("") Then
-                                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(j))
-                                                    changeCellColor(dg_grid1.CurrentCell, Colors.Red, Colors.White)
+                            If Not temp_userdata.col_list.Item(1).Equals("") Then
+                                For Each list In configHeaderList
+                                    If temp_userdata.col_list.Item(1).Equals(list.Item(0)) Then
+                                        'Console.WriteLine("Selection Equals " & list.Item(0))
+                                        For i As Integer = 1 To list.Count - 1
+                                            For j As Integer = 0 To dg_grid1.Columns.Count - 3
+                                                If (list.Item(i).ToLower()).Equals(headerList(j).ToLower()) Then
+                                                    If temp_userdata.col_list.Item(j).Equals("") Then
+                                                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(j))
+                                                        changeCellColor(dg_grid1.CurrentCell, Colors.Red, Colors.White)
+                                                    End If
                                                 End If
-                                            End If
+                                            Next
                                         Next
-                                    Next
-                                    Exit For
-                                End If
-                            Next
+                                        Exit For
+                                    End If
+                                Next
+                            End If
 
                             ' Check if Unit of Pressure / Unit of Temperature is Empty or Not
-                            'If empty highlight it 
-                            For Each item In indexList
-                                If temp_userdata.col_list(item).Equals("") Then
-                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(item))
-                                    changeCellColor(dg_grid1.CurrentCell, Colors.Red, Colors.White)
-                                End If
-                            Next
+                            'If empty highlight it
+                            If Not temp_userdata.col_list.Item(1).Equals("") Then
+                                For Each item In indexList
+                                    If temp_userdata.col_list(item).Equals("") Then
+                                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(item))
+                                        changeCellColor(dg_grid1.CurrentCell, Colors.Red, Colors.White)
+                                    End If
+                                Next
+                            End If
+
                         Else
                             Console.WriteLine("Base : validate_Mandatory" & vbNewLine & "Object doesn't contain any column Values. Invalid!!")
                             shutdown()

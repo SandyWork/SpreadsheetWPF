@@ -182,7 +182,7 @@
                     </DataGrid.RowStyle>
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Path = col_list.Item[0]}" x:Name="dgtxtcol_name" >
+                        <DataGridTextColumn Binding="{Binding Path = col_list.Item[0]}" x:Name="dgtxtcol_name" IsReadOnly="True">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
