@@ -44,7 +44,7 @@
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
 
-                            <Image Source="/Menu1.jpg" Width="20" Height="20" >
+                            <Image Source="Menu1.jpg" Width="20" Height="20" >
                                 <Image.OpacityMask>
                                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                         <GradientStop Color="Black" Offset="0"/>
@@ -66,7 +66,7 @@
                         <Separator Width="15" Opacity="0"/>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" x:Name="btn_export" Click="btn_export_Click" Background="White">
-                                <Image Source="export-icon.jpg"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  MinWidth="30" MinHeight="30" Width="45" Height="45"/>
+                                <Image Source="Publish.jpg"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  MinWidth="30" MinHeight="30" Width="45" Height="45"/>
                             </Button>
                             <Label Content="Publish" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
                         </StackPanel>
@@ -76,7 +76,7 @@
                 <TabItem HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                            <Image Source="/Menu2.jpg" Width="20" Height="20" >
+                            <Image Source="Menu2.jpg" Width="20" Height="20" >
                                 <Image.OpacityMask>
                                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                         <GradientStop Color="Black" Offset="0"/>
@@ -92,7 +92,7 @@
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Name="btn_save" Click="btn_save_Click" Background="White">
                                 <Button.Content>
-                                    <Image Source="/save.jpg" MinWidth="30" MinHeight="30" Width="45" Height="45"/>
+                                    <Image Source="Save.jpg" MinWidth="30" MinHeight="30" Width="45" Height="45"/>
                                 </Button.Content>
                             </Button>
                             <Label Content="Save" HorizontalAlignment="Center" FontWeight="Normal" FontSize="13" />
@@ -180,9 +180,9 @@
                             <Setter Property="ContextMenu" Value="{StaticResource rowContextMenu}"/>
                         </Style>
                     </DataGrid.RowStyle>
-
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Path = col_list.Item[0]}" x:Name="dgtxtcol_name" IsReadOnly="True">
+                        
+                        <DataGridTextColumn Width="140" Binding="{Binding Path = col_list.Item[0]}" x:Name="dgtxtcol_name" IsReadOnly="True">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -190,7 +190,7 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="1" TextWrapping="Wrap"/>
-                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,75,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
+                                    <Button BorderThickness="0" HorizontalAlignment="Right" Margin="-5,105,0,-12"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="0" Click="btn_filter_Click" Background="#FFEEEEEE" RenderTransformOrigin="0.5,0.5">
                                         <Button.RenderTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="90"/>
@@ -209,8 +209,8 @@
                                 <DataTemplate>
                                     <ComboBox x:Name="cmb_MeasuringPrinciple"
                                               ItemsSource="{Binding Path= measuringprinciple}"
-                                              SelectedValue="{Binding Path= col_list.Item[1]}"
-                                              SelectionChanged="changeComboBoxValue" />
+                                              SelectedValue="{Binding Path= col_list.Item[1]}"                                           
+                                              SelectionChanged="changeComboBoxValue" Loaded = "comboLoaded"/>
 
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -373,7 +373,7 @@
                                     <ComboBox x:Name="cmb_unitofPressure"
                                               ItemsSource="{Binding Path= pressureUnit}"
                                               SelectedValue="{Binding Path= col_list.Item[8]}"
-                                              SelectionChanged="changeComboBoxValue" />
+                                              SelectionChanged="changeComboBoxValue" Loaded = "comboLoaded" />
 
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -470,7 +470,7 @@
                                     <ComboBox x:Name="cmb_unitofTemperature"
                                               ItemsSource="{Binding Path= tempUnit}"
                                               SelectedValue="{Binding Path= col_list.Item[12]}"
-                                              SelectionChanged="changeComboBoxValue" />
+                                              SelectionChanged="changeComboBoxValue" Loaded = "comboLoaded" />
 
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -569,7 +569,7 @@
                                     <ComboBox x:Name="cmb_unitofDiffPressure"
                                               ItemsSource="{Binding Path= diffPressureUnit}"
                                               SelectedValue="{Binding Path= col_list.Item[16]}"
-                                              SelectionChanged="changeComboBoxValue" />
+                                              SelectionChanged="changeComboBoxValue" Loaded = "comboLoaded" />
 
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -602,10 +602,10 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Delete Row" x:Name="deleteRow">
+                        <DataGridTemplateColumn x:Name="dgtxtcol_includeRow" Header="Include">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button x:Name="btn_delete_row" Content="Delete" Click="btn_delete_row_Click"/>
+                                    <CheckBox x:Name="chk_include" Checked="chk_include_Checked" Unchecked="chk_include_Checked" IsChecked="True"></CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

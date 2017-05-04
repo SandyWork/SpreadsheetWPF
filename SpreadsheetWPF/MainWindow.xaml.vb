@@ -16,10 +16,10 @@ Namespace gridData
 
     Public Class userData : Implements INotifyPropertyChanged, IEditableObject
 
-        Dim _tempUnit_() As String = {"°C"}
-        Dim _pressureUnit_() As String = {"bar", "pascal"}
-        Dim _diffPressureUnit_() As String = {"bar", "pascal"}
-        Dim _measuringprinciple_() As String = {"BAV", "BUC", "BUV", "DPT", "LCT", "LST", "MFM", "PG", "PGS", "RTD", "TE", "THE"}
+        Dim _tempUnit_() As String = {"", "°C"}
+        Dim _pressureUnit_() As String = {"", "bara", "bar(pe)", "bar(abs)", "pascal"}
+        Dim _diffPressureUnit_() As String = {"", "bar", "mbar"}
+        Dim _measuringprinciple_() As String = {"", "BAV", "BUC", "BUV", "DPT", "LCT", "LST", "MFM", "PG", "PGS", "RTD", "TE", "THE"}
 
 
         Public Property col_list As List(Of String)
@@ -333,7 +333,7 @@ Namespace gridData
             'IF you are specifying all the values, no need to pass the datagrid columns count
 
             'Initialize array Values
-            arrayData = {"F11001", "", "M1", "0002", "New", "", "6", "12", "bara", "50", "120", "200", "°C", "", "0.4", "0.8", "bar"}
+            arrayData = {"F11001", "MFM", "M1", "0002", "New", "", "6", "12", "bar", "50", "120", "200", "°C", "", "0.4", "0.8", "bar"}
 
             'Adding object to collection
             obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
@@ -342,27 +342,27 @@ Namespace gridData
             'Method to clear Array
             Array.Clear(arrayData, 0, arrayData.Length)
 
-            arrayData = {"H11001", "BAV", "S1", "0002", "New", "", "", "12", "bara", "50", "120", "200", "°C", "", "", "", ""}
+            arrayData = {"H11001", "BAV", "S1", "0002", "New", "", "", "12", "bar", "50", "120", "200", "°C", "", "", "", ""}
             obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
             collection.Add(obj)
             Array.Clear(arrayData, 0, arrayData.Length)
 
-            arrayData = {"H16601", "", "S1", "0001", "New", "0.8", "1.2", "1.5", "bar(pe)", "20", "25", "50", "°C", "100", "150", "300", "mbar"}
+            arrayData = {"H16601", "BUC", "S1", "0001", "New", "0.8", "1.2", "1.5", "bar", "20", "25", "50", "°C", "100", "150", "300", "bar"}
             obj = New userData(arrayData)
             collection.Add(obj)
-            arrayData = {"H16632", "", "S1", "0001", "New", "", "", "4", "bar(pe)", "12", "28", "50", "°C", "", "", "", ""}
+            arrayData = {"H16632", "BUV", "S1", "0001", "New", "", "", "4", "bar", "12", "28", "50", "°C", "", "", "", ""}
             obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
             collection.Add(obj)
 
-            arrayData = {"L11001", "", "M1", "0002", "New", "1", "1.3", "2.4", "bar(abs)", "", "94.8", "200", "°C", "", "1.3", "1.5", "bar"}
+            arrayData = {"L11001", "DPT", "M1", "0002", "New", "1", "1.3", "2.4", "bar", "", "94.8", "200", "°C", "", "1.3", "1.5", "pascal"}
             obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
             collection.Add(obj)
 
-            arrayData = {"L11003", "", "M1", "0002", "New", "", "", "12", "bara", "", "120", "200", "°C", "", "", "", ""}
+            arrayData = {"L11003", "LST", "M1", "0002", "New", "", "", "12", "bar", "", "120", "200", "°C", "", "", "", ""}
             obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
             collection.Add(obj)
 
-            arrayData = {"L16608", "", "M1", "0001", "New", "", "", "10.5", "bar(abs)", "", "", "45", "°C", "", "", "", ""}
+            arrayData = {"L16608", "LCT", "M1", "0001", "New", "", "", "10.5", "pascal", "", "", "45", "°C", "", "", "", ""}
             obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
             collection.Add(obj)
 
@@ -520,11 +520,11 @@ Namespace gridData
 
             Catch e As FileNotFoundException
                 Console.WriteLine("Unable to find or Create configuration file" & vbNewLine & "Not enough access to the current Directory")
-                shutdown()
+                'shutdown()
             Catch e As Exception
                 Console.WriteLine("Base: MainWindow.fileRead " & vbNewLine & "Error : While Reading Configuration file from Directory")
                 Console.WriteLine(e.Message)
-                shutdown()
+                'shutdown()
             End Try
         End Sub
 
@@ -665,12 +665,12 @@ Namespace gridData
                     End If
                 Else
                     Console.WriteLine("Base : openFilterWindow" & vbNewLine & "FilterWindow encountered an error. ShowDialog Returned False")
-                    shutdown()
+                    'shutdown()
                 End If
             Catch ex As Exception
                 Console.WriteLine("Base: openFilterWindow")
                 Console.WriteLine(ex.Message)
-                shutdown()
+                'shutdown()
             End Try
 
         End Sub
@@ -828,7 +828,7 @@ Namespace gridData
         'More specifically, it is used to determine on which row, the user has clicked the Add Row Button
         Private Sub detectCellClicked(sender As Object, e As MouseButtonEventArgs) Handles dg_grid1.PreviewMouseLeftButtonUp
 
-            HighlightClear()
+            'HighlightClear()
 
             Dim dep As DependencyObject = e.OriginalSource
 
@@ -1018,72 +1018,66 @@ Namespace gridData
 
         Private Sub highlightCells_Click(sender As Object, e As RoutedEventArgs)
 
-            For Each cell In blueCellsColored
-                cell.BorderBrush = New SolidColorBrush(Colors.Black)
-                cell.BorderThickness = New Thickness(0.0)
-            Next
-            blueCellsColored.Clear()
+            'For Each cell In blueCellsColored
+            '    cell.BorderBrush = New SolidColorBrush(Colors.Black)
+            '    cell.BorderThickness = New Thickness(0.0)
+            'Next
+            ''blueCellsColored.Clear()
             blueHighlight = False
             blueFlag = False
-            ''Highlight option is available for every row cell
-            ''This is to ensure that it works only when it is clicked on Selection Column
+
             Dim foundSelection As Boolean = False
             Try
-                If columnIndex = 1 Then
-                    '' First Read the Configuration file, to get the current Selection configuration
-                    '' In such Way, even if the config file is changed in middle of application, it won't be affected
-                    fileRead()
-
-                    Dim obj As userData = collection.Item(rowIndex)
-                    If obj IsNot Nothing Then
-                        obj = setValues(obj)
-                        If obj.col_list.Count > 0 Then
-                            Try
-                                For Each List In configHeaderList
-                                    If List.Item(0) IsNot Nothing Then
-                                        If obj.col_list.Item(1).Equals(List.Item(0)) Then
-                                            foundSelection = True
-                                            dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(1))
-                                            changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
-                                            For i As Integer = 1 To List.Count - 1
-                                                For j As Integer = 2 To dg_grid1.Columns.Count - 3
-                                                    If (List.Item(i).ToLower()).Equals(headerList(j).ToLower()) Then
-                                                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(j))
-                                                        changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
-                                                    End If
-                                                Next
+                fileRead()
+                'rowIndex -> rowEditIndex 
+                Dim obj As userData = collection.Item(rowEditIndex)
+                If obj IsNot Nothing Then
+                    obj = setValues(obj)
+                    If obj.col_list.Count > 0 Then
+                        Try
+                            For Each List In configHeaderList
+                                If List.Item(0) IsNot Nothing Then
+                                    If obj.col_list.Item(1).Equals(List.Item(0)) Then
+                                        foundSelection = True
+                                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowEditIndex), dg_grid1.Columns.Item(1))
+                                        changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
+                                        For i As Integer = 1 To List.Count - 1
+                                            For j As Integer = 2 To dg_grid1.Columns.Count - 3
+                                                If (List.Item(i).ToLower()).Equals(headerList(j).ToLower()) Then
+                                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowEditIndex), dg_grid1.Columns.Item(j))
+                                                    changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
+                                                End If
                                             Next
-                                            Exit For
-                                        End If
+                                        Next
+                                        Exit For
                                     End If
-                                Next
-
-                                '' If none of the selection value in Configuration File Matches, default selection is selected
-                                '' i.e only Selection cell and Name Cell
-                                If foundSelection = False Then
-                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(1))
-                                    changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
-                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowIndex), dg_grid1.Columns.Item(0))
-                                    changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
                                 End If
-                            Catch ex As Exception
-                                Console.WriteLine("Base : highlightCells_Click" & vbNewLine & "Exception while highlighting Cells")
-                                shutdown()
-                            End Try
-                        Else
-                            Console.WriteLine("Base : highlightCells_Click" & vbNewLine & "Object doesn't contain any column Values. Invalid!!")
+                            Next
+
+                            '' If none of the selection value in Configuration File Matches, default selection is selected
+                            '' i.e only Selection cell and Name Cell
+                            If foundSelection = False Then
+                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowEditIndex), dg_grid1.Columns.Item(1))
+                                changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
+                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowEditIndex), dg_grid1.Columns.Item(0))
+                                changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
+                            End If
+                        Catch ex As Exception
+                            Console.WriteLine("Base : highlightCells_Click" & vbNewLine & "Exception while highlighting Cells")
                             shutdown()
-                        End If
+                        End Try
                     Else
-                        Console.WriteLine("Base : highlightCells_Click" & vbNewLine & "Null Object obtained. Possbile Empty Datagrid")
+                        Console.WriteLine("Base : highlightCells_Click" & vbNewLine & "Object doesn't contain any column Values. Invalid!!")
                         shutdown()
                     End If
-
+                Else
+                    Console.WriteLine("Base : highlightCells_Click" & vbNewLine & "Null Object obtained. Possbile Empty Datagrid")
+                    'shutdown()
                 End If
             Catch ex As Exception
                 Console.WriteLine("Base : highlightCells_Click" & vbNewLine & "Exception ")
                 Console.WriteLine(ex.Message)
-                shutdown()
+                'shutdown()
             End Try
 
         End Sub
@@ -1102,6 +1096,11 @@ Namespace gridData
                         If rowEditIndex <> -1 Then
                             If colEditIndex <> -1 Then
                                 collection.Item(rowEditIndex).col_list.Item(colEditIndex) = comboBox.SelectedValue.ToString
+                            Else
+                                collection.Item(rowEditIndex).col_list.Item(colEditIndex) = ""
+                            End If
+                            If colEditIndex = 1 Then
+                                highlightCells_Click(New Object(), New RoutedEventArgs())
                             End If
                         End If
                     End If
@@ -1115,6 +1114,12 @@ Namespace gridData
         ''Excel Related Files
         Private Sub btn_export_Click(sender As Object, e As RoutedEventArgs)
             exportExcel()
+        End Sub
+
+        Private Sub comboLoaded(sender As Object, e As RoutedEventArgs)
+            If sender.SelectedValue Is Nothing Then
+                sender.SelectedValue = ""
+            End If
         End Sub
 
         Private Sub exportExcel()
@@ -1163,6 +1168,10 @@ Namespace gridData
                 Console.WriteLine(ex.Message)
                 shutdown()
             End Try
+        End Sub
+
+        Private Sub chk_include_Checked(sender As Object, e As RoutedEventArgs)
+
         End Sub
 
         Private Sub btn_import_click(sender As Object, e As RoutedEventArgs)
@@ -1247,7 +1256,6 @@ Namespace gridData
         ''Excel Related Functions
 
         Private Sub btn_save_click(sender As Object, e As RoutedEventArgs)
-
         End Sub
 
         Private Function getexcelsheetnames(ByVal filename As String) As List(Of String)
@@ -1280,7 +1288,7 @@ Namespace gridData
 
         Private Sub btn_validate_Click(sender As Object, e As RoutedEventArgs)
             Try
-                validate_Mandatory(collection.Count)
+                validate_Mandatory2(collection.Count)
 
                 If errorHighlight = False Then
                     validate_integerValue(collection.Count)
@@ -1297,24 +1305,42 @@ Namespace gridData
                 End If
 
                 If valHighlight = True Then
-                    errorStatus.Content = errorStatus.Content & vbTab & "Value highlighted in Dark Red don't match with validation conditions"
+                    errorStatus.Content = errorStatus.Content & vbTab & "Value highlighted in Dark Red should be in order: Min < Operation < Max"
                 End If
 
                 If intHighlight = True Then
                     errorStatus.Content = errorStatus.Content & vbTab & "Value highlighted in Violet must be a numeric value"
                 End If
+
+                If intHighlight = False AndAlso valHighlight = False AndAlso errorHighlight = False Then
+                    MsgBox("Validation Ok")
+                Else
+                    MsgBox("Validation not Ok")
+                End If
+
             Catch ex As Exception
-                Console.WriteLine("Base : btn_validate_click" & vbNewLine)
+                MsgBox("Base : btn_validate_click" & vbNewLine)
                 Console.WriteLine(ex.Message)
-                shutdown()
+                'shutdown()
             End Try
 
         End Sub
 
         Private Sub validate_integerValue(nRows As Integer)
             For Each cell In violetcellsColored
-                cell.BorderBrush = New SolidColorBrush(Colors.Black)
-                cell.BorderThickness = New Thickness(0.0)
+                If blueCellsColored.Contains(cell) Then
+                    cell.BorderBrush = New SolidColorBrush(Colors.Blue)
+                    cell.BorderThickness = New Thickness(3.0)
+                ElseIf darkRedCellsColored.Contains(cell) Then
+                    cell.BorderBrush = New SolidColorBrush(Colors.DarkRed)
+                    cell.BorderThickness = New Thickness(3.0)
+                ElseIf redcellsColored.Contains(cell) Then
+                    cell.BorderBrush = New SolidColorBrush(Colors.Red)
+                    cell.BorderThickness = New Thickness(3.0)
+                Else
+                    cell.BorderBrush = New SolidColorBrush(Colors.Black)
+                    cell.BorderThickness = New Thickness(0.0)
+                End If
             Next
             violetcellsColored.Clear()
             intHighlight = False
@@ -1351,18 +1377,18 @@ Namespace gridData
                                 End If
                             Next
                         Else
-                            Console.WriteLine("Base : validate_integerValue" & vbNewLine & "Object doesn't contain any column Values. Invalid!!")
-                            shutdown()
+                            MsgBox("Base : validate_integerValue" & vbNewLine & "Object doesn't contain any column Values. Invalid!!")
+                            'shutdown()
                         End If
                     Else
-                        Console.WriteLine("Base : validate_integerValue" & vbNewLine & "Null Object obtained. Possbile Empty Datagrid")
-                        shutdown()
+                        MsgBox("Base : validate_integerValue" & vbNewLine & "Null Object obtained. Possbile Empty Datagrid")
+                        'shutdown()
                     End If
                 Next
             Catch ex As Exception
-                Console.WriteLine("Base : validate_integerValue" & vbNewLine & "Exception Thrown")
+                MsgBox("Base : validate_integerValue" & vbNewLine & "Exception Thrown")
                 Console.WriteLine(ex.Message)
-                shutdown()
+                'shutdown()
             End Try
 
         End Sub
@@ -1370,8 +1396,19 @@ Namespace gridData
         Private Sub validate_Mandatory(nRows As Integer)
             fileRead()
             For Each cell In redcellsColored
-                cell.BorderBrush = New SolidColorBrush(Colors.Black)
-                cell.BorderThickness = New Thickness(0.0)
+                If blueCellsColored.Contains(cell) Then
+                    cell.BorderBrush = New SolidColorBrush(Colors.Blue)
+                    cell.BorderThickness = New Thickness(3.0)
+                ElseIf darkRedCellsColored.Contains(cell) Then
+                    cell.BorderBrush = New SolidColorBrush(Colors.DarkRed)
+                    cell.BorderThickness = New Thickness(3.0)
+                ElseIf violetcellsColored.Contains(cell) Then
+                    cell.BorderBrush = New SolidColorBrush(Colors.Violet)
+                    cell.BorderThickness = New Thickness(3.0)
+                Else
+                    cell.BorderBrush = New SolidColorBrush(Colors.Black)
+                    cell.BorderThickness = New Thickness(0.0)
+                End If
             Next
             redcellsColored.Clear()
             errorHighlight = False
@@ -1393,8 +1430,8 @@ Namespace gridData
                 Next
 
                 If indexList.Count < 2 Then
-                    Console.WriteLine("Error : Header Name Mismatch" & vbNewLine & "Check column header names for Unit of Pressure & Temperature in both xaml")
-                    shutdown()
+                    MsgBox("Error : Header Name Mismatch" & vbNewLine & "Check column header names for Unit of Pressure & Temperature in both xaml")
+                    'shutdown()
                 End If
 
                 For counter As Integer = 0 To nRows - 1
@@ -1420,10 +1457,11 @@ Namespace gridData
                                         Exit For
                                     End If
                                 Next
+                            Else
+                                errorHighlight = True
                             End If
-
                             ' Check if Unit of Pressure / Unit of Temperature is Empty or Not
-                            'If empty highlight it
+                            'If empty highlight it 
                             If Not temp_userdata.col_list.Item(1).Equals("") Then
                                 For Each item In indexList
                                     If temp_userdata.col_list(item).Equals("") Then
@@ -1432,20 +1470,93 @@ Namespace gridData
                                     End If
                                 Next
                             End If
-
                         Else
-                            Console.WriteLine("Base : validate_Mandatory" & vbNewLine & "Object doesn't contain any column Values. Invalid!!")
-                            shutdown()
+                            MsgBox("Base : validate_Mandatory" & vbNewLine & "Object doesn't contain any column Values. Invalid!!")
+                            'shutdown()
                         End If
                     Else
-                        Console.WriteLine("Base : validate_Mandatory" & vbNewLine & "Null Object obtained. Possbile Empty Datagrid")
-                        shutdown()
+                        MsgBox("Base : validate_Mandatory" & vbNewLine & "Null Object obtained. Possbile Empty Datagrid")
+                        'shutdown()
                     End If
                 Next
             Catch ex As Exception
-                Console.WriteLine("Base : validate_Mandatory" & vbNewLine & "Exception Thrown")
+                MessageBox.Show("Enter values in highlighted fields", "Validation Message", MessageBoxButton.OK, MessageBoxImage.Error)
+                'MsgBox("Base : validate_Mandatory" & vbNewLine & "Exception Thrown")
                 Console.WriteLine(ex.Message)
-                shutdown()
+                'shutdown()
+            End Try
+
+        End Sub
+
+        Private Sub validate_Mandatory2(nRows As Integer)
+            fileRead()
+            For Each cell In redcellsColored
+                If blueCellsColored.Contains(cell) Then
+                    cell.BorderBrush = New SolidColorBrush(Colors.Blue)
+                    cell.BorderThickness = New Thickness(3.0)
+                ElseIf darkRedCellsColored.Contains(cell) Then
+                    cell.BorderBrush = New SolidColorBrush(Colors.DarkRed)
+                    cell.BorderThickness = New Thickness(3.0)
+                ElseIf violetcellsColored.Contains(cell) Then
+                    cell.BorderBrush = New SolidColorBrush(Colors.Violet)
+                    cell.BorderThickness = New Thickness(3.0)
+                Else
+                    cell.BorderBrush = New SolidColorBrush(Colors.Black)
+                    cell.BorderThickness = New Thickness(0.0)
+                End If
+            Next
+            redcellsColored.Clear()
+            errorHighlight = False
+
+            Try
+                Dim indexList As List(Of Integer) = New List(Of Integer)()
+                Dim pgotIt As Boolean = False
+                'Get the index of Unit of Pressure and Unit of Temperature to check for values
+
+                For i As Integer = 0 To headerList.Length - 1
+                    If (headerList(i).ToLower()).Contains("unit of pressure") Then
+                        indexList.Add(i)
+                        Continue For
+                    End If
+                    If (headerList(i).ToLower()).Contains("unit of temperature") Then
+                        indexList.Add(i)
+                        Continue For
+                    End If
+                    If (headerList(i).ToLower()).Contains("unit of differential pressure") Then
+                        indexList.Add(i)
+                        Continue For
+                    End If
+                Next
+
+                If indexList.Count < 3 Then
+                    MsgBox("Error : Header Name Mismatch" & vbNewLine & "Check column header names for Unit of Pressure & Temperature in both xaml")
+                    'shutdown()
+                End If
+
+                For counter As Integer = 0 To nRows - 1
+                    'Get the current Row userData object
+                    Dim temp_userdata As userData = collection.Item(counter)
+                    If temp_userdata IsNot Nothing Then
+                        temp_userdata = setValues(temp_userdata)
+                        If temp_userdata.col_list.Count > 0 Then
+                            For Each item In indexList
+                                If temp_userdata.col_list(item).Equals("") Then
+                                    If Not (temp_userdata.col_list(item - 1).Equals("") AndAlso temp_userdata.col_list(item - 2).Equals("") AndAlso temp_userdata.col_list(item - 3).Equals("")) Then
+                                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(item))
+                                        changeCellColor(dg_grid1.CurrentCell, Colors.Red, Colors.White)
+                                    End If
+                                End If
+                            Next
+                        End If
+                    Else
+                        MsgBox("Base : validate_Mandatory" & vbNewLine & "Null Object obtained. Possbile Empty Datagrid")
+                        'shutdown()
+                    End If
+                Next
+            Catch ex As Exception
+                MessageBox.Show("Enter values in highlighted fields", "Validation Message", MessageBoxButton.OK, MessageBoxImage.Error)
+                Console.WriteLine(ex.Message)
+                'shutdown()
             End Try
 
         End Sub
@@ -1453,8 +1564,19 @@ Namespace gridData
         Private Sub validate_comparison(nRows As Integer)
             fileRead()
             For Each cell In darkRedCellsColored
-                cell.BorderBrush = New SolidColorBrush(Colors.Black)
-                cell.BorderThickness = New Thickness(0.0)
+                If blueCellsColored.Contains(cell) Then
+                    cell.BorderBrush = New SolidColorBrush(Colors.Blue)
+                    cell.BorderThickness = New Thickness(3.0)
+                ElseIf redCellsColored.Contains(cell) Then
+                    cell.BorderBrush = New SolidColorBrush(Colors.Red)
+                    cell.BorderThickness = New Thickness(3.0)
+                ElseIf violetcellsColored.Contains(cell) Then
+                    cell.BorderBrush = New SolidColorBrush(Colors.Violet)
+                    cell.BorderThickness = New Thickness(3.0)
+                Else
+                    cell.BorderBrush = New SolidColorBrush(Colors.Black)
+                    cell.BorderThickness = New Thickness(0.0)
+                End If
             Next
             darkRedCellsColored.Clear()
             valHighlight = False
@@ -1508,8 +1630,8 @@ Namespace gridData
                     End If
 
                     If minIndex = -1 Or maxIndex = -1 Or normIndex = -1 Then
-                        Console.WriteLine("Error : Header Name Mismatch" & vbNewLine & "Check column header names for Pressure, Temperature & Differential Pressure")
-                        shutdown()
+                        MsgBox("Error : Header Name Mismatch" & vbNewLine & "Check column header names for Pressure, Temperature & Differential Pressure")
+                        'shutdown()
                     End If
 
                     For counter As Integer = 0 To nRows - 1
@@ -1538,8 +1660,8 @@ Namespace gridData
                                     Next
                                 End If
                             Else
-                                Console.WriteLine("Base : validate_comparison" & vbNewLine & "Object doesn't contain any column Values. Invalid!!")
-                                shutdown()
+                                MsgBox("Base : validate_comparison" & vbNewLine & "Object doesn't contain any column Values. Invalid!!")
+                                'shutdown()
                             End If
                         Else
                             Console.WriteLine("Base : validate_comparison" & vbNewLine & "Null Object obtained. Possbile Empty Datagrid")
@@ -1555,7 +1677,8 @@ Namespace gridData
         End Sub
 
         Private Sub btn_close_Click(sender As Object, e As RoutedEventArgs)
-            Application.Current.Shutdown(0)
+            Application.Current.MainWindow.Close()
+
         End Sub
 
     End Class

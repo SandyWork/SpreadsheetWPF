@@ -166,27 +166,6 @@
     <Resource Include="New Job-96.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Menu1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Menu2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="import.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="export-icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="import-icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="validate.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="close.png" />
-  </ItemGroup>
-  <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
       <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
       <VersionMajor>2</VersionMajor>
@@ -198,22 +177,33 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="filter-512.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Save.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="close.jpg" />
+    <Resource Include="close.png" />
     <Resource Include="filter-512.jpg" />
+    <Resource Include="filter-512.png" />
     <Resource Include="import-icon.jpg" />
+    <Resource Include="import-icon.png" />
     <Resource Include="import.jpg" />
+    <Resource Include="import.png" />
     <Resource Include="Menu1.jpg" />
+    <Resource Include="Menu1.png" />
     <Resource Include="Menu2.jpg" />
+    <Resource Include="Menu2.png" />
+    <Resource Include="Publish.jpg" />
+    <Resource Include="Publish.png" />
     <Resource Include="Save.jpg" />
+    <Resource Include="Save.png" />
+    <Resource Include="validate.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="export-icon.jpg" />
+    <Resource Include="close.ico" />
+    <Resource Include="export.ico" />
+    <Resource Include="filter-512.ico" />
+    <Resource Include="import-icon.ico" />
+    <Resource Include="menu1.ico" />
+    <Resource Include="menu2.ico" />
+    <Resource Include="save.ico" />
+    <Resource Include="validate.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
