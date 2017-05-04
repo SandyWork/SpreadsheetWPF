@@ -605,7 +605,7 @@
                         <DataGridTemplateColumn x:Name="dgtxtcol_includeRow" Header="Include">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox x:Name="chk_include" Checked="chk_include_Checked" Unchecked="chk_include_Checked" IsChecked="True"></CheckBox>
+                                    <CheckBox x:Name="chk_include" Checked="chk_include_Checked" Unchecked="chk_include_Unchecked"  IsChecked="True"></CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

@@ -171,7 +171,7 @@ Namespace gridData
 
         Dim btnNamesArray() As String = {"btn_filter_name", "btn_filter_sel", "btn_filter_attri1", "btn_filter_attri2", "btn_filter_attri3", "btn_filter_attri4", "btn_filter_unitattri4", "btn_filter_attri5", "btn_filter_attri6", "btn_filter_attri7", "btn_filter_attri8", "btn_filter_attri9", "btn_filter_attri10", "btn_filter_minval", "btn_filter_normval", "btn_filter_maxval", "btn_filter_unitofdifferentialpressure"}
         Dim colNames() As String = {"dgtxtcol_name", "dgtxtcol_sel", "dgtxtcol_attri1", "dgtxtcol_attri2", "dgtxtcol_attri3", "dgtxtcol_attri4", "dgtxtcol_unitattri4", "dgtxtcol_attri5", "dgtxtcol_attri6", "dgtxtcol_attri7", "dgtxtcol_attri8", "dgtxtcol_attri9", "dgtxtcol_attri10", "dgtxtcol_minval", "dgtxtcol_normval", "dgtxtcol_maxval", "dgtxtcol_unitofdifferentialpressure"}
-
+        Dim discardList As List(Of Integer) = New List(Of Integer)()
 
         'header of the column where user right clicked
         Dim headerSelected As String = "", configurationFileName As String = "..\selectionConfigFile.txt"
@@ -1136,23 +1136,30 @@ Namespace gridData
                     Dim xlWorkBook As Excel.Workbook = xlApp.Workbooks.Add
                     Dim xlWorkSheet As Excel.Worksheet = xlWorkBook.Worksheets(1)
                     Dim colCount = dg_grid1.Columns.Count, rowCount = collection.Count
-
+                    Dim temp As Integer = 0, added As Boolean = True
                     'Create an array with n columns and n rows
                     Dim DataArray(rowCount, colCount - 2) As Object
 
                     For row As Short = 0 To rowCount - 1
-                        For col As Short = 0 To colCount - 3
-                            Dim index = determineIndex(headerList(col).ToLower())
-                            If index <> -1 Then
-                                DataArray(row, col) = collection.Item(row).col_list.Item(index)
-                            Else
-                                Console.WriteLine("Base : exportExcel" & vbNewLine & "Invalid Header value.")
-                                shutdown()
-                            End If
-                        Next
+                        If Not discardList.Contains(row) Then
+                            For col As Short = 0 To colCount - 3
+                                Dim index = determineIndex(headerList(col).ToLower())
+                                If index <> -1 Then
+                                    DataArray(temp, col) = collection.Item(row).col_list.Item(index)
+                                    added = True
+                                Else
+                                    Console.WriteLine("Base : exportExcel" & vbNewLine & "Invalid Header value.")
+                                    shutdown()
+                                End If
+                            Next
+                        End If
+                        If added Then
+                            temp = temp + 1
+                            added = False
+                        End If
                     Next
                     xlWorkSheet.Range("A1").Resize(1, colCount).Value = headerList
-                    xlWorkSheet.Range("A2").Resize(rowCount, colCount).Value = DataArray
+                    xlWorkSheet.Range("A2").Resize(temp, colCount).Value = DataArray
 
 
                     xlWorkSheet.SaveAs(f.FileName)
@@ -1164,13 +1171,22 @@ Namespace gridData
                     releaseObject(xlWorkSheet)
                 End If
             Catch ex As Exception
-                MessageBox.Show("Unable to export", "Error", MessageBoxButton.OK, MessageBoxImage.Error)
-                Console.WriteLine(ex.Message)
-                shutdown()
+            MessageBox.Show("Unable to export", "Error", MessageBoxButton.OK, MessageBoxImage.Error)
+            Console.WriteLine(ex.Message)
+            shutdown()
             End Try
         End Sub
 
         Private Sub chk_include_Checked(sender As Object, e As RoutedEventArgs)
+            If discardList.Contains(rowEditIndex) Then
+                discardList.Remove(rowEditIndex)
+            End If
+        End Sub
+
+        Private Sub chk_include_Unchecked(sender As Object, e As RoutedEventArgs)
+            If Not discardList.Contains(rowEditIndex) Then
+                discardList.Add(rowEditIndex)
+            End If
 
         End Sub
 
