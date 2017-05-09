@@ -17,8 +17,8 @@ Namespace gridData
     Public Class userData : Implements INotifyPropertyChanged, IEditableObject
 
         Dim _tempUnit_() As String = {"", "°C"}
-        Dim _pressureUnit_() As String = {"", "bara", "bar(pe)", "bar(abs)", "pascal"}
-        Dim _diffPressureUnit_() As String = {"", "bar", "mbar"}
+        Dim _pressureUnit_() As String = {"", "bar", "mbar", "pascal"}
+        Dim _diffPressureUnit_() As String = {"", "bar", "mbar", "pascal"}
         Dim _measuringprinciple_() As String = {"", "BAV", "BUC", "BUV", "DPT", "LCT", "LST", "MFM", "PG", "PGS", "RTD", "TE", "THE"}
 
 
@@ -167,18 +167,17 @@ Namespace gridData
     Class MainWindow
 
         Dim collection As PresentData
-        Dim headerList() As String = {"Item Tag Name", "Measuring Principle", "Measuring/Adjust Location", "PID Sheet Number", "Construction Status", "Pressure P1 Minimum", "Pressure P1 In Operation", "Pressure P1 Maximum", "Unit Of Pressure P1", "Temperature Minimum", "Temperature In Operation", "Temperature Maximum", "Unit Of Temperature", "Differential Pressure Minimum", "Differential Pressure In Operation", "Differential Pressure Maximum", "Unit of Differential Pressure"}
+        Dim headerList() As String = {"Include", "Item Tag Name", "Measuring Principle", "Measuring/Adjust Location", "PID Sheet Number", "Construction Status", "Pressure P1 Minimum", "Pressure P1 In Operation", "Pressure P1 Maximum", "Unit Of Pressure P1", "Temperature Minimum", "Temperature In Operation", "Temperature Maximum", "Unit Of Temperature", "Differential Pressure Minimum", "Differential Pressure In Operation", "Differential Pressure Maximum", "Unit of Differential Pressure"}
 
-        Dim btnNamesArray() As String = {"btn_filter_name", "btn_filter_sel", "btn_filter_attri1", "btn_filter_attri2", "btn_filter_attri3", "btn_filter_attri4", "btn_filter_unitattri4", "btn_filter_attri5", "btn_filter_attri6", "btn_filter_attri7", "btn_filter_attri8", "btn_filter_attri9", "btn_filter_attri10", "btn_filter_minval", "btn_filter_normval", "btn_filter_maxval", "btn_filter_unitofdifferentialpressure"}
-        Dim colNames() As String = {"dgtxtcol_name", "dgtxtcol_sel", "dgtxtcol_attri1", "dgtxtcol_attri2", "dgtxtcol_attri3", "dgtxtcol_attri4", "dgtxtcol_unitattri4", "dgtxtcol_attri5", "dgtxtcol_attri6", "dgtxtcol_attri7", "dgtxtcol_attri8", "dgtxtcol_attri9", "dgtxtcol_attri10", "dgtxtcol_minval", "dgtxtcol_normval", "dgtxtcol_maxval", "dgtxtcol_unitofdifferentialpressure"}
+        Dim btnNamesArray() As String = {"", "btn_filter_name", "btn_filter_sel", "btn_filter_attri1", "btn_filter_attri2", "btn_filter_attri3", "btn_filter_attri4", "btn_filter_unitattri4", "btn_filter_attri5", "btn_filter_attri6", "btn_filter_attri7", "btn_filter_attri8", "btn_filter_attri9", "btn_filter_attri10", "btn_filter_minval", "btn_filter_normval", "btn_filter_maxval", "btn_filter_unitofdifferentialpressure"}
+        Dim colNames() As String = {"dgtxtcol_include", "dgtxtcol_name", "dgtxtcol_sel", "dgtxtcol_attri1", "dgtxtcol_attri2", "dgtxtcol_attri3", "dgtxtcol_attri4", "dgtxtcol_unitattri4", "dgtxtcol_attri5", "dgtxtcol_attri6", "dgtxtcol_attri7", "dgtxtcol_attri8", "dgtxtcol_attri9", "dgtxtcol_attri10", "dgtxtcol_minval", "dgtxtcol_normval", "dgtxtcol_maxval", "dgtxtcol_unitofdifferentialpressure"}
         Dim discardList As List(Of Integer) = New List(Of Integer)()
 
         'header of the column where user right clicked
         Dim headerSelected As String = "", configurationFileName As String = "..\selectionConfigFile.txt"
 
         'rowIndex and columnIndex stores the location of the cell where user right clicked to open the context Menu
-        Dim rowIndex As Short = 0, columnIndex As Short = 0
-
+        Dim rowIndex As Short = 0, columnIndex As Short = 0, measuringIndex As Short = 0, itemNameIndex As Short = 0
         'rowEditIndex, colEditIndex stores the location of the cell where user left clicked
         'This is used for Add Row and Delete Row Buttons to know exactly where users wants to perform Row operations
 
@@ -319,7 +318,7 @@ Namespace gridData
                 shutdown()
             End If
 
-            Dim arrayData(dg_grid1.Columns.Count - 2) As String
+            Dim arrayData(dg_grid1.Columns.Count - 1) As String
             Dim obj As userData
 
             ''Insert the data you need to insert below. 
@@ -329,45 +328,45 @@ Namespace gridData
             'While adding Values to array, you can skip to enter rightmost values. You cannot skip in between
             'If you want to skip a value, specify a null string in that place
             'If you are skipping values, please do pass the number of columns as an arguemnt
-            'dg_grid1.Columns.Count - 2 will give you the actual number of columns present
+            'dg_grid1.Columns.Count - 1 will give you the actual number of columns present
             'IF you are specifying all the values, no need to pass the datagrid columns count
 
             'Initialize array Values
-            arrayData = {"F11001", "MFM", "M1", "0002", "New", "", "6", "12", "bar", "50", "120", "200", "°C", "", "0.4", "0.8", "bar"}
+            arrayData = {"", "F11001", "MFM", "M1", "0002", "New", "", "6", "12", "bar", "50", "120", "200", "°C", "", "0.4", "0.8", "bar"}
 
             'Adding object to collection
-            obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
+            obj = New userData(arrayData, dg_grid1.Columns.Count - 1)
             collection.Add(obj)
 
             'Method to clear Array
             Array.Clear(arrayData, 0, arrayData.Length)
 
-            arrayData = {"H11001", "BAV", "S1", "0002", "New", "", "", "12", "bar", "50", "120", "200", "°C", "", "", "", ""}
-            obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
+            arrayData = {"", "H11001", "BAV", "S1", "0002", "New", "", "", "12", "bar", "50", "120", "200", "°C", "", "", "", ""}
+            obj = New userData(arrayData, dg_grid1.Columns.Count - 1)
             collection.Add(obj)
             Array.Clear(arrayData, 0, arrayData.Length)
 
-            arrayData = {"H16601", "BUC", "S1", "0001", "New", "0.8", "1.2", "1.5", "bar", "20", "25", "50", "°C", "100", "150", "300", "bar"}
+            arrayData = {"", "H16601", "BUC", "S1", "0001", "New", "0.8", "1.2", "1.5", "bar", "20", "25", "50", "°C", "100", "150", "300", "bar"}
             obj = New userData(arrayData)
             collection.Add(obj)
-            arrayData = {"H16632", "BUV", "S1", "0001", "New", "", "", "4", "bar", "12", "28", "50", "°C", "", "", "", ""}
-            obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
+            arrayData = {"", "H16632", "BUV", "S1", "0001", "New", "", "", "4", "bar", "12", "28", "50", "°C", "", "", "", ""}
+            obj = New userData(arrayData, dg_grid1.Columns.Count - 1)
             collection.Add(obj)
 
-            arrayData = {"L11001", "DPT", "M1", "0002", "New", "1", "1.3", "2.4", "bar", "", "94.8", "200", "°C", "", "1.3", "1.5", "pascal"}
-            obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
+            arrayData = {"", "L11001", "DPT", "M1", "0002", "New", "1", "1.3", "2.4", "bar", "", "94.8", "200", "°C", "", "1.3", "1.5", "pascal"}
+            obj = New userData(arrayData, dg_grid1.Columns.Count - 1)
             collection.Add(obj)
 
-            arrayData = {"L11003", "LST", "M1", "0002", "New", "", "", "12", "bar", "", "120", "200", "°C", "", "", "", ""}
-            obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
+            arrayData = {"", "L11003", "LST", "M1", "0002", "New", "", "", "12", "bar", "", "120", "200", "°C", "", "", "", ""}
+            obj = New userData(arrayData, dg_grid1.Columns.Count - 1)
             collection.Add(obj)
 
-            arrayData = {"L16608", "LCT", "M1", "0001", "New", "", "", "10.5", "pascal", "", "", "45", "°C", "", "", "", ""}
-            obj = New userData(arrayData, dg_grid1.Columns.Count - 2)
+            arrayData = {"", "L16608", "LCT", "M1", "0001", "New", "", "", "10.5", "pascal", "", "", "45", "°C", "", "", "", ""}
+            obj = New userData(arrayData, dg_grid1.Columns.Count - 1)
             collection.Add(obj)
 
-            Console.WriteLine("columns count" & dg_grid1.Columns.Count)
-            Console.WriteLine("attributes count" & obj.col_list.Count)
+            Console.WriteLine("Columns count - " & dg_grid1.Columns.Count)
+            Console.WriteLine("Attributes count - " & obj.col_list.Count)
         End Sub
 
         Public Sub New(_userObject_ As userData)
@@ -395,7 +394,7 @@ Namespace gridData
             If _userObjectArray_ IsNot Nothing Then
                 If _userObjectArray_.Count > 0 Then
                     For Each item In _userObjectArray_
-                        If item.col_list.Count = dg_grid1.Columns.Count - 2 Then
+                        If item.col_list.Count = dg_grid1.Columns.Count - 1 Then
                             collection.Add(item)
                         Else
                             Console.WriteLine("Base: userData Array in MainWindow Constructor" & vbNewLine & "userData object contains too less values.")
@@ -418,7 +417,7 @@ Namespace gridData
             ' This call is required by the designer.
             initialization()
 
-            If colCount < dg_grid1.Columns.Count - 2 Then
+            If colCount < dg_grid1.Columns.Count - 1 Then
                 colCount = dg_grid1.Columns.Count
             End If
 
@@ -428,7 +427,7 @@ Namespace gridData
 
         Private Sub assignColumnHeader()
             Try
-                For i As Integer = 0 To dg_grid1.Columns.Count - 3
+                For i As Integer = 0 To dg_grid1.Columns.Count - 2
                     Dim col = dg_grid1.Columns.Item(i)
                     col.Header.Children.Item(0).Text = headerList(i)
                 Next
@@ -610,13 +609,15 @@ Namespace gridData
         End Sub
 
         Private Function determineIndex(header As String, Optional value As Integer = 0) As Integer
+            Console.WriteLine("Header = " & header)
             Dim list() As String = headerList
             If value = 1 Then
                 list = btnNamesArray
             End If
 
-            For i As Integer = 0 To dg_grid1.Columns.Count - 3
+            For i As Integer = 0 To dg_grid1.Columns.Count - 2
                 If (list(i).ToLower()).Equals(header) Then
+                    Console.WriteLine("i = " & i)
                     Return i
                 End If
             Next
@@ -631,10 +632,18 @@ Namespace gridData
                 Application.Current.Shutdown(1)
             End If
 
-            If headerList.Length <> dg_grid1.Columns.Count - 2 Or btnNamesArray.Length <> dg_grid1.Columns.Count - 2 Or colNames.Length <> dg_grid1.Columns.Count - 2 Then
+            If headerList.Length <> dg_grid1.Columns.Count - 1 Or (btnNamesArray.Length) <> dg_grid1.Columns.Count - 1 Or colNames.Length <> dg_grid1.Columns.Count - 1 Then
                 MessageBox.Show("Critical Error : Insufficient Column ids or Button Name IDs or Headers List", "Error", MessageBoxButton.OK, MessageBoxImage.Error)
                 Application.Current.Shutdown(1)
             End If
+
+            For i As Integer = 0 To headerList.Length - 1
+                If (headerList(i).ToLower()).Equals("measuring principle") Then
+                    measuringIndex = i
+                ElseIf (headerList(i).ToLower()).Equals("item tag name") Then
+                    itemNameIndex = i
+                End If
+            Next
 
         End Sub
 
@@ -683,6 +692,9 @@ Namespace gridData
         Private Sub btn_filter_Click(sender As Object, e As RoutedEventArgs)
             If TypeOf sender Is System.Windows.Controls.Button Then
                 Dim btn As System.Windows.Controls.Button = sender
+                If btn.Name = "" Then
+                    btn.Name = "btn_filter_name"
+                End If
                 Dim counter As Integer = determineIndex(btn.Name.ToLower(), 1)
                 If counter = -1 Then
                     Console.WriteLine("Base : btn_filter_Click" & vbNewLine & "Error : Button Names List Initialized in DataGridColumns (xaml) doesn't match with btnNamesArray in MainWindow")
@@ -765,7 +777,7 @@ Namespace gridData
 
         ''This method determines the where user performed mouse right click And stores the location Of click.
         Private Sub columnHeader_PreviewMouseRightButtonUp(sender As Object, e As MouseButtonEventArgs) Handles dg_grid1.PreviewMouseRightButtonUp
-            HighlightClear()
+            'HighlightClear()
             Dim dep As DependencyObject = e.OriginalSource
 
             'No Matter where user click inside the Datagrid, be it row or column or header, the sender is always DataGrid.
@@ -864,8 +876,8 @@ Namespace gridData
         End Sub
 
         Private Sub btn_edit_row_Click(sender As Object, e As RoutedEventArgs)
-            If colEditIndex = dg_grid1.Columns.Count - 2 Then
-                collection.Insert(rowEditIndex + 1L, New userData(Nothing, dg_grid1.Columns.Count - 2))
+            If colEditIndex = dg_grid1.Columns.Count - 1 Then
+                collection.Insert(rowEditIndex + 1L, New userData(Nothing, dg_grid1.Columns.Count - 1))
             End If
         End Sub
 
@@ -873,7 +885,7 @@ Namespace gridData
             If colEditIndex = dg_grid1.Columns.Count - 1 Then
                 collection.RemoveAt(rowEditIndex)
                 If collection.Count = 0 Then
-                    collection.Add(New userData(Nothing, dg_grid1.Columns.Count - 2))
+                    collection.Add(New userData(Nothing, dg_grid1.Columns.Count - 1))
                 End If
             End If
         End Sub
@@ -954,6 +966,11 @@ Namespace gridData
                         collection.Insert(currRowIndex, curruserData)
                     End If
 
+                    dg_grid1.Focus()
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(currRowIndex), dg_grid1.Columns(currColIndex - 1))
+                    dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
+
+
                 End If
             Catch ex As Exception
                 Console.WriteLine("Base : RetrieveCells" & vbNewLine & "Error in Pasting values!")
@@ -1026,6 +1043,7 @@ Namespace gridData
             blueHighlight = False
             blueFlag = False
 
+
             Dim foundSelection As Boolean = False
             Try
                 fileRead()
@@ -1037,12 +1055,12 @@ Namespace gridData
                         Try
                             For Each List In configHeaderList
                                 If List.Item(0) IsNot Nothing Then
-                                    If obj.col_list.Item(1).Equals(List.Item(0)) Then
+                                    If obj.col_list.Item(measuringIndex).Equals(List.Item(0)) Then
                                         foundSelection = True
-                                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowEditIndex), dg_grid1.Columns.Item(1))
+                                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowEditIndex), dg_grid1.Columns.Item(measuringIndex))
                                         changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
                                         For i As Integer = 1 To List.Count - 1
-                                            For j As Integer = 2 To dg_grid1.Columns.Count - 3
+                                            For j As Integer = 2 To dg_grid1.Columns.Count - 2
                                                 If (List.Item(i).ToLower()).Equals(headerList(j).ToLower()) Then
                                                     dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowEditIndex), dg_grid1.Columns.Item(j))
                                                     changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
@@ -1057,9 +1075,10 @@ Namespace gridData
                             '' If none of the selection value in Configuration File Matches, default selection is selected
                             '' i.e only Selection cell and Name Cell
                             If foundSelection = False Then
-                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowEditIndex), dg_grid1.Columns.Item(1))
+                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowEditIndex), dg_grid1.Columns.Item(measuringIndex))
+
                                 changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
-                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowEditIndex), dg_grid1.Columns.Item(0))
+                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowEditIndex), dg_grid1.Columns.Item(itemNameIndex))
                                 changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
                             End If
                         Catch ex As Exception
@@ -1099,7 +1118,7 @@ Namespace gridData
                             Else
                                 collection.Item(rowEditIndex).col_list.Item(colEditIndex) = ""
                             End If
-                            If colEditIndex = 1 Then
+                            If colEditIndex = measuringIndex Then
                                 highlightCells_Click(New Object(), New RoutedEventArgs())
                             End If
                         End If
@@ -1171,10 +1190,14 @@ Namespace gridData
                     releaseObject(xlWorkSheet)
                 End If
             Catch ex As Exception
-            MessageBox.Show("Unable to export", "Error", MessageBoxButton.OK, MessageBoxImage.Error)
-            Console.WriteLine(ex.Message)
-            shutdown()
+                MessageBox.Show("Unable to export", "Error", MessageBoxButton.OK, MessageBoxImage.Error)
+                Console.WriteLine(ex.Message)
+                shutdown()
             End Try
+        End Sub
+
+        Private Sub clearHighlightCells_Click(sender As Object, e As RoutedEventArgs)
+            HighlightClear()
         End Sub
 
         Private Sub chk_include_Checked(sender As Object, e As RoutedEventArgs)
@@ -1428,7 +1451,6 @@ Namespace gridData
             Next
             redcellsColored.Clear()
             errorHighlight = False
-
             Try
                 Dim indexList As List(Of Integer) = New List(Of Integer)()
                 Dim pgotIt As Boolean = False
@@ -1456,12 +1478,12 @@ Namespace gridData
                     If temp_userdata IsNot Nothing Then
                         temp_userdata = setValues(temp_userdata)
                         If temp_userdata.col_list.Count > 0 Then
-                            If Not temp_userdata.col_list.Item(1).Equals("") Then
+                            If Not temp_userdata.col_list.Item(measuringIndex).Equals("") Then
                                 For Each list In configHeaderList
-                                    If temp_userdata.col_list.Item(1).Equals(list.Item(0)) Then
+                                    If temp_userdata.col_list.Item(measuringIndex).Equals(list.Item(0)) Then
                                         'Console.WriteLine("Selection Equals " & list.Item(0))
                                         For i As Integer = 1 To list.Count - 1
-                                            For j As Integer = 0 To dg_grid1.Columns.Count - 3
+                                            For j As Integer = 0 To dg_grid1.Columns.Count - 2
                                                 If (list.Item(i).ToLower()).Equals(headerList(j).ToLower()) Then
                                                     If temp_userdata.col_list.Item(j).Equals("") Then
                                                         dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(j))
@@ -1478,7 +1500,7 @@ Namespace gridData
                             End If
                             ' Check if Unit of Pressure / Unit of Temperature is Empty or Not
                             'If empty highlight it 
-                            If Not temp_userdata.col_list.Item(1).Equals("") Then
+                            If Not temp_userdata.col_list.Item(measuringIndex).Equals("") Then
                                 For Each item In indexList
                                     If temp_userdata.col_list(item).Equals("") Then
                                         dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(counter), dg_grid1.Columns.Item(item))
@@ -1583,7 +1605,7 @@ Namespace gridData
                 If blueCellsColored.Contains(cell) Then
                     cell.BorderBrush = New SolidColorBrush(Colors.Blue)
                     cell.BorderThickness = New Thickness(3.0)
-                ElseIf redCellsColored.Contains(cell) Then
+                ElseIf redcellsColored.Contains(cell) Then
                     cell.BorderBrush = New SolidColorBrush(Colors.Red)
                     cell.BorderThickness = New Thickness(3.0)
                 ElseIf violetcellsColored.Contains(cell) Then
@@ -1603,7 +1625,7 @@ Namespace gridData
                     Dim minIndex As Integer = -1, normIndex As Integer = -1, maxIndex As Integer = -1
 
                     If j = 0 Then
-                        For i As Integer = 0 To dg_grid1.Columns.Count - 3
+                        For i As Integer = 0 To dg_grid1.Columns.Count - 2
                             If headerList(i).Equals("Pressure P1 Minimum") Then
                                 minIndex = i
                                 If headerList(i + 1).Equals("Pressure P1 In Operation") Then
@@ -1616,7 +1638,7 @@ Namespace gridData
                             End If
                         Next
                     ElseIf j = 1 Then
-                        For i As Integer = 0 To dg_grid1.Columns.Count - 3
+                        For i As Integer = 0 To dg_grid1.Columns.Count - 2
                             If headerList(i).Equals("Temperature Minimum") Then
                                 minIndex = i
                                 If headerList(i + 1).Equals("Temperature In Operation") Then
@@ -1629,7 +1651,7 @@ Namespace gridData
                             End If
                         Next
                     ElseIf j = 2 Then
-                        For i As Integer = 0 To dg_grid1.Columns.Count - 3
+                        For i As Integer = 0 To dg_grid1.Columns.Count - 2
                             If headerList(i).Equals("Differential Pressure Minimum") Then
                                 minIndex = i
                                 If headerList(i + 1).Equals("Differential Pressure In Operation") Then

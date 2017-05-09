@@ -156,7 +156,8 @@
                             <MenuItem Header="Copy" x:Name="copyCells" Click="copyCells_Click" />
                             <MenuItem Header="Paste" x:Name="cutCells" Click="cutCells_Click" />
                             <MenuItem Header="Cut" x:Name="pasteCells"  Click="pasteCells_Click" ></MenuItem>
-                            <MenuItem Header="Highlight" x:Name="highlightCells" Click="highlightCells_Click" ></MenuItem>
+                            <MenuItem Header="Highlight All" x:Name="highlightCells" Click="highlightCells_Click" ></MenuItem>
+                            <MenuItem Header="Clear" x:Name="clearHighlightCells" Click="clearHighlightCells_Click"></MenuItem>
                         </ContextMenu>
                     </DataGrid.Resources>
 
@@ -181,8 +182,23 @@
                         </Style>
                     </DataGrid.RowStyle>
                     <DataGrid.Columns>
-                        
-                        <DataGridTextColumn Width="140" Binding="{Binding Path = col_list.Item[0]}" x:Name="dgtxtcol_name" IsReadOnly="True">
+                        <DataGridTemplateColumn x:Name="dgtxtcol_includeRow" Width="70">
+                            <DataGridTemplateColumn.Header>
+                                <Grid Margin="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="15"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="1" TextWrapping="Wrap"/>
+                                </Grid>
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox x:Name="chk_include" Checked="chk_include_Checked" Unchecked="chk_include_Unchecked"  IsChecked="True"></CheckBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Width="140" Binding="{Binding Path = col_list.Item[1]}" x:Name="dgtxtcol_name" IsReadOnly="True">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -209,7 +225,7 @@
                                 <DataTemplate>
                                     <ComboBox x:Name="cmb_MeasuringPrinciple"
                                               ItemsSource="{Binding Path= measuringprinciple}"
-                                              SelectedValue="{Binding Path= col_list.Item[1]}"                                           
+                                              SelectedValue="{Binding Path= col_list.Item[2]}"                                           
                                               SelectionChanged="changeComboBoxValue" Loaded = "comboLoaded"/>
 
                                 </DataTemplate>
@@ -235,7 +251,7 @@
                                 </Grid>
                             </DataGridTemplateColumn.Header>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Binding="{Binding Path = col_list.Item[2]}" x:Name="dgtxtcol_attri1" >
+                        <DataGridTextColumn Binding="{Binding Path = col_list.Item[3]}" x:Name="dgtxtcol_attri1" >
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -257,7 +273,7 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[3]}" x:Name="dgtxtcol_attri2">
+                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[4]}" x:Name="dgtxtcol_attri2">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -279,7 +295,7 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[4]}" x:Name="dgtxtcol_attri3">
+                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[5]}" x:Name="dgtxtcol_attri3">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -301,7 +317,7 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[5]}" x:Name="dgtxtcol_attri4">
+                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[6]}" x:Name="dgtxtcol_attri4">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -323,7 +339,7 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[6]}" x:Name="dgtxtcol_unitattri4">
+                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[7]}" x:Name="dgtxtcol_unitattri4">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -345,7 +361,7 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[7]}" x:Name="dgtxtcol_attri5">
+                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[8]}" x:Name="dgtxtcol_attri5">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -372,7 +388,7 @@
                                 <DataTemplate>
                                     <ComboBox x:Name="cmb_unitofPressure"
                                               ItemsSource="{Binding Path= pressureUnit}"
-                                              SelectedValue="{Binding Path= col_list.Item[8]}"
+                                              SelectedValue="{Binding Path= col_list.Item[9]}"
                                               SelectionChanged="changeComboBoxValue" Loaded = "comboLoaded" />
 
                                 </DataTemplate>
@@ -398,7 +414,7 @@
                                 </Grid>
                             </DataGridTemplateColumn.Header>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[9]}" x:Name="dgtxtcol_attri7">
+                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[10]}" x:Name="dgtxtcol_attri7">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -420,7 +436,7 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[10]}" x:Name="dgtxtcol_attri8">
+                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[11]}" x:Name="dgtxtcol_attri8">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -442,7 +458,7 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[11]}" x:Name="dgtxtcol_attri9">
+                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[12]}" x:Name="dgtxtcol_attri9">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -469,7 +485,7 @@
                                 <DataTemplate>
                                     <ComboBox x:Name="cmb_unitofTemperature"
                                               ItemsSource="{Binding Path= tempUnit}"
-                                              SelectedValue="{Binding Path= col_list.Item[12]}"
+                                              SelectedValue="{Binding Path= col_list.Item[13]}"
                                               SelectionChanged="changeComboBoxValue" Loaded = "comboLoaded" />
 
                                 </DataTemplate>
@@ -497,7 +513,7 @@
                         </DataGridTemplateColumn>
                         
                         <!--TargetNullValue={x:Static sys:String.Empty}-->
-                        <DataGridTextColumn Binding="{Binding Path = col_list.Item[13] ,TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_minval">
+                        <DataGridTextColumn Binding="{Binding Path = col_list.Item[14] ,TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_minval">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -519,7 +535,7 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[14],TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_normval">
+                        <DataGridTextColumn  Binding="{Binding Path = col_list.Item[15],TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_normval">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -541,7 +557,7 @@
                                 </Grid>
                             </DataGridTextColumn.Header>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Binding="{Binding Path = col_list.Item[15],TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_maxval">
+                        <DataGridTextColumn Binding="{Binding Path = col_list.Item[16],TargetNullValue={x:Static sys:String.Empty}}" x:Name="dgtxtcol_maxval">
                             <DataGridTextColumn.Header>
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
@@ -568,7 +584,7 @@
                                 <DataTemplate>
                                     <ComboBox x:Name="cmb_unitofDiffPressure"
                                               ItemsSource="{Binding Path= diffPressureUnit}"
-                                              SelectedValue="{Binding Path= col_list.Item[16]}"
+                                              SelectedValue="{Binding Path= col_list.Item[17]}"
                                               SelectionChanged="changeComboBoxValue" Loaded = "comboLoaded" />
 
                                 </DataTemplate>
@@ -599,13 +615,6 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button x:Name="btn_edit_row" Content="Add" Click="btn_edit_row_Click"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTemplateColumn x:Name="dgtxtcol_includeRow" Header="Include">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <CheckBox x:Name="chk_include" Checked="chk_include_Checked" Unchecked="chk_include_Unchecked"  IsChecked="True"></CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
