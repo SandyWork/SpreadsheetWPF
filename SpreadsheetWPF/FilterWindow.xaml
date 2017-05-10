@@ -5,23 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpreadsheetWPF"
         mc:Ignorable="d"
-        Title="FilterWindow" Height="300" Width="300">
+        Title="FilterWindow" Height="350" Width="300">
     <Grid>
         <StackPanel Orientation="Vertical" >
-            <StackPanel Orientation="Horizontal" Margin="25,15,0,0">
+            <StackPanel x:Name="textPanel" Orientation="Horizontal" Margin="25,15,0,0" Visibility="Visible">
                 <Label Content="Filter by Value  " HorizontalAlignment="Center" VerticalAlignment="Center"  />
                 <TextBox x:Name="filterValue" Width="100" Margin="25,0,0,0" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="30,20,0,0">
+            <StackPanel x:Name="comboPanel" Orientation="Horizontal" Margin="25,-26,0,0" Visibility="Hidden"  >
+                <Label Content="Filter by Item" HorizontalAlignment="Center" VerticalAlignment="Center"  />
+                <ComboBox x:Name="cmb_List" Margin="34,0,0,0" Width="110"></ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="30,30,0,0">
                 <CheckBox x:Name="chk_caseSenst" Content="Case Sensitive"/>
             </StackPanel>
-
-
         </StackPanel>
-        <StatusBar Height="56" VerticalAlignment="Bottom" Background="white"  Margin="0,0,0,20">
-            <Label HorizontalAlignment="Center" x:Name="errorStatus" Visibility="Hidden" Content="Please Enter A Filter Value" TextBlock.Foreground="Red" Margin="65,0,0,0"></Label>
-        </StatusBar>
 
-        <Button x:Name="button" VerticalAlignment="Center" Content="Ok" Click="button_Click" Margin="100,80,100,0"/>
+        <Button x:Name="button" VerticalAlignment="Center" Content="Ok" Click="button_Click"  Margin="100,0,100,0"/>
+        <DockPanel VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
+            <StatusBar DockPanel.Dock="Bottom">
+                <StatusBarItem/>
+                <Label x:Name="lblCursorPosition" Content="Filtering Column : " Visibility="Visible" />
+            </StatusBar>
+            <StatusBar Visibility="Hidden" x:Name="errorPanel" DockPanel.Dock="Bottom">
+                <StatusBarItem/>
+                <Label x:Name="errorStatus" Visibility="Hidden"   Content="Please Enter A Filter Value" TextBlock.Foreground="Red"></Label>
+            </StatusBar>
+        </DockPanel>
     </Grid>
+
 </Window>

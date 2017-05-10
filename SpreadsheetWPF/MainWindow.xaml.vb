@@ -173,6 +173,7 @@ Namespace gridData
         Dim colNames() As String = {"dgtxtcol_include", "dgtxtcol_name", "dgtxtcol_sel", "dgtxtcol_attri1", "dgtxtcol_attri2", "dgtxtcol_attri3", "dgtxtcol_attri4", "dgtxtcol_unitattri4", "dgtxtcol_attri5", "dgtxtcol_attri6", "dgtxtcol_attri7", "dgtxtcol_attri8", "dgtxtcol_attri9", "dgtxtcol_attri10", "dgtxtcol_minval", "dgtxtcol_normval", "dgtxtcol_maxval", "dgtxtcol_unitofdifferentialpressure"}
         Dim discardList As List(Of Integer) = New List(Of Integer)()
 
+
         'header of the column where user right clicked
         Dim headerSelected As String = "", configurationFileName As String = "..\selectionConfigFile.txt"
 
@@ -652,8 +653,25 @@ Namespace gridData
         ''Methods Pertaining to FilterData in DataGrid
 
         Private Sub openFilterWindow(sender As Object, e As RoutedEventArgs)
+
             Try
-                Dim inputDialog As FilterWindow = New FilterWindow()
+                Dim dummyUserData As userData = New userData(Nothing, dg_grid1.Columns.Count - 1)
+                Dim list As List(Of String) = New List(Of String)
+                If headerSelected.ToLower.Equals("measuring principle") Then
+                    list = dummyUserData.measuringprinciple
+                ElseIf headerSelected.ToLower.Equals("unit of pressure p1") Then
+                    list = dummyUserData.pressureUnit
+                ElseIf headerSelected.ToLower.Equals("unit of temperature") Then
+                    list = dummyUserData.tempUnit
+                ElseIf headerSelected.ToLower.Equals("unit of differential pressure") Then
+                    list = dummyUserData.diffPressureUnit
+                End If
+                Dim inputDialog As FilterWindow
+                If list.Count = 0 Then
+                    inputDialog = New FilterWindow(headerSelected)
+                Else
+                    inputDialog = New FilterWindow(list, headerSelected)
+                End If
                 inputDialog.ShowInTaskbar = True
                 inputDialog.Owner = Me
 
@@ -666,7 +684,7 @@ Namespace gridData
 
                     If Not filterValue.Equals("") Then
                         CollectionViewSource.GetDefaultView(dg_grid1.ItemsSource).Refresh()
-                        filterStatus.Content = "Currently Filter Is applied to Column" & headerSelected & " with Value : " & filterValue
+                        filterStatus.Content = "Currently Filter Is applied to Column : " & headerSelected & " with Value : " & filterValue
                         filterStatus.Visibility = Visibility.Visible
                     Else
                         Console.WriteLine("Base: openFilterWindow" & vbNewLine & "Invalid filter Value obtained from FilterWindow")
@@ -1163,12 +1181,9 @@ Namespace gridData
                         If Not discardList.Contains(row) Then
                             For col As Short = 0 To colCount - 3
                                 Dim index = determineIndex(headerList(col).ToLower())
-                                If index <> -1 Then
+                                If index > 0 Then
                                     DataArray(temp, col) = collection.Item(row).col_list.Item(index)
                                     added = True
-                                Else
-                                    Console.WriteLine("Base : exportExcel" & vbNewLine & "Invalid Header value.")
-                                    shutdown()
                                 End If
                             Next
                         End If
