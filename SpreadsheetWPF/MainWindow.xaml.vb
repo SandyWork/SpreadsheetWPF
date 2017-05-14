@@ -27,6 +27,7 @@ Namespace gridData
         Public Property diffPressureUnit As List(Of String)
         Public Property tempUnit As List(Of String)
         Public Property measuringprinciple As List(Of String)
+        Public Property include As Boolean = True
 
 
         Private Sub addComboData(obj As userData)
@@ -64,7 +65,6 @@ Namespace gridData
                     Next
                 End If
             End If
-
             addComboData(Me)
         End Sub
 
@@ -186,7 +186,7 @@ Namespace gridData
         Dim oldWindowHeight As Double = 600
         'Filter Value that user entered when prompted
         Dim filterValue As String = ""
-        Dim copyActivated As Boolean = False, cutActivated As Boolean = False, pasteActivated As Boolean = False
+        Dim copyActivated As Boolean = False, cutActivated As Boolean = False, pasteActivated As Boolean = False, rowAdd = False, allHighlight = True
         Private filterSelected As Boolean = False, caseSensitive As Boolean = False
         Dim configHeaderList As List(Of List(Of String)) = New List(Of List(Of String))()
         Dim configIndexCount As Integer = 0
@@ -890,21 +890,20 @@ Namespace gridData
             'By default e.Handled is True. It signifies that right click has been handled, and sometimes context menu don't pop up
             'To avoid this, set it to False, so context menu gets visible
             e.Handled = False
+
+            If colEditIndex = dg_grid1.Columns.Count - 1 Then
+                rowAdd = True
+            Else
+                rowAdd = False
+            End If
+
             Return
         End Sub
 
         Private Sub btn_edit_row_Click(sender As Object, e As RoutedEventArgs)
+            Console.WriteLine("Adding Row " & collection.Count)
             If colEditIndex = dg_grid1.Columns.Count - 1 Then
                 collection.Insert(rowEditIndex + 1L, New userData(Nothing, dg_grid1.Columns.Count - 1))
-            End If
-        End Sub
-
-        Private Sub btn_delete_row_Click(sender As Object, e As RoutedEventArgs)
-            If colEditIndex = dg_grid1.Columns.Count - 1 Then
-                collection.RemoveAt(rowEditIndex)
-                If collection.Count = 0 Then
-                    collection.Add(New userData(Nothing, dg_grid1.Columns.Count - 1))
-                End If
             End If
         End Sub
 
@@ -941,51 +940,49 @@ Namespace gridData
             Try
                 Dim ifCut As Boolean = False
                 Dim currentCell As DataGridCellInfo = dg_grid1.SelectedCells.Item(0)
-                Dim currColIndex = currentCell.Column.DisplayIndex
-                Dim currRowIndex = GetRowIndexFromCell(dg_grid1, currentCell)
-                Dim curruserData As userData = collection.Item(currRowIndex)
+                Dim _currColIndx = currentCell.Column.DisplayIndex
+                Dim _currRowIndx = GetRowIndexFromCell(dg_grid1, currentCell)
+                Dim curruserData As userData = collection.Item(_currRowIndx)
 
                 If previousSelectedCells.Count > 0 Then
-                    Dim rowIndex = GetRowIndexFromCell(dg_grid1, previousSelectedCells.Item(0))
-                    Dim prevuserData As userData = collection.Item(rowIndex)
-                    Dim colIndex As Integer = 0
+                    Dim _rowIndx = GetRowIndexFromCell(dg_grid1, previousSelectedCells.Item(0))
+                    Dim prevuserData As userData = collection.Item(_rowIndx)
+                    Dim _colIndx As Integer = 0
                     For i As Integer = 0 To previousSelectedCells.Count - 1
                         Dim cell As DataGridCellInfo = previousSelectedCells.Item(i)
-                        colIndex = cell.Column.DisplayIndex
-                        curruserData.col_list.Item(currColIndex) = prevuserData.col_list.Item(colIndex)
+                        _colIndx = cell.Column.DisplayIndex
+                        curruserData.col_list.Item(_currColIndx) = prevuserData.col_list.Item(_colIndx)
 
                         If cutActivated Then
-                            prevuserData.col_list.Item(colIndex) = ""
+                            prevuserData.col_list.Item(_colIndx) = ""
                             ifCut = True
                         End If
-                        currColIndex += 1
+                        _currColIndx += 1
                     Next
 
                     If ifCut Then
                         cutActivated = False
-                    Else
-                        copyActivated = False
                     End If
 
-                    If rowIndex > currRowIndex Then
-                        collection.RemoveAt(rowIndex)
-                        collection.RemoveAt(currRowIndex)
+                    If _rowIndx > _currRowIndx Then
+                        collection.RemoveAt(_rowIndx)
+                        collection.RemoveAt(_currRowIndx)
 
-                        collection.Insert(currRowIndex, curruserData)
-                        collection.Insert(rowIndex, prevuserData)
-                    ElseIf rowIndex < currRowIndex Then
-                        collection.RemoveAt(currRowIndex)
-                        collection.RemoveAt(rowIndex)
+                        collection.Insert(_currRowIndx, curruserData)
+                        collection.Insert(_rowIndx, prevuserData)
+                    ElseIf _rowIndx < _currRowIndx Then
+                        collection.RemoveAt(_currRowIndx)
+                        collection.RemoveAt(_rowIndx)
 
-                        collection.Insert(rowIndex, prevuserData)
-                        collection.Insert(currRowIndex, curruserData)
+                        collection.Insert(_rowIndx, prevuserData)
+                        collection.Insert(_currRowIndx, curruserData)
                     Else
-                        collection.RemoveAt(rowIndex)
-                        collection.Insert(currRowIndex, curruserData)
+                        collection.RemoveAt(_rowIndx)
+                        collection.Insert(_currRowIndx, curruserData)
                     End If
 
                     dg_grid1.Focus()
-                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(currRowIndex), dg_grid1.Columns(currColIndex - 1))
+                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(_currRowIndx), dg_grid1.Columns(_currColIndx - 1))
                     dg_grid1.SelectedCells.Add(dg_grid1.CurrentCell)
 
 
@@ -1032,7 +1029,6 @@ Namespace gridData
 
             RetrieveCells(sender, e)
             pasteActivated = True
-            previousSelectedCells.Clear()
         End Sub
 
         ''*********End of Miscellaneous tasks
@@ -1051,90 +1047,84 @@ Namespace gridData
             RetrieveCells(sender, Nothing)
         End Sub
 
-        Private Sub highlightCells_Click(sender As Object, e As RoutedEventArgs)
+        Private Sub highlightAllRows_Click(sender As Object, e As RoutedEventArgs)
+            allHighlight = True
+            _highlightCells(sender, e, True)
+        End Sub
 
-            'For Each cell In blueCellsColored
-            '    cell.BorderBrush = New SolidColorBrush(Colors.Black)
-            '    cell.BorderThickness = New Thickness(0.0)
-            'Next
-            ''blueCellsColored.Clear()
+        Private Sub clearHighlightCells_Click(sender As Object, e As RoutedEventArgs)
+            HighlightClear()
+        End Sub
+
+        Private Sub _highlightCells(sender As Object, e As RoutedEventArgs, nRows As Boolean)
             blueHighlight = False
             blueFlag = False
-
-
-            Dim foundSelection As Boolean = False
+            Dim _tempRow As Integer = rowEditIndex
+            Dim _end As Integer = _tempRow
+            If nRows Then
+                _end = collection.Count - 1
+                _tempRow = 0
+            End If
             Try
                 fileRead()
-                'rowIndex -> rowEditIndex 
-                Dim obj As userData = collection.Item(rowEditIndex)
-                If obj IsNot Nothing Then
-                    obj = setValues(obj)
-                    If obj.col_list.Count > 0 Then
-                        Try
-                            For Each List In configHeaderList
-                                If List.Item(0) IsNot Nothing Then
-                                    If obj.col_list.Item(measuringIndex).Equals(List.Item(0)) Then
-                                        foundSelection = True
-                                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowEditIndex), dg_grid1.Columns.Item(measuringIndex))
-                                        changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
-                                        For i As Integer = 1 To List.Count - 1
-                                            For j As Integer = 2 To dg_grid1.Columns.Count - 2
-                                                If (List.Item(i).ToLower()).Equals(headerList(j).ToLower()) Then
-                                                    dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowEditIndex), dg_grid1.Columns.Item(j))
-                                                    changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
-                                                End If
+                For _rowIndx As Integer = _tempRow To _end
+                    Dim obj As userData = collection.Item(_rowIndx)
+                    If obj IsNot Nothing Then
+                        obj = setValues(obj)
+                        If obj.col_list.Count > 0 Then
+                            Try
+                                For Each List In configHeaderList
+                                    If List.Item(0) IsNot Nothing Then
+                                        If obj.col_list.Item(measuringIndex).Equals(List.Item(0)) Then
+                                            dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(_rowIndx), dg_grid1.Columns.Item(measuringIndex))
+                                            changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
+                                            For i As Integer = 1 To List.Count - 1
+                                                For j As Integer = 2 To dg_grid1.Columns.Count - 2
+                                                    If (List.Item(i).ToLower()).Equals(headerList(j).ToLower()) Then
+                                                        dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(_rowIndx), dg_grid1.Columns.Item(j))
+                                                        changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
+                                                    End If
+                                                Next
                                             Next
-                                        Next
-                                        Exit For
+                                            Exit For
+                                        End If
                                     End If
-                                End If
-                            Next
-
-                            '' If none of the selection value in Configuration File Matches, default selection is selected
-                            '' i.e only Selection cell and Name Cell
-                            If foundSelection = False Then
-                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowEditIndex), dg_grid1.Columns.Item(measuringIndex))
-
-                                changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
-                                dg_grid1.CurrentCell = New DataGridCellInfo(dg_grid1.Items(rowEditIndex), dg_grid1.Columns.Item(itemNameIndex))
-                                changeCellColor(dg_grid1.CurrentCell, Colors.Blue, Colors.White)
-                            End If
-                        Catch ex As Exception
-                            Console.WriteLine("Base : highlightCells_Click" & vbNewLine & "Exception while highlighting Cells")
-                            shutdown()
-                        End Try
+                                Next
+                            Catch ex As Exception
+                                Console.WriteLine("Base : highlightCells_Click" & vbNewLine & "Exception while highlighting Cells")
+                                'shutdown()
+                            End Try
+                        Else
+                            Console.WriteLine("Base : highlightCells_Click" & vbNewLine & "Object doesn't contain any column Values. Invalid!!")
+                            'shutdown()
+                        End If
                     Else
-                        Console.WriteLine("Base : highlightCells_Click" & vbNewLine & "Object doesn't contain any column Values. Invalid!!")
-                        shutdown()
+                        Console.WriteLine("Base : highlightCells_Click" & vbNewLine & "Null Object obtained. Possbile Empty Datagrid")
+                        'shutdown()
                     End If
-                Else
-                    Console.WriteLine("Base : highlightCells_Click" & vbNewLine & "Null Object obtained. Possbile Empty Datagrid")
-                    'shutdown()
-                End If
+                Next
             Catch ex As Exception
                 Console.WriteLine("Base : highlightCells_Click" & vbNewLine & "Exception ")
                 Console.WriteLine(ex.Message)
                 'shutdown()
             End Try
-
         End Sub
 
-        Private Sub EscapeCommand_Executed(sender As Object, e As ExecutedRoutedEventArgs)
+        Private Sub highlightCells_Click(sender As Object, e As RoutedEventArgs)
+            _highlightCells(sender, e, False)
         End Sub
+
         ''********End Of Row Context Menu tasks
-
 
         ''ComboBox Selection Changed
         Private Sub changeComboBoxValue(sender As Object, e As SelectionChangedEventArgs)
-            If TypeOf sender Is ComboBox Then
-                Dim comboBox As ComboBox = CType(sender, ComboBox)
-                If comboBox IsNot Nothing Then
+            If rowAdd = False Then
+                If TypeOf sender Is ComboBox Then
+                    Dim comboBox As ComboBox = CType(sender, ComboBox)
                     If comboBox.SelectedValue IsNot Nothing Then
-                        If rowEditIndex <> -1 Then
-                            If colEditIndex <> -1 Then
+                        If rowEditIndex >= 0 Then
+                            If colEditIndex >= 0 AndAlso colEditIndex < dg_grid1.Columns.Count - 1 Then
                                 collection.Item(rowEditIndex).col_list.Item(colEditIndex) = comboBox.SelectedValue.ToString
-                            Else
-                                collection.Item(rowEditIndex).col_list.Item(colEditIndex) = ""
                             End If
                             If colEditIndex = measuringIndex Then
                                 highlightCells_Click(New Object(), New RoutedEventArgs())
@@ -1143,10 +1133,9 @@ Namespace gridData
                     End If
                 End If
             End If
+
         End Sub
         ''End of ComboBox Event Handlers
-
-
 
         ''Excel Related Files
         Private Sub btn_export_Click(sender As Object, e As RoutedEventArgs)
@@ -1179,12 +1168,9 @@ Namespace gridData
 
                     For row As Short = 0 To rowCount - 1
                         If Not discardList.Contains(row) Then
-                            For col As Short = 0 To colCount - 3
-                                Dim index = determineIndex(headerList(col).ToLower())
-                                If index > 0 Then
-                                    DataArray(temp, col) = collection.Item(row).col_list.Item(index)
-                                    added = True
-                                End If
+                            For col As Short = 0 To colCount - 2
+                                DataArray(temp, col) = collection.Item(row).col_list.Item(col)
+                                added = True
                             Next
                         End If
                         If added Then
@@ -1192,6 +1178,7 @@ Namespace gridData
                             added = False
                         End If
                     Next
+
                     xlWorkSheet.Range("A1").Resize(1, colCount).Value = headerList
                     xlWorkSheet.Range("A2").Resize(temp, colCount).Value = DataArray
 
@@ -1199,7 +1186,9 @@ Namespace gridData
                     xlWorkSheet.SaveAs(f.FileName)
                     xlWorkBook.Close()
                     xlApp.Quit()
-                    MessageBox.Show("done")
+
+                    MessageBox.Show("Published!.")
+
                     releaseObject(xlApp)
                     releaseObject(xlWorkBook)
                     releaseObject(xlWorkSheet)
@@ -1207,21 +1196,21 @@ Namespace gridData
             Catch ex As Exception
                 MessageBox.Show("Unable to export", "Error", MessageBoxButton.OK, MessageBoxImage.Error)
                 Console.WriteLine(ex.Message)
-                shutdown()
+                'shutdown()
             End Try
         End Sub
 
-        Private Sub clearHighlightCells_Click(sender As Object, e As RoutedEventArgs)
-            HighlightClear()
-        End Sub
+
 
         Private Sub chk_include_Checked(sender As Object, e As RoutedEventArgs)
+            collection.Item(rowEditIndex).include = True
             If discardList.Contains(rowEditIndex) Then
                 discardList.Remove(rowEditIndex)
             End If
         End Sub
 
         Private Sub chk_include_Unchecked(sender As Object, e As RoutedEventArgs)
+            collection.Item(rowEditIndex).include = False
             If Not discardList.Contains(rowEditIndex) Then
                 discardList.Add(rowEditIndex)
             End If
@@ -1310,6 +1299,7 @@ Namespace gridData
         ''Excel Related Functions
 
         Private Sub btn_save_click(sender As Object, e As RoutedEventArgs)
+            Console.WriteLine(collection.Item(0).include.ToString)
         End Sub
 
         Private Function getexcelsheetnames(ByVal filename As String) As List(Of String)

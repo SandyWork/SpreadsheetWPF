@@ -154,9 +154,10 @@
                         <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{x:Static SystemColors.HighlightTextColor}"/>
                         <ContextMenu  x:Key="rowContextMenu" x:Name="rowContextMenu">
                             <MenuItem Header="Copy" x:Name="copyCells" Click="copyCells_Click" />
-                            <MenuItem Header="Paste" x:Name="cutCells" Click="cutCells_Click" />
-                            <MenuItem Header="Cut" x:Name="pasteCells"  Click="pasteCells_Click" ></MenuItem>
-                            <MenuItem Header="Highlight All" x:Name="highlightCells" Click="highlightCells_Click" ></MenuItem>
+                            <MenuItem Header="Paste" x:Name="pasteCells" Click="pasteCells_Click" /> 
+                            <MenuItem Header="Cut" x:Name="cutCells"  Click="cutCells_Click" ></MenuItem>
+                            <MenuItem Header="Highlight" x:Name="highlight" Click="highlightCells_Click"></MenuItem>
+                            <MenuItem Header="Highlight All" x:Name="highlightAllRows" Click="highlightAllRows_Click" ></MenuItem>
                             <MenuItem Header="Clear" x:Name="clearHighlightCells" Click="clearHighlightCells_Click"></MenuItem>
                         </ContextMenu>
                     </DataGrid.Resources>
@@ -194,7 +195,7 @@
                             </DataGridTemplateColumn.Header>
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox x:Name="chk_include" Checked="chk_include_Checked" Unchecked="chk_include_Unchecked"  IsChecked="True"></CheckBox>
+                                    <CheckBox x:Name="chk_include" Checked="chk_include_Checked" Unchecked="chk_include_Unchecked"  IsChecked="{Binding Path=include}"></CheckBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -611,7 +612,7 @@
                             </DataGridTemplateColumn.Header>
                         </DataGridTemplateColumn>
 
-                        <DataGridTemplateColumn Visibility="Hidden" Header="Add Row" x:Name="addRow">
+                        <DataGridTemplateColumn Visibility="Visible"  Header="Add Row" x:Name="addRow">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button x:Name="btn_edit_row" Content="Add" Click="btn_edit_row_Click"/>
